@@ -1,0 +1,43 @@
+<div class="albumComments">
+  <div class="title-wrap">
+    <div class="title">
+      <%-data.title%>
+    </div>
+    <div class="space">
+
+    </div>
+    <div class="write-wrap" id="btn-albumComments-leave-comments">
+      <div class="write-logo">
+
+      </div>
+      <div class="write" >
+        写留言
+      </div>
+    </div>
+  </div>
+  <div class="subtitle">
+    <%-data.subtitle%>
+  </div>
+  <div class="list">
+    <% for(var i = 0, len = data.list.length; i <len; i++) { %>
+    <% var l = data.list[i]; %>
+    <div class="row">
+      <div class="image" <%if(data.pic){%> style="background-image:url(<%- data.pic %>)" <%}%>  >
+      </div>
+      <div class="message-wrap">
+        <div class="person-wrap">
+          <div class="name">
+            <%-l.nick_name%>
+          </div>
+          <div class="time">
+              <%-l.created_time%>
+          </div>
+        </div>
+        <div class="message">
+            <%-l.content%>
+        </div>
+      </div>
+    </div>
+    <% } %>
+  </div>
+</div>

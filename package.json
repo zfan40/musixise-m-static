@@ -1,0 +1,44 @@
+{
+  "name": "m-static",
+  "version": "0.0.1",
+  "description": "",
+  "main": "gulpfile.js",
+  "scripts": {
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "del": "^2.2.0",
+    "gulp": "^3.9.0",
+    "gulp-util": "~3.0.7",
+
+    "webpack": "^1.12.9",
+    "webpack-dev-server": "~1.14.0",
+    "copy-webpack-plugin": "^0.3.3",
+    "html-webpack-plugin": "~2.14.0",
+    "extract-text-webpack-plugin": "~0.9.1",
+    "compression": "~1.6.0",
+    "browser-sync": "^2.10.1",
+    "lodash": "~3.10.1",
+    "minimist": "~1.2.0",
+    "node-sass": "^3.4.2",
+
+    "css-loader": "^0.23.1",
+    "sass-loader": "^3.1.2",
+    "style-loader": "^0.13.0",
+    "raw-loader": "~0.5.1",
+    "@ali/alimusic-orbit-ejs-loader": "~0.0.2",
+    "html-minify-loader": "~1.0.0",
+    "ejs-loader": "~0.2.1",
+    "file-loader": "~0.8.5",
+    "url-loader": "~0.5.7",
+
+    "@ali/alimusic-m-build-util": "0.0.3"
+  },
+  "dependencies": {
+    "es6-promise": "~3.0.2",
+    "@ali/alimusic-orbit-mtop": "0.1.1",
+    "@ali/lib-windvane": "~2.1.1",
+    "lodash.escape": "~3.1.0"
+  }
+}
