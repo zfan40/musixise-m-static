@@ -30,9 +30,15 @@
     }
 }*/
 
-$gold:#FAD65A;
-$lightblue:#86CDE9;
+/*$gold:#FAD65A;*/
+$gold:#FFCC33;
+/*$gold:#FFFF00;*/
+$watchingnum:#86CDE9;
+/*$watchingnum:#ffff00;*/
 
+a, u {
+    text-decoration: none;
+}
 p {
     font-size: .42rem;
 }
@@ -46,6 +52,7 @@ body {
     width: 10rem;
     padding: 0rem 0rem .5rem;
     .musixiser {
+        display: block;
         position: relative;
         width: 100%;
         /*height: 9+1.5rem;   9rem*9rem, extra 1.5rem description bar*/
@@ -95,7 +102,7 @@ body {
                     display: inline-block;
                     top: .033rem;
                     right: .1rem;
-                    color: $lightblue;
+                    color: $watchingnum;
                     font-size: .5rem;   
 
                 }
@@ -109,7 +116,7 @@ body {
             font-size:.32rem;
             line-height: .75rem;
             padding-left: .5rem;
-            color: white;
+            color: $gold;
             &:before {
                 content: "";
                 position: absolute;

@@ -1,36 +1,50 @@
+// jsbridge
+var MUSIXISE = undefined;
 
-	// var $ = require('../../_common/js/zepto.min.js');
+function connectWebViewJavascriptBridge(callback) {
+    if (window.WebViewJavascriptBridge) {
+        callback(WebViewJavascriptBridge);
+    } else {
+        document.addEventListener('WebViewJavascriptBridgeReady', function() {
+            callback(WebViewJavascriptBridge);
+        }, false)
+    }
+}
 
+// 调用处理
+function callHandler(evt, data, callback) {
+    if (!MUSIXISE) {
+        connectWebViewJavascriptBridge(function(bridge) {
+            MUSIXISE = bridge;
+            bridge.callHandler(evt, data, callback)
+        })
+    } else {
+        MUSIXISE.callHandler(evt, data, callback)
+    }
+}
+// timing params
+var timeDiff = 0; //performer start time vs. audience enter 
+var latency = 5000; //5000 milliseconds
+var tt = 0; // total time, from the first two params
+var hasFirstNoteArrived = false; //use first Note to set late 
 
-	var hisname = location.href.match(/.*?stage\/(.*)/)[1];
+var SoundModule = {
+    sendMidi: function(note_data) {
+        if (!hasFirstNoteArrived && note_data.midi_msg) {
+            hasFirstNoteArrived = true;
+            timeDiff = note_data.time - performance.now(); //rough value
+        }
+        tt = note_data.time - timeDiff + latency;
+        
+        //method 1: js setTimeout
+        setTimeout(function() {
+            callHandler('MusicDeviceMIDIEvent', [+note_data.midi_msg[0], +note_data.midi_msg[1], +note_data.midi_msg[2], 0])
+        		console.log('bang');
+        }, tt - performance.now());
+        //mathod 2: native sample based
+				// callHandler('MusicDeviceMIDIEvent', [+note_data.midi_msg[0], +note_data.midi_msg[1], +note_data.midi_msg[2], 44.1*(tt - performance.now())]);
+    }
+}
 
-	// timing params
-	var timeDiff = 0; //performer start time vs. audience enter 
-	var latency = 1500; //5000 milliseconds
-	var tt = 0; // total time, from the first two params
-	var hasFirstNoteArrived = false; //use first Note to set late 
-
-	var SoundModule = {
-	    sendMidi: function(note_data) {
-	        if (!hasFirstNoteArrived && note_data.midi_msg) {
-	            hasFirstNoteArrived = true;
-	            timeDiff = note_data.time - performance.now();
-	            console.log('two side timeDiff: ' + timeDiff);
-	        }
-	        console.log('note time from musixiser: ' + note_data.time);
-	        tt = note_data.time - timeDiff + latency;
-
-	        //第一种synth方案,不传入时间信息，setTimeout控制synth时间
-	        // setTimeout(function() {
-	        //     // Synth.handleMidiMsg(note_data.midi_msg, note_data.timbre);
-	        //     // if (note_data.midi_msg[0]==144)
-	        //     // {letThereBeLight()}
-	        // }, tt - performance.now());
-	        // Synth.handleMidiMsg(note_data.midi_msg, note_data.timbre)    //这行复原啊！！！！！！
-	        //第二种synth方案,传入时间信息，synth自己管理时间
-	        // Synth.handleMidiMsg(note_data.midi_msg, note_data.timbre, tt / 1000.0);
-	    }
-	}
-
-	console.log('SoundModule Activated');
-	module.exports = SoundModule;
+console.log('SoundModule Activated');
+module.exports = SoundModule;

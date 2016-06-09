@@ -96,6 +96,12 @@ body {
         }
     }
 }*/
+/*$gold:#FAD65A;*/
+/*$gold:#FFFF00;*/
+/*$watchingnum:#ffff00;*/
+a, u {
+  text-decoration: none; }
+
 p {
   font-size: .42rem; }
 
@@ -108,6 +114,7 @@ body {
   width: 10rem;
   padding: 0rem 0rem .5rem; }
   #musixiser-section .musixiser {
+    display: block;
     position: relative;
     width: 100%;
     /*height: 9+1.5rem;   9rem*9rem, extra 1.5rem description bar*/
@@ -135,7 +142,7 @@ body {
           height: 1.2rem;
           margin-top: .15rem;
           border-radius: .6rem;
-          border: 2px solid #FAD65A; }
+          border: 2px solid #FFCC33; }
       #musixiser-section .musixiser .info .section-two {
         flex: 3; }
         #musixiser-section .musixiser .info .section-two .name {
@@ -159,7 +166,7 @@ body {
       font-size: .32rem;
       line-height: .75rem;
       padding-left: .5rem;
-      color: white; }
+      color: #FFCC33; }
       #musixiser-section .musixiser .caption:before {
         content: "";
         position: absolute;
