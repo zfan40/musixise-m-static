@@ -13,6 +13,8 @@ var mainTpl = require('../template/main.ejs');
 
 var mock = require('../mock/performerMock.js');
 
+var Yeshao = require('../../_common/songs/overtherainbow.js');
+
 var musixiser = '';
 musixiser = location.href.match(/.*?stage\/(.*)/)[1];
 if (!musixiser) {
@@ -27,7 +29,7 @@ var app = {
         Comment.init(function(msg,order_songname){
             console.log('mlb');
             socket.emit('req_AudienceComment',msg);
-            if (order_songname) {alert('sd');socket.emit('req_AudienceOrderSong',order_songname);}
+            if (order_songname) {socket.emit('req_AudienceOrderSong',order_songname);}
         });
     	self.bindSocket();
         self.bindLeaveMessage();
@@ -46,6 +48,7 @@ var app = {
         });
         socket.on('res_MusixiserMIDI', function(data) {
             var note_data = JSON.parse(data.message);
+            console.log(note_data);
             Sound.sendMidi(note_data);
             // Visual.letThereBeLight(note_data);
         });
@@ -62,16 +65,21 @@ var app = {
             console.log('有观众点了歌:'+data);
         });
         socket.on('no stage', function() {
-            $('.stage-banner').html('舞台并不存在,3s后返回');
-            var timer = 3;
-            setInterval(function() {
-                if (timer != 1) {
-                    timer--;
-                    $('.stage-banner').html('舞台并不存在, ' + timer + 's后返回');
-                } else {
-                    location.href = '//m.musixise.com';
-                }
-            }, 1000);
+            // $('.stage-banner').html('舞台并不存在,3s后返回');
+            // var timer = 3;
+            // setInterval(function() {
+            //     if (timer != 1) {
+            //         timer--;
+            //         $('.stage-banner').html('舞台并不存在, ' + timer + 's后返回');
+            //     } else {
+            //         location.href = '//m.musixise.com';
+            //     }
+            // }, 1000);
+            console.log('empty room');
+            Sound.playPiece(Yeshao);
+            // setInterval(function(){
+            //     Sound.sendMid()
+            // },200);
         });
 
     },
