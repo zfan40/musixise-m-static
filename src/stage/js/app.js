@@ -8,6 +8,7 @@ var socket = io('http://io.musixise.com');
 var Visual = require('./visual.js');
 var Sound = require('./sound.js');
 var Comment = require('./comment.js');
+var User = require('./user.js');
 
 var mainTpl = require('../template/main.ejs');
 
@@ -26,12 +27,15 @@ var app = {
         var self = this;
         self.render();
         Visual.bindResponsiveBackgroundSprite();
-        Comment.init(function(msg,order_songname){
+        Comment.init(function(username,msg, order_songname) {
             console.log('mlb');
-            socket.emit('req_AudienceComment',msg);
-            if (order_songname) {socket.emit('req_AudienceOrderSong',order_songname);}
+            socket.emit('req_AudienceComment', {username:username,msg:msg});
+            if (order_songname) {
+                console.log('您点播了一首' + order_songname);
+                socket.emit('req_AudienceOrderSong', {username:username,songname:order_songname});
+            }
         });
-    	self.bindSocket();
+        self.bindSocket();
         self.bindLeaveMessage();
         self.bindSendGift();
     },
@@ -52,17 +56,17 @@ var app = {
             Sound.sendMidi(note_data);
             // Visual.letThereBeLight(note_data);
         });
-        socket.on('res_MusixiserComment',function(data){
-            console.log('主播发来一条消息:'+data);
+        socket.on('res_MusixiserComment', function(data) {
+            console.log('主播发来一条消息:' + data);
         });
-        socket.on('res_MusixiserPickSong',function(data){
-            console.log('主播将开始演奏'+data);
+        socket.on('res_MusixiserPickSong', function(data) {
+            console.log('主播将开始演奏' + data);
         });
         socket.on('res_AudienceComment', function(data) {
-            $('#tl-msg ul').prepend('<li>'+data+'</li>');
+            $('#tl-msg ul').append('<li>'+data.username+':'+data.msg + '</li>');
         });
         socket.on('res_AudienceOrderSong', function(data) {
-            console.log('有观众点了歌:'+data);
+            console.log(''+data.username+'点歌:' + data.songname);
         });
         socket.on('no stage', function() {
             // $('.stage-banner').html('舞台并不存在,3s后返回');
@@ -83,10 +87,10 @@ var app = {
         });
 
     },
-    bindLeaveMessage: function(){
+    bindLeaveMessage: function() {
 
     },
-    bindSendGift: function(){
+    bindSendGift: function() {
 
     }
 };
