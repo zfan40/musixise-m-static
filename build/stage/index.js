@@ -106,7 +106,6 @@
 	        self.render();
 	        Visual.bindResponsiveBackgroundSprite();
 	        Comment.init(function(username,msg, order_songname) {
-	            console.log('mlb');
 	            socket.emit('req_AudienceComment', {username:username,msg:msg});
 	            if (order_songname) {
 	                console.log('您点播了一首' + order_songname);
@@ -138,7 +137,7 @@
 	            console.log('主播发来一条消息:' + data);
 	        });
 	        socket.on('res_MusixiserPickSong', function(data) {
-	            console.log('主播将开始演奏' + data);
+	            console.log('' + data);
 	        });
 	        socket.on('res_AudienceComment', function(data) {
 	            $('#tl-msg ul').append('<li>'+data.username+':'+data.msg + '</li>');
