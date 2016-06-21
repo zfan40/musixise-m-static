@@ -159,11 +159,12 @@ a {
     padding: 0 1rem; }
   #top-layer #tl-msg {
     position: absolute;
+    width: 10rem;
     bottom: .8rem;
     padding: 0 1rem;
     max-height: 30%;
     color: #fff;
-    overflow: hidden; }
+    overflow-y: scroll; }
   #top-layer #leaveMessage {
     position: absolute;
     width: 100%;

@@ -53,7 +53,8 @@ var SoundModule = {
                 }, noteArray[i][3]);
             })(i);
             //mathod 2: native sample based
-            // Musixise.callHandler('MusicDeviceMIDIEvent', [noteArray[i][0], noteArray[i][1], noteArray[i][2], 44.1*noteArray[i][3]]);
+            // for (var i = 0; i <= length - 1; i++)
+            //     Musixise.callHandler('MusicDeviceMIDIEvent', [noteArray[i][0], noteArray[i][1], noteArray[i][2], noteArray[i][3]]);
         }
     }
 }

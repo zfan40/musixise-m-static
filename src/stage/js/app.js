@@ -62,7 +62,7 @@ var app = {
             console.log('' + data);
         });
         socket.on('res_AudienceComment', function(data) {
-            $('#tl-msg ul').append('<li>'+data.username+':'+data.msg + '</li>');
+            Comment.updateComment(data);
         });
         socket.on('res_AudienceOrderSong', function(data) {
             console.log(''+data.username+'点歌:' + data.songname);

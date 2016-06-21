@@ -140,7 +140,7 @@
 	            console.log('' + data);
 	        });
 	        socket.on('res_AudienceComment', function(data) {
-	            $('#tl-msg ul').append('<li>'+data.username+':'+data.msg + '</li>');
+	            Comment.updateComment(data);
 	        });
 	        socket.on('res_AudienceOrderSong', function(data) {
 	            console.log(''+data.username+'点歌:' + data.songname);
@@ -298,7 +298,8 @@
 	                }, noteArray[i][3]);
 	            })(i);
 	            //mathod 2: native sample based
-	            // Musixise.callHandler('MusicDeviceMIDIEvent', [noteArray[i][0], noteArray[i][1], noteArray[i][2], 44.1*noteArray[i][3]]);
+	            // for (var i = 0; i <= length - 1; i++)
+	            //     Musixise.callHandler('MusicDeviceMIDIEvent', [noteArray[i][0], noteArray[i][1], noteArray[i][2], noteArray[i][3]]);
 	        }
 	    }
 	}
@@ -340,6 +341,9 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var User = __webpack_require__(8);
+	var lockAutoScroll = false;
+	var lockAutoScrollProcess;
+	
 	function orderSongTextRule(comment_str) {
 		var split_str;
 		if (comment_str) split_str = comment_str.split('#');
@@ -349,23 +353,37 @@
 		return false;
 	}
 	var CommentModule = {
-	    init: function(callback) {
-	    	var username = User.getUserInfo();
-	    	console.log(username);
-			$('#leaveMessage').keydown(function(e){
+		init: function(callback) {
+			var username = User.getUserInfo();
+			console.log(username);
+			$('#leaveMessage').keydown(function(e) {
 				var content = $(this).val();
 				if (e.keyCode == 13 && content) {
-					$('#tl-msg ul').append('<li>'+username+':'+content+'</li>');
-					callback(username,content,orderSongTextRule(content));
+					$('#tl-msg ul').append('<li>' + username + ':' + content + '</li>');
+					document.querySelector('#tl-msg').scrollTop = document.querySelector('#tl-msg ul').clientHeight;
+					callback(username, content, orderSongTextRule(content));
 					$(this).val('');
 				}
 			});
-	    }
+			$('#tl-msg').on('scroll', function() {
+				lockAutoScroll = true;
+				clearTimeout(lockAutoScrollProcess);
+				lockAutoScrollProcess = setTimeout(function() {
+					lockAutoScroll = false;
+				}, 5000);
+			})
+		},
+		updateComment: function(data) {
+			$('#tl-msg ul').append('<li>' + data.username + ':' + data.msg + '</li>');
+			//keep the message section scrolled down most of the time
+			if (!lockAutoScroll) {
+				document.querySelector('#tl-msg').scrollTop = document.querySelector('#tl-msg ul').clientHeight;
+			}
+		}
 	}
 	
 	console.log('CommentModule Activated');
 	module.exports = CommentModule;
-
 
 /***/ },
 /* 8 */
