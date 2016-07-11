@@ -14,7 +14,7 @@ var mainTpl = require('../template/main.ejs');
 
 var mock = require('../mock/performerMock.js');
 
-var Yeshao = require('../../_common/songs/overtherainbow.js');
+var Yeshao = require('../../_common/songs/her.js');
 
 var musixiser = '';
 musixiser = location.href.match(/.*?stage\/(.*)/)[1];

@@ -44,17 +44,19 @@ var SoundModule = {
         // }
 
         for (var i = 0; i <= length - 1; i++) {
+            if (i==0||i==length-1){
+                console.log(performance.now());
+            }
             //method 1: js setTimeout
-            (function(i) {
-                setTimeout(function() {
-                    console.log(noteArray[i][0]);
-                    Musixise.callHandler('MusicDeviceMIDIEvent', [noteArray[i][0], noteArray[i][1], noteArray[i][2], 0]);
-                    // Visual.letThereBeLight(noteArray[i]);
-                }, noteArray[i][3]);
-            })(i);
+            // (function(i) {
+            //     setTimeout(function() {
+            //         console.log(noteArray[i][0]);
+            //         Musixise.callHandler('MusicDeviceMIDIEvent', [noteArray[i][0], noteArray[i][1], noteArray[i][2], 0]);
+            //         // Visual.letThereBeLight(noteArray[i]);
+            //     }, noteArray[i][3]);
+            // })(i);
             //mathod 2: native sample based
-            // for (var i = 0; i <= length - 1; i++)
-            //     Musixise.callHandler('MusicDeviceMIDIEvent', [noteArray[i][0], noteArray[i][1], noteArray[i][2], noteArray[i][3]]);
+               Musixise.callHandler('MusicDeviceMIDIEvent', [noteArray[i][0], noteArray[i][1], noteArray[i][2], noteArray[i][3]]);
         }
     }
 }

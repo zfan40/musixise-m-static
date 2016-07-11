@@ -1,21 +1,21 @@
 <% for(var i = 0, len = data.list.length; i <len; i++) { %>
     <% var l = data.list[i]; %>
-        <a href="<%-'//m.musixiser.com/stage/'+l.userId%>" class="musixiser" data-id="<%-l.name%>">
+        <a href="<%-'//m.musixise.com/stage/'+l.name%>" class="musixiser" id="id<%-l.name%>" data-name="<%-l.name%>">
             <div class="l-avatar">
-                <img src="<%-l.largeAvatar%>">
+                <img src="<%-l.userAvatar%>">
             </div>
             <div class="info">
                 <!-- <p class="nationality">China</p> -->
                 <div class="section-one">
-                    <img class="s-avatar" src="<%-l.largeAvatar%>">
+                    <img class="s-avatar" src="<%-l.userAvatar%>">
                 </div>
                 <div class="section-two">
                     <p class="name"><%-l.name%></p>
                 </div>
-                <p class="listener-total"><span><%-l.currentNum%></span>在听</p>
+                <p class="listener-total"><span><%-l.audienceNum%></span>在听</p>
             </div>
-            <% if(l.description) { %>
-                <p class="caption"><%-l.description%></p>
+            <% if(l.stageTitle) { %>
+                <p class="caption"><%-l.stageTitle%></p>
             <% } %>
         </a>
 <% } %>

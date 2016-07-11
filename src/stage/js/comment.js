@@ -23,7 +23,7 @@ var CommentModule = {
 				$(this).val('');
 			}
 		});
-		$('#tl-msg').on('scroll', function() {
+		document.querySelector('#tl-msg').addEventListener('touchstart', function() {
 			lockAutoScroll = true;
 			clearTimeout(lockAutoScrollProcess);
 			lockAutoScrollProcess = setTimeout(function() {

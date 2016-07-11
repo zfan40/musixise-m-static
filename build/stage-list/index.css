@@ -140,6 +140,7 @@ body {
         flex: 1; }
         #musixiser-section .musixiser .info .section-one .s-avatar {
           height: 1.2rem;
+          width: 1.2rem;
           margin-top: .15rem;
           border-radius: .6rem;
           border: 2px solid #FFCC33; }
