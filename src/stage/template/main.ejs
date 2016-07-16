@@ -1,8 +1,8 @@
-  <div id="bg"><img src="<%-data.backgroundSprite%>" id="bgi" /></div>
+  <div id="bg"><img src="<%-data.backgroundSprite||'http://gw.alicdn.com/tps/TB1hrh4JVXXXXaCXXXXXXXXXXXX-980-756.png'%>" id="bgi" /></div>
   <div id="top-layer">
     <div id="tl-basic">
-      <h2 id="musixiser-name"><%-data.nickName%></h2>
-      <h3 id="musixiser-duration"><%-data.startTime%></h3>
+      <h2 id="musixiser-name"><%-data.name%></h2>
+      <h3 id="musixiser-duration"><%-data.beginTime%></h3>
     </div>
     <div id="tl-msg"><ul></ul></div>
     <input id="leaveMessage" placeholder="发表留言:"></input>

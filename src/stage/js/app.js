@@ -25,30 +25,36 @@ if (!musixiser) {
 var app = {
     init: function() {
         var self = this;
-        self.render();
-        Visual.bindResponsiveBackgroundSprite();
-        Comment.init(function(username,msg, order_songname) {
-            socket.emit('req_AudienceComment', {username:username,msg:msg});
-            if (order_songname) {
-                console.log('您点播了一首' + order_songname);
-                socket.emit('req_AudienceOrderSong', {username:username,songname:order_songname});
-            }
-        });
-        self.bindSocket();
-        self.bindLeaveMessage();
-        self.bindSendGift();
-    },
-    render: function() {
-        var self = this;
-        $('body').append(mainTpl(mock));
-
-    },
-    bindSocket: function() {
-        console.log('In SoundModule: bindSocket');
         socket.on('connect', function() {
             console.log('enter stage ' + musixiser);
             socket.emit('audienceEnterStage', musixiser);
         });
+        socket.on('res_AudienceEnterStage', function(data) {
+            console.log('确认进场');
+            self.render(data);
+            Visual.bindResponsiveBackgroundSprite();
+            Comment.init(function(username, msg, order_songname) {
+                socket.emit('req_AudienceComment', { username: username, msg: msg });
+                if (order_songname) {
+                    console.log('您点播了一首' + order_songname);
+                    socket.emit('req_AudienceOrderSong', { username: username, songname: order_songname });
+                }
+            });
+            self.bindSocket();
+            self.bindLeaveMessage();
+            self.bindSendGift();
+        });
+
+    },
+    render: function(renderer) {
+        var self = this;
+        console.log(renderer);
+        $('body').append(mainTpl(renderer));
+
+    },
+    bindSocket: function() {
+        var self = this;
+        console.log('In SoundModule: bindSocket');
         socket.on('res_MusixiserMIDI', function(data) {
             var note_data = JSON.parse(data.message);
             console.log(note_data);
@@ -65,7 +71,7 @@ var app = {
             Comment.updateComment(data);
         });
         socket.on('res_AudienceOrderSong', function(data) {
-            console.log(''+data.username+'点歌:' + data.songname);
+            console.log('' + data.username + '点歌:' + data.songname);
         });
         socket.on('no stage', function() {
             // $('.stage-banner').html('舞台并不存在,3s后返回');

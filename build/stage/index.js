@@ -103,30 +103,36 @@
 	var app = {
 	    init: function() {
 	        var self = this;
-	        self.render();
-	        Visual.bindResponsiveBackgroundSprite();
-	        Comment.init(function(username,msg, order_songname) {
-	            socket.emit('req_AudienceComment', {username:username,msg:msg});
-	            if (order_songname) {
-	                console.log('您点播了一首' + order_songname);
-	                socket.emit('req_AudienceOrderSong', {username:username,songname:order_songname});
-	            }
-	        });
-	        self.bindSocket();
-	        self.bindLeaveMessage();
-	        self.bindSendGift();
-	    },
-	    render: function() {
-	        var self = this;
-	        $('body').append(mainTpl(mock));
-	
-	    },
-	    bindSocket: function() {
-	        console.log('In SoundModule: bindSocket');
 	        socket.on('connect', function() {
 	            console.log('enter stage ' + musixiser);
 	            socket.emit('audienceEnterStage', musixiser);
 	        });
+	        socket.on('res_AudienceEnterStage', function(data) {
+	            console.log('确认进场');
+	            self.render(data);
+	            Visual.bindResponsiveBackgroundSprite();
+	            Comment.init(function(username, msg, order_songname) {
+	                socket.emit('req_AudienceComment', { username: username, msg: msg });
+	                if (order_songname) {
+	                    console.log('您点播了一首' + order_songname);
+	                    socket.emit('req_AudienceOrderSong', { username: username, songname: order_songname });
+	                }
+	            });
+	            self.bindSocket();
+	            self.bindLeaveMessage();
+	            self.bindSendGift();
+	        });
+	
+	    },
+	    render: function(renderer) {
+	        var self = this;
+	        console.log(renderer);
+	        $('body').append(mainTpl(renderer));
+	
+	    },
+	    bindSocket: function() {
+	        var self = this;
+	        console.log('In SoundModule: bindSocket');
 	        socket.on('res_MusixiserMIDI', function(data) {
 	            var note_data = JSON.parse(data.message);
 	            console.log(note_data);
@@ -143,7 +149,7 @@
 	            Comment.updateComment(data);
 	        });
 	        socket.on('res_AudienceOrderSong', function(data) {
-	            console.log(''+data.username+'点歌:' + data.songname);
+	            console.log('' + data.username + '点歌:' + data.songname);
 	        });
 	        socket.on('no stage', function() {
 	            // $('.stage-banner').html('舞台并不存在,3s后返回');
@@ -443,11 +449,11 @@
 	var _ = { escape: __webpack_require__(11) };module.exports = function (data) {
 	var __t, __p = '', __e = _.escape;
 	__p += '<div id="bg"><img src="' +
-	__e(data.backgroundSprite) +
+	__e(data.backgroundSprite||'http://gw.alicdn.com/tps/TB1hrh4JVXXXXaCXXXXXXXXXXXX-980-756.png') +
 	'" id="bgi"></div><div id="top-layer"><div id="tl-basic"><h2 id="musixiser-name">' +
-	__e(data.nickName) +
+	__e(data.name) +
 	'</h2><h3 id="musixiser-duration">' +
-	__e(data.startTime) +
+	__e(data.beginTime) +
 	'</h3></div><div id="tl-msg"><ul></ul></div><input id="leaveMessage" placeholder="发表留言:"></div>';
 	return __p
 	};
@@ -704,10 +710,10 @@
 
 	//to render the initial stage view
 	module.exports = {
-	  nickName:'小胖子',
-	  avartar:'',
-	  startTime:1357924680,
-	  currentAudienceAmount:10,
+	  name:'小胖子',
+	  userAvartar:'',
+	  beginTime:1357924680,
+	  audienceNum:10,
 	  backgroundSprite:'http://gw.alicdn.com/tps/TB1hrh4JVXXXXaCXXXXXXXXXXXX-980-756.png'
 	}
 
