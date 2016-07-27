@@ -2,46 +2,62 @@
 @import "../_common/css/_variables";
 @import "../_common/css/_reboot";
 @import "../_common/css/_common";
-
 html {
-  overflow-y:hidden;
+  overflow-y: hidden;
   height: 100%;
 }
-a{ outline: none;}
+
+a {
+  outline: none;
+}
+
 body {
-  overflow-y:auto;
+  overflow-y: auto;
   margin: 0;
   padding: 0;
   border: 0;
   height: 100%;
-  background-color: #000;
+  background-color: #E6FFFF;
   transition: background-color 0.3s ease;
-/*  -webkit-transition:background-color 1s ease-in; 
+  /*  -webkit-transition:background-color 1s ease-in; 
   -moz-transition:background-color 1s ease-in; 
   -o-transition:background-color 1s ease-in; 
   transition:background-color 1s ease-in; */
   font-family: Arial, Helvetica, sans-serif;
   font-size: 13px;
 }
+
 #bg {
-  position:fixed; top:0; left:0; z-index: -200;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -200;
 }
+
 #bgf {
-  position:fixed; top:0; left:0; width: 100%; height: 100%; z-index: 5;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 5;
 }
+
 #bgi {
   visibility: hidden;
 }
+
 #nav {
   position: absolute;
   left: 48%;
   top: 62%;
   width: 50%;
 }
+
 h1 {
   color: white;
   text-decoration: none;
-  font-weight: normal;  
+  font-weight: normal;
   margin: 0 0 2.2em 25px;
   font-size: 2em;
   text-transform: uppercase;
@@ -53,57 +69,85 @@ h1 strong {
   font-weight: bold;
   margin-right: 7px;
 }
+
 a {
   text-decoration: none;
   color: white;
   text-shadow: 0 0 0.2em #000000, 0 0 0.3em rgba(0, 0, 0, 0.8), 0 0 0.4em rgba(0, 0, 0, 0.5);
 }
-@media  only screen and (min-device-width : 320px) and (max-device-width : 480px) {
+
+@media only screen and (min-device-width: 320px) and (max-device-width: 480px) {
   #nav {
     left: 0%;
     top: 10%;
-    width:20%;
+    width: 20%;
   }
 }
 
+
 /* m-end top layer*/
+
 #top-layer {
-  position:fixed;
+  position: fixed;
   height: 100%;
   width: 100%;
   padding-top: 1.2rem;
-  background-color: rgba(0,0,0,.2);
-  h2 {
-    color:white;
-    font-size: .7rem;
-    color:rgba(255,255,255,.5);
+  /*background-color: rgba(0, 0, 0, .2);*/
+  h2,h3 {}
+  #tl-stage {
+    padding: 0 1rem;
+    text-align: center;
+    #musixiser-avatar {
+      width: 2rem;
+      height: 2rem;
+      border-radius: 1rem;
+    }
+    #musixiser-name {
+      color: white;
+      font-size: .7rem;
+      line-height: 1rem;
+      /*color: rgba(255, 255, 255, .5);*/
+      color: #272727;
+    }    
+    #musixiser-title {
+      color: white;
+      font-size: .6rem;
+      line-height: .8rem;
+      color: #272727;
+    }
+    #musixiser-duration {
+      color: white;
+      font-size: .5rem;
+      line-height: .8rem;
+      color: #272727;
+    }
+
   }
-  h3 {
-    color:white;
-    font-size: .6rem;
-    color:rgba(255,255,255,.5);
+  #tl-musixiser-msg {
+    position: absolute;
   }
-  #tl-basic {
-    padding:0 1rem;
-  }
-  #tl-msg {
+  #tl-audience-msg {
     position: absolute;
     width: 10rem;
-    bottom: .8rem;
+    bottom: 1.2rem;
     padding: .2rem 1rem 0;
     max-height: 4rem;
-    color: #fff;
+    color: #272727;
     overflow-y: scroll;
     li {
       line-height: .5rem;
     }
+    .audiencename {
+      color:#34c3ab;
+    }
+    .songname {
+      color:pink;
+    }
   }
   #leaveMessage {
     position: absolute;
-    width:100%;
-    bottom:0;
+    width: 60%;
+    bottom: 0;
     height: .8rem;
   }
-
 }
-

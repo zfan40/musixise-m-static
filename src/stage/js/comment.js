@@ -17,13 +17,18 @@ var CommentModule = {
 		$('#leaveMessage').keydown(function(e) {
 			var content = $(this).val();
 			if (e.keyCode == 13 && content) {
-				$('#tl-msg ul').append('<li>' + username + ':' + content + '</li>');
-				document.querySelector('#tl-msg').scrollTop = document.querySelector('#tl-msg ul').clientHeight;
-				callback(username, content, orderSongTextRule(content));
+				var pickSong = orderSongTextRule(content);
+				if (pickSong) { //点了一首歌
+					var array = content.split('#');
+					content = ''+ array[0] + '<span class="songname">#'+array[1]+'#</span>'+array[2];
+				}
+				$('#tl-audience-msg ul').append('<li><span class="audiencename">' + username + '</span>: ' + content + '</li>');
+				document.querySelector('#tl-audience-msg').scrollTop = document.querySelector('#tl-audience-msg ul').clientHeight;
+				callback(username, content, pickSong);
 				$(this).val('');
 			}
 		});
-		document.querySelector('#tl-msg').addEventListener('touchstart', function() {
+		document.querySelector('#tl-audience-msg').addEventListener('touchstart', function() {
 			lockAutoScroll = true;
 			clearTimeout(lockAutoScrollProcess);
 			lockAutoScrollProcess = setTimeout(function() {
@@ -32,10 +37,16 @@ var CommentModule = {
 		})
 	},
 	updateComment: function(data) {
-		$('#tl-msg ul').append('<li>' + data.username + ':' + data.msg + '</li>');
+		var content = data.msg;
+		var pickSong = orderSongTextRule(content);
+		if (pickSong) { //点了一首歌
+			var array = content.split('#');
+			content = ''+ array[0] + '<span class="songname">#'+array[1]+'#</span>'+array[2];
+		}
+		$('#tl-audience-msg ul').append('<li><span class="audiencename">' + data.username + '</span>: ' + content + '</li>');
 		//keep the message section scrolled down most of the time
 		if (!lockAutoScroll) {
-			document.querySelector('#tl-msg').scrollTop = document.querySelector('#tl-msg ul').clientHeight;
+			document.querySelector('#tl-audience-msg').scrollTop = document.querySelector('#tl-audience-msg ul').clientHeight;
 		}
 	}
 }

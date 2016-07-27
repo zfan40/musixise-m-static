@@ -1,9 +1,20 @@
   <div id="bg"><img src="<%-data.backgroundSprite||'http://gw.alicdn.com/tps/TB1hrh4JVXXXXaCXXXXXXXXXXXX-980-756.png'%>" id="bgi" /></div>
   <div id="top-layer">
-    <div id="tl-basic">
+    <div id="tl-stage">
+      <img id="musixiser-avatar" src="<%-data.userAvatar%>">
       <h2 id="musixiser-name"><%-data.name%></h2>
+      <h3 id="musixiser-title"><%-data.stageTitle%></h3>
       <h3 id="musixiser-duration"><%-data.beginTime%></h3>
+      <p><%-data.audienceNum%>在听</p>
     </div>
-    <div id="tl-msg"><ul></ul></div>
+    
+    <div id="tl-musixiser-msg">
+
+    </div>
+    
+    <div id="tl-audience-msg">
+    	<ul></ul>
+    </div>
+    
     <input id="leaveMessage" placeholder="发表留言:"></input>
   </div>
