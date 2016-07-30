@@ -46,7 +46,7 @@ var CommentModule = {
 			}, 5000);
 		})
 	},
-	updateAudienceSection: function(data) {
+	updateAudienceComment: function(data) {
 		var content = data.msg;
 		var pickSong = orderSongTextRule(content);
 		if (pickSong) { //点了一首歌
