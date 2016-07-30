@@ -2,6 +2,9 @@ var User = require('./user.js');
 var lockAutoScroll = false;
 var lockAutoScrollProcess;
 
+var lockAutoScroll2 = false;
+var lockAutoScrollProcess2;
+
 function orderSongTextRule(comment_str) {
 	var split_str;
 	if (comment_str) split_str = comment_str.split('#');
@@ -34,9 +37,16 @@ var CommentModule = {
 			lockAutoScrollProcess = setTimeout(function() {
 				lockAutoScroll = false;
 			}, 5000);
+		});
+		document.querySelector('#tl-musixiser-msg').addEventListener('touchstart', function() {
+			lockAutoScroll2 = true;
+			clearTimeout(lockAutoScrollProcess2);
+			lockAutoScrollProcess2 = setTimeout(function() {
+				lockAutoScroll2 = false;
+			}, 5000);
 		})
 	},
-	updateComment: function(data) {
+	updateAudienceSection: function(data) {
 		var content = data.msg;
 		var pickSong = orderSongTextRule(content);
 		if (pickSong) { //点了一首歌
@@ -47,6 +57,27 @@ var CommentModule = {
 		//keep the message section scrolled down most of the time
 		if (!lockAutoScroll) {
 			document.querySelector('#tl-audience-msg').scrollTop = document.querySelector('#tl-audience-msg ul').clientHeight;
+		}
+	},
+	updateMusixiserComment: function(data) {
+		$('#tl-musixiser-msg ul').append('<li>' + data + '</li>');
+		//keep the message section scrolled down most of the time
+		if (!lockAutoScroll2) {
+			document.querySelector('#tl-musixiser-msg').scrollTop = document.querySelector('#tl-musixiser-msg ul').clientHeight;
+		}
+	},
+	updateMusixiserPickSong: function(data) {
+		var tpl;
+		console.log(data);
+		if (data.type) {
+			tpl = '<(￣︶￣)> 即将演奏<span class="audiencename">'+ data.audienceName + '</span>点播的<span class="songname">#' + data.songName+'#</span>';
+		} else {
+			tpl = '(⊙﹏⊙✿) 不太会<span class="audiencename">'+ data.audienceName + '</span>点播的<span class="songname">#' + data.songName+'#</span>';
+		}
+		$('#tl-musixiser-msg ul').append('<li>' + tpl + '</li>');
+		//keep the message section scrolled down most of the time
+		if (!lockAutoScroll2) {
+			document.querySelector('#tl-musixiser-msg').scrollTop = document.querySelector('#tl-musixiser-msg ul').clientHeight;
 		}
 	}
 }

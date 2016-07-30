@@ -9,12 +9,13 @@ var Visual = require('./visual.js');
 var Sound = require('./sound.js');
 var Comment = require('./comment.js');
 var User = require('./user.js');
+var Util = require('../../_common/js/utils.js');
 
 var mainTpl = require('../template/main.ejs');
 
-var mock = require('../mock/performerMock.js');
+// var mock = require('../mock/performerMock.js');
 
-var Yeshao = require('../../_common/songs/her.js');
+var Yeshao = require('../../_common/songs/yeshao.js');
 
 var musixiser = '';
 musixiser = location.href.match(/.*?stage\/(.*)/)[1];
@@ -49,6 +50,7 @@ var app = {
         socket.on('res_AudienceEnterStage', function(data) {
             console.log('确认进场');
             self.render(data);
+
             //Visual.bindResponsiveBackgroundSprite();
             Comment.init(function(username, msg, order_songname) {
                 socket.emit('req_AudienceComment', { username: username, msg: msg });
@@ -66,7 +68,14 @@ var app = {
     render: function(renderer) {
         var self = this;
         console.log(renderer);
+        var now = +(new Date());
+        renderer.ellapseTime = Util.milleSecToMinuteSec(now - renderer.beginTime);
+        if (renderer.audienceNum>=1){
+            renderer.audienceNum -= 1;    
+        }
         $('body').append(mainTpl(renderer));
+        //update timer constantly
+        Util.runTimer('#minute','#second');
 
     },
     bindSocket: function() {
@@ -79,16 +88,23 @@ var app = {
             // Visual.letThereBeLight(note_data);
         });
         socket.on('res_MusixiserComment', function(data) {
-            console.log('主播发来一条消息:' + data);
+            console.log('res_MusixiserComment',data);
+            Comment.updateMusixiserComment(data);
         });
         socket.on('res_MusixiserPickSong', function(data) {
-            console.log('' + data);
+            console.log('res_MusixiserPickSong' + data);
+            Comment.updateMusixiserPickSong(data);
         });
         socket.on('res_AudienceComment', function(data) {
-            Comment.updateComment(data);
+            Comment.updateAudienceComment(data);
         });
         socket.on('res_AudienceOrderSong', function(data) {
             console.log('' + data.username + '点歌:' + data.songname);
+        });
+        socket.on('audienceNumUpdate', function(data) {
+            var q = document.querySelector('#listening-num');
+            var currentAudienceNum = +q.innerHTML
+            q.innerHTML = currentAudienceNum + data.amountdiff;
         });
     },
     bindSendGift: function() {
