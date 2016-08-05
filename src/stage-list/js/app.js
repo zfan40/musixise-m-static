@@ -6,14 +6,18 @@
 var d = document;
 var io = require('../../_common/js/socket.io.js');
 var socket = io('http://io.musixise.com');
+var Musixise = require('../../_common/js/jsbridge.js');
 
 var StageListTpl = require('../template/stageList.ejs');
-var MockData = require('../mock/mock.js')
+// var MockData = require('../mock/mock.js');
+var User = require('./user.js');
 var app = {
     init: function() {
         var self = this;
         // self.renderStageList(MockData);
+        User.getUserInfo();
         self.bindSocket();
+        self.bindEvent();
     },
     renderStageList: function(data) {
         var self = this;
@@ -67,6 +71,14 @@ var app = {
             //insert into musician list(right place)
             //this data is e.g {nickname: "12321", amountdiff: 1}
             self.updateStageAudienceNum(data);
+        });
+    },
+    bindEvent: function() {
+        var self = this;
+        var stageList = d.querySelector('#musixiser-section');
+        stageList.addEventListener('touchend',function(e){
+            Musixise.callHandler('EnterStage', 'http://m.musixise.com/stage/'+e.target.getAttribute('data-name')); 
+            // location.href = 'http://m.musixise.com/stage/'+e.target.getAttribute('data-name');  
         });
     }
 };

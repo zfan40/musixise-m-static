@@ -26,6 +26,7 @@ if (!musixiser) {
 var app = {
     init: function() {
         var self = this;
+        User.getUserInfo();
         socket.on('connect', function() {
             console.log('enter stage ' + musixiser);
             socket.emit('audienceEnterStage', musixiser);

@@ -67,7 +67,7 @@ var UtilsModule = {
         if (expiresHours > 0) {
             var date = new Date();
             date.setTime(date.getTime + expiresHours * 3600 * 1000);
-            cookieString = cookieString + "; expires=" + date.toGMTString() + ';domain=.xiami.com;path=/';
+            cookieString = cookieString + "; expires=" + date.toGMTString() + ';domain=.musixise.com;path=/';
         }
         document.cookie = cookieString;
     },

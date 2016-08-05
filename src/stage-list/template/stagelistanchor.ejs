@@ -1,8 +1,8 @@
 <% for(var i = 0, len = data.list.length; i <len; i++) { %>
     <% var l = data.list[i]; %>
-        <div class="musixiser" id="id<%-l.name%>" data-name="<%-l.name%>">
+        <a href="<%-'//m.musixise.com/stage/'+l.name%>" class="musixiser" id="id<%-l.name%>" data-name="<%-l.name%>">
             <div class="l-avatar">
-                <img src="<%-l.userAvatar%>" data-name="<%-l.name%>">
+                <img src="<%-l.userAvatar%>">
             </div>
             <div class="info">
                 <!-- <p class="nationality">China</p> -->
@@ -17,5 +17,5 @@
             <% if(l.stageTitle) { %>
                 <p class="caption"><%-l.stageTitle%></p>
             <% } %>
-        </div>
+        </a>
 <% } %>
