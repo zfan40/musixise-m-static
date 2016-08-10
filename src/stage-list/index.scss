@@ -41,6 +41,7 @@ a, u {
 }
 p {
     font-size: .42rem;
+    font-weight: 100;
 }
 body {
 	/*background:linear-gradient(to right, rgba(27, 80, 90, 0.5), rgba(78, 20, 89, 0.5));;*/
@@ -76,6 +77,7 @@ body {
 	        /*bottom: 0;*/
 	        font-size: .5rem;
 	        line-height: 1.5rem;
+            box-shadow: 2px 5px 8px #888;
             .section-one {
                 flex:1;
                 .s-avatar {
@@ -131,5 +133,67 @@ body {
             }
         }
     }
+}
 
+.venus-spinner.mask {
+    display: -webkit-box;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-box-pack: center;
+    align-items: center;
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    background-color: rgba(0,0,0,.4)
+}
+.venus-spinner {
+    z-index: 1000;
+}
+.venus-spinner.mask .box {
+    padding: .26667rem .53333rem;
+    border-radius: .13333rem;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    font-weight: light;
+}
+.venus-spinner .box .img-bk {
+    position: relative;
+    background: url('https://gw.alicdn.com/tps/TB1Vlg8LXXXXXbkXVXXXXXXXXXX-90-45.png') no-repeat center center;
+/*    background-size: contain;
+    -webkit-background-size: contain;*/
+    width: 2.12rem;
+    height: 1.06667rem;
+/*    margin-left: 50%;
+    left: -.53333rem;*/
+    overflow: hidden;
+    text-align: center;
+}
+.venus-spinner .box .img-bk #ticktack {
+  background:#ffcc33;
+  width:2px;
+  height:2.12rem;
+  margin-left:1.06rem;
+  -webkit-animation: TICKTACK 1.5s infinite; /* Safari 4+ */
+  -moz-animation:    TICKTACK 1.5s infinite; /* Fx 5+ */
+  -o-animation:      TICKTACK 1.5s infinite; /* Opera 12+ */
+  animation:         TICKTACK 1.5s infinite; /* IE 10+, Fx 29+ */
+}
+.venus-spinner.mask .box .title {
+    position: relative;
+    text-align: center;
+    z-index: 1001;
+    color: hsla(0,0%,100%,.8);
+    font-size: .37333rem;
+    margin-top: .26667rem;
+}
+
+@keyframes TICKTACK {
+  0%   { transform: rotate(-45deg); }
+  50% { transform: rotate(45deg); }
+  /*50% { transform: rotate(0deg); }*/
+  /*75% { transform: rotate(-45deg); }*/
+  100% { transform: rotate(-45deg); }
 }
