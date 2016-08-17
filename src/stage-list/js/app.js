@@ -21,11 +21,17 @@ var app = {
     },
     renderStageList: function(data) {
         var self = this;
+        var loading = d.querySelector('.venus-spinner');
+        loading.style.display = 'none';
         var stageList = d.querySelector('#musixiser-section');
         var a = {};
         a.list = data;
         var renderStr = StageListTpl(a);
         stageList.innerHTML = renderStr;
+        //if no stage at all, show empty icon
+        if (!d.querySelector('.musixiser')){
+            d.querySelector('#empty-stage').style.display='flex';    
+        }
     },
     insertStage: function(data) {
         var self = this;
@@ -33,10 +39,17 @@ var app = {
         var a ={};
         a.list = [data];
         stageList.innerHTML = StageListTpl(a)+stageList.innerHTML ;
+        //remove empty icon
+        d.querySelector('#empty-stage').style.display='none';
     },
     removeStage: function(name) {
         var self = this;
         d.querySelector('#id'+name).remove();
+        //if no stage at all, show empty icon
+        if (!d.querySelector('.musixiser')){
+            d.querySelector('#empty-stage').style.display='flex';    
+        }
+        
     },
     updateStageAudienceNum: function(data) {
         var self = this;
