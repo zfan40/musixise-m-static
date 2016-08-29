@@ -72,7 +72,7 @@ var CommentModule = {
 		if (data.type) {
 			tpl = '<(￣︶￣)> 即将演奏<span class="audiencename">'+ data.audienceName + '</span>点播的<span class="songname">#' + data.songName+'#</span>';
 		} else {
-			tpl = '(⊙﹏⊙✿) 不太会<span class="audiencename">'+ data.audienceName + '</span>点播的<span class="songname">#' + data.songName+'#</span>';
+			tpl = '(⊙﹏⊙✿) 跳过<span class="audiencename">'+ data.audienceName + '</span>点播的<span class="songname">#' + data.songName+'#</span>';
 		}
 		$('#tl-musixiser-msg ul').append('<li>' + tpl + '</li>');
 		//keep the message section scrolled down most of the time

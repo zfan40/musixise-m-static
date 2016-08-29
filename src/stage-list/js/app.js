@@ -89,7 +89,7 @@ var app = {
     bindEvent: function() {
         var self = this;
         var stageList = d.querySelector('#musixiser-section');
-        stageList.addEventListener('touchend',function(e){
+        stageList.addEventListener('click',function(e){
             Musixise.callHandler('EnterStage', 'http://m.musixise.com/stage/'+e.target.getAttribute('data-name')); 
             // location.href = 'http://m.musixise.com/stage/'+e.target.getAttribute('data-name');  
         });
