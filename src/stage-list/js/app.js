@@ -20,6 +20,17 @@ var app = {
         self.bindEvent();
     },
     renderStageList: function(data) {
+    /*
+     data is list of userInfo
+     var userInfo = {
+        name: '',
+        realname: '',
+        uid: '',
+        userAvatar: '',
+        stageTitle: '',
+        audienceNum: 0 //此处可造假数据...
+    }
+    */
         var self = this;
         var loading = d.querySelector('.venus-spinner');
         loading.style.display = 'none';
@@ -53,8 +64,9 @@ var app = {
     },
     updateStageAudienceNum: function(data) {
         var self = this;
-        var currentNum = +d.querySelector('#id'+ data.nickname+' .listener-total span').innerHTML;
-        d.querySelector('#id'+ data.nickname+' .listener-total span').innerHTML = currentNum+data.amountdiff;
+        console.log(data);
+        var currentNum = +d.querySelector('#id'+ data.musixiserId+' .listener-total span').innerHTML;
+        d.querySelector('#id'+ data.musixiserId+' .listener-total span').innerHTML = currentNum+data.amountdiff;
     },
     bindSocket: function() {
         var self = this;
@@ -82,7 +94,8 @@ var app = {
         });
         socket.on('audienceNumUpdate', function(data) {
             //insert into musician list(right place)
-            //this data is e.g {nickname: "12321", amountdiff: 1}
+            //this data is e.g {musixiserId: "12321", amountdiff: 1}
+            console.log('get num update');
             self.updateStageAudienceNum(data);
         });
     },
@@ -90,8 +103,11 @@ var app = {
         var self = this;
         var stageList = d.querySelector('#musixiser-section');
         stageList.addEventListener('click',function(e){
-            Musixise.callHandler('EnterStage', 'http://m.musixise.com/stage/'+e.target.getAttribute('data-name')); 
-            // location.href = 'http://m.musixise.com/stage/'+e.target.getAttribute('data-name');  
+            if (e.target.getAttribute('data-uid')) {
+                Musixise.callHandler('EnterStage', 'http://m.musixise.com/stage/'+e.target.getAttribute('data-uid')); 
+                // location.href = 'http://m.musixise.com/stage/'+e.target.getAttribute('data-name');  
+            }
+            
         });
     }
 };

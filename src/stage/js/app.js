@@ -2,6 +2,7 @@
  * app
  * @type {Object}
  */
+
 // var $ = require('../../_common/js/zepto.min.js');
 var io = require('../../_common/js/socket.io.js');
 var socket = io('http://io.musixise.com');
@@ -17,10 +18,10 @@ var mainTpl = require('../template/main.ejs');
 
 var Yeshao = require('../../_common/songs/yeshao.js');
 
-var musixiser = '';
-musixiser = location.href.match(/.*?stage\/(.*)/)[1];
-if (!musixiser) {
-    musixiser = 'fzw'
+var musixiserId = '';
+musixiserId = location.href.match(/.*?stage\/(.*)/)[1];
+if (!musixiserId) {
+    musixiserId = 'fzw'
 }
 
 var app = {
@@ -28,8 +29,8 @@ var app = {
         var self = this;
         User.getUserInfo();
         socket.on('connect', function() {
-            console.log('enter stage ' + musixiser);
-            socket.emit('audienceEnterStage', musixiser);
+            console.log('enter stage ' + musixiserId);
+            socket.emit('audienceEnterStage', musixiserId);
         });
         socket.on('no stage', function() {
             // $('.stage-banner').html('舞台并不存在,3s后返回');
