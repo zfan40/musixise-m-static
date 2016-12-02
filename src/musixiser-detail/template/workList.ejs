@@ -1,0 +1,15 @@
+<% if(data.length) { %>
+    <h2>作品</h2>
+    <ul>
+    <% for(var i = 0, len = data.length; i <len; i++) { %>
+        <% var l = data[i]; %>
+        <li data-id="<%-l.id%>">
+            <div class="info" data-id="<%-l.id%>">
+                <span data-id="<%-l.id%>"><%-new Date(l.createdDate)%></span>
+                <span data-id="<%-l.id%>"><%-l.name%></span>
+                <span data-id="<%-l.id%>"><%-l.description%></span>
+            </div>
+        </li>
+    <% } %>
+    </ul>
+<% } %>

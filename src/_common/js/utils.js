@@ -1,4 +1,14 @@
 var UtilsModule = {
+    getiOSVersion: function() {
+        var UA = window.navigator.userAgent;
+        var IOS_VERSION_RE = /OS\s+(\d+)_(\d+)/;
+        var arr = UA.match(IOS_VERSION_RE);
+        if (arr && arr.length > 2) {
+            return parseInt(arr[1], 10) + parseInt(arr[2], 10) / 10;
+        } else {
+            return 0;
+        }
+    },
     milleSecToMinuteSec: function(mS) {
         var minute = Math.floor(mS / 60000);
         var second = Math.floor(mS / 1000 - minute * 60);

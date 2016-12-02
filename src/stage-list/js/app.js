@@ -41,7 +41,7 @@ var app = {
         stageList.innerHTML = renderStr;
         //if no stage at all, show empty icon
         if (!d.querySelector('.musixiser')){
-            d.querySelector('#empty-stage').style.display='flex';    
+            d.querySelector('#empty-stage').style.display='flex';
         }
     },
     insertStage: function(data) {
@@ -58,9 +58,9 @@ var app = {
         d.querySelector('#id'+name).remove();
         //if no stage at all, show empty icon
         if (!d.querySelector('.musixiser')){
-            d.querySelector('#empty-stage').style.display='flex';    
+            d.querySelector('#empty-stage').style.display='flex';
         }
-        
+
     },
     updateStageAudienceNum: function(data) {
         var self = this;
@@ -104,10 +104,12 @@ var app = {
         var stageList = d.querySelector('#musixiser-section');
         stageList.addEventListener('click',function(e){
             if (e.target.getAttribute('data-uid')) {
-                Musixise.callHandler('EnterStage', 'http://m.musixise.com/stage/'+e.target.getAttribute('data-uid')); 
-                // location.href = 'http://m.musixise.com/stage/'+e.target.getAttribute('data-name');  
+                Musixise.callHandler('EnterStage', 'http://m.musixise.com/stage/'+e.target.getAttribute('data-uid'));
+                // location.href = 'http://m.musixise.com/stage/'+e.target.getAttribute('data-name');
+            } else if (e.target.getAttribute('data-sm-uid')) {
+              location.replace('//m.musixise.com/musixiser-detail/'+e.target.getAttribute('data-sm-uid'));
             }
-            
+
         });
     }
 };

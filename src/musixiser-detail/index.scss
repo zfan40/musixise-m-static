@@ -1,0 +1,237 @@
+@import "../_common/css/_function";
+@import "../_common/css/_variables";
+@import "../_common/css/_reboot";
+@import "../_common/css/_common";
+
+/* master section */
+/*#master-section {
+    width: 10rem;
+    padding: 0rem .5rem .5rem;
+    .master {
+        position: relative;
+        width: 100%;
+        height: 4rem;
+        background-color: #aeaeae;
+        margin-top: .5rem;
+        img {
+            width: 100%;
+            height: 100%;
+        }
+        .bar {
+            position: absolute;
+            padding-left: 1rem;
+            width: 100%;
+            height: 1rem;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, .2);
+            font-size: .3rem;
+            line-height: 1rem;
+        }
+    }
+}*/
+
+/*$gold:#FAD65A;*/
+$gold:#FFCC33;
+/*$gold:#FFFF00;*/
+$watchingnum:#86CDE9;
+/*$watchingnum:#ffff00;*/
+
+a, u {
+    text-decoration: none;
+}
+p {
+    font-size: .42rem;
+    font-weight: 100;
+}
+body {
+    /*background:linear-gradient(to right, rgba(27, 80, 90, 0.5), rgba(78, 20, 89, 0.5));;*/
+    background-color:#E6FFFF;
+}
+
+#intro-info {
+    padding-top: 1rem;    
+    .avatar {
+        text-align: center;
+        img {
+            width: 5.5rem;
+            height: 5.5rem;
+            border-radius: .8rem;
+        }
+    }
+    .core {
+        text-align: center;
+        .name {
+            line-height: .8rem;
+            font-size: .6rem;         
+        }
+
+    }
+    .musixiserID {
+        text-align: center;
+        padding-top: .3rem;
+        font-size: .47rem;
+    }
+}
+#basic-info {
+    padding-left: 3rem;
+    line-height: .8rem;
+    font-size: .42rem;
+}
+#past-work {
+    h2 {
+        padding-left:.5rem;
+        font-size: .55rem;
+    }
+    ul {
+        padding: 0 .5rem;
+        li {
+            display: flex;
+            align-items:center;
+            height: 2.25rem;
+            border-radius: .2rem;
+            justify-content: center;
+            background-color: #222;
+            color: #ffcc33;
+            margin: .4rem 0 .6rem;
+            .avatar {
+                flex:1;
+                img {
+                    width: 2rem;
+                    height: 2rem;
+                    border-radius: 1rem;                    
+                }
+
+            }
+            .info {
+                display: flex;
+                flex-direction:column;
+                font-size: .373rem;
+                line-height: .75rem;
+                text-align: center;
+            }
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.venus-spinner.mask {
+    display: -webkit-box;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-box-pack: center;
+    align-items: center;
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    /*background-color: rgba(0,0,0,.4)*/
+}
+.venus-spinner {
+    z-index: 1000;
+}
+.venus-spinner.mask .box {
+    padding: .26667rem .53333rem;
+    border-radius: .13333rem;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    font-weight: light;
+}
+.venus-spinner .box .img-bk {
+    position: relative;
+    background: url('https://gw.alicdn.com/tps/TB1Vlg8LXXXXXbkXVXXXXXXXXXX-90-45.png') no-repeat center center;
+    width: 2.12rem;
+    height: 1.06667rem;
+    background-size: 2rem 1.05rem;
+    overflow: hidden;
+    text-align: center;
+}
+.venus-spinner .box .img-bk #ticktack {
+  background:#ffcc33;
+  width:2px;
+
+  height:1.72rem;
+  /*margin top can adjust the position: .2*2+1.72 = 2.12*/
+  margin-top: .2rem;
+  margin-left:1.06rem;
+  -webkit-animation: TICKTACK 1.5s infinite; /* Safari 4+ */
+  -moz-animation:    TICKTACK 1.5s infinite; /* Fx 5+ */
+  -o-animation:      TICKTACK 1.5s infinite; /* Opera 12+ */
+  animation:         TICKTACK 1.5s infinite; /* IE 10+, Fx 29+ */
+}
+.venus-spinner.mask .box .title {
+    position: relative;
+    text-align: center;
+    z-index: 1001;
+    color: hsla(0,0%,100%,.8);
+    font-size: .37333rem;
+    margin-top: .26667rem;
+}
+
+@keyframes TICKTACK {
+  0%   { transform: rotate(-45deg); }
+  50% { transform: rotate(45deg); }
+  /*50% { transform: rotate(0deg); }*/
+  /*75% { transform: rotate(-45deg); }*/
+  100% { transform: rotate(-45deg); }
+}
+
+.annoucement {
+    position: relative;
+    height: .8rem;
+    width: 100%;
+    background-color: #ffcc33;
+    color: black;
+    p {
+        line-height: .8rem;
+        width: 15rem;
+       -webkit-animation: ANNOUNCE 10s infinite; /* Safari 4+ */
+        -moz-animation:   ANNOUNCE 10s infinite; /* Fx 5+ */
+        -o-animation:     ANNOUNCE 10s infinite; /* Opera 12+ */
+         animation-timing-function: cubic-bezier(0,0,1,1) 
+    }
+}
+@keyframes ANNOUNCE {
+  0%   { transform: translate(15rem); }
+  to { transform: translate(-15rem); }
+}
+#empty-stage {
+    display: flex;
+    position: fixed;
+    width: 100%;
+    /* text-align: center; */
+    height: 100%;
+    align-items: center;
+    top:0;
+    left:0;
+    #boya {
+        width: 6rem;
+        margin: 0 auto;
+    }
+}
