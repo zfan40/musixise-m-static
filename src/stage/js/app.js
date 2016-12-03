@@ -65,7 +65,6 @@ var app = {
             self.bindSendGift();
             // self.bindXiaJiBaDian();
         });
-
     },
     render: function(renderer) {
         var self = this;
@@ -73,7 +72,7 @@ var app = {
         var now = +(new Date());
         renderer.ellapseTime = Util.milleSecToMinuteSec(now - renderer.beginTime);
         if (renderer.audienceNum>=1){
-            renderer.audienceNum -= 1;    
+            renderer.audienceNum -= 1;
         }
         $('body').append(mainTpl(renderer));
         //update timer constantly
@@ -114,7 +113,7 @@ var app = {
     },
     bindXiaJiBaDian: function() {
         var self = this;
-        window.addEventListener('touchstart',function(){        
+        window.addEventListener('touchstart',function(){
             self.lastjb = self.thisjb||0;
             self.thisjb=performance.now();
             Sound.playRandomNote();
