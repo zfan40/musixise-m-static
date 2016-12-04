@@ -34,11 +34,11 @@ var app = {
         }, function() {
             isLogin = false;
             self.renderPage();
-        })
+        });
     },
     renderPage: function() {
         var self = this;
-        var req_config = {}
+        var req_config = {};
         axios.post('//api.musixise.com/api/user/detail/' + musixiserId, '', req_config)
             .then(function(res) {
                 // console.log(res.data.data);
@@ -105,7 +105,7 @@ var app = {
         var self = this;
         d.querySelector('#past-work').addEventListener('click', function(e) {
             alert('play piece of id ' + e.target.getAttribute('data-id'));
-            Musixise.callHandler('showToast', '开始播放'，function() {}, function() {});
+            Musixise.callHandler('showToast', '开始播放',function() {}, function() {});
             location.href = "musixise://play/" + e.target.getAttribute('data-id');
         });
     },
@@ -123,13 +123,16 @@ var app = {
             })
             .catch(function(err) {
                 console.log(err);
-            })
+            });
     },
     bindCheckMusixiser: function() {
         var self = this;
         d.querySelector('.avatar').addEventListener('click', function() {
             Musixise.callHandler('popMusixiserBox', {
-                id: musixiserId
+                id: musixiserId,
+                avatar: '',
+                follow:0,
+                name:''
             }, function() {
                 //
             }, function() {
@@ -161,7 +164,7 @@ var app = {
                 })
                 .catch(function(err) {
                     console.log(err);
-                })
+                });
         });
     }
 };
