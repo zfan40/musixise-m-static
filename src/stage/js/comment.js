@@ -15,7 +15,7 @@ function orderSongTextRule(comment_str) {
 }
 var CommentModule = {
 	init: function(callback) {
-		var username = User.getUserInfo();
+		var username = User.getUserInfo().username;
 		console.log(username);
 		$('#leaveMessage').keydown(function(e) {
 			var content = $(this).val();
@@ -44,7 +44,7 @@ var CommentModule = {
 			lockAutoScrollProcess2 = setTimeout(function() {
 				lockAutoScroll2 = false;
 			}, 5000);
-		})
+		});
 	},
 	updateAudienceComment: function(data) {
 		var content = data.msg;
@@ -80,7 +80,7 @@ var CommentModule = {
 			document.querySelector('#tl-musixiser-msg').scrollTop = document.querySelector('#tl-musixiser-msg ul').clientHeight;
 		}
 	}
-}
+};
 
 console.log('CommentModule Activated');
 module.exports = CommentModule;

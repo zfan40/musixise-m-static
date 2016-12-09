@@ -15,7 +15,7 @@ var app = {
     init: function() {
         var self = this;
         // self.renderStageList(MockData);
-        User.getUserInfo();
+        // User.getUserInfo();
         self.bindSocket();
         self.bindEvent();
     },

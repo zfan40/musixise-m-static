@@ -19,15 +19,16 @@ var mainTpl = require('../template/main.ejs');
 var Yeshao = require('../../_common/songs/yeshao.js');
 
 var musixiserId = '';
+var UserInfo = {};
 musixiserId = location.href.match(/.*?stage\/(.*)/)[1];
 if (!musixiserId) {
-    musixiserId = 'fzw'
+    musixiserId = 'fzw';
 }
 
 var app = {
     init: function() {
         var self = this;
-        User.getUserInfo();
+        UserInfo = User.getUserInfo();
         socket.on('connect', function() {
             console.log('enter stage ' + musixiserId);
             socket.emit('audienceEnterStage', musixiserId);
@@ -104,7 +105,7 @@ var app = {
         });
         socket.on('audienceNumUpdate', function(data) {
             var q = document.querySelector('#listening-num');
-            var currentAudienceNum = +q.innerHTML
+            var currentAudienceNum = +q.innerHTML;
             q.innerHTML = currentAudienceNum + data.amountdiff;
         });
     },
@@ -118,8 +119,7 @@ var app = {
             self.thisjb=performance.now();
             Sound.playRandomNote();
             console.log(self.thisjb-self.lastjb);
-        })
+        });
     }
-
 };
 module.exports = app;
