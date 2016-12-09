@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title></title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+  <!-- Makes your prototype chrome-less once bookmarked to your phone's home screen -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no">
+  <meta name="apple-itunes-app" content="app-id=1146478896">
+  <!-- uc强制竖屏 -->
+  <meta name="screen-orientation" content="portrait">
+  <!-- qq强制竖屏 -->
+  <% if(htmlWebpackPlugin.options.buildOptions.debug){ %>
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <% } %>
+
+  <script>;(function(){var win=window,docElem=document.documentElement,timeoutId;setRem();docElem.setAttribute('data-dpr',win.devicePixelRatio);win.addEventListener('resize',delaySetRem,false);win.addEventListener('pageshow',function(e){e.persisted&&delaySetRem()},false);function delaySetRem(){clearTimeout(timeoutId);timeoutId=setTimeout(setRem,300)}function setRem(){win.rem=docElem.getBoundingClientRect().width/10;docElem.style.fontSize=win.rem+'px'}})();</script>
+  <link rel="stylesheet" href="<%= htmlWebpackPlugin.options.buildOptions.resourceBase %>/index.css">
+  <link href='https://fonts.googleapis.com/css?family=Dancing+Script' rel='stylesheet' type='text/css'>
+</head>
+<body>
+  <div class="swiper-container">
+    <!-- Additional required wrapper -->
+    <div class="swiper-wrapper">
+      <!-- Slides -->
+      <div class="swiper-slide" id="page1">
+        <div class="m-logo"></div>
+        <div class="m-logo-background"></div>
+        <div id="byzq">
+          <!-- length of 98-->
+          <span>伯</span><span>牙</span><span>善</span><span>鼓</span><span>琴</span><span>，</span><span>钟</span><span>子</span><span>期</span><span>善</span><span>听</span><span>。</span><span>伯</span><span>牙</span><span>鼓</span><span>琴</span><span>，</span><span>志</span><span>在</span><span>高</span><span>山</span><span>，</span><span>钟</span><span>子</span><span>期</span><span>曰</span><span>：</span><span>“</span><span>善</span><span>哉</span><span>，</span><span>峨</span><span>峨</span><span>兮</span><span>若</span><span>泰</span><span>山</span><span>！</span><span>”</span><span>志</span><span>在</span><span>流</span><span>水</span><span>，</span><span>钟</span><span>子</span><span>期</span><span>曰</span><span>：</span><span>“</span><span>善</span><span>哉</span><span>，</span><span>洋</span><span>洋</span><span>兮</span><span>若</span><span>江</span><span>河</span><span>！</span><span>”</span><span>伯</span><span>牙</span><span>所</span><span>念</span><span>，</span><span>钟</span><span>子</span><span>期</span><span>必</span><span>得</span><span>之</span><span>。</span><span>子</span><span>期</span><span>死</span><span>，</span><span>伯</span><span>牙</span><span>谓</span><span>世</span><span>再</span><span>无</span><span>知</span><span>音</span><span>，</span><span>乃</span><span>破</span><span>琴</span><span>绝</span><span>弦</span><span>，</span><span>终</span><span>身</span><span>不</span><span>复</span><span>鼓</span><span>。</span>
+        </div>
+      </div>
+      <div class="swiper-slide" id="page2"><div class="full-mask"></div><p class="quote">Music comes straight from the heart and talks only to the heart.</p></div>
+      <div class="swiper-slide" id="page3"><div class="full-mask"></div><p class="quote">Music is not a hobby, not even a passion with me; music is me.</p></div>
+      <div class="swiper-slide" id="page4"><div class="full-mask"></div><p class="quote">Perfection itself is imperfection.</p></div>
+      <div class="swiper-slide" id="page5"><div class="full-mask"></div><p class="quote">Music must be given to those who love it.</p></div>
+      <div class="swiper-slide" id="page6">Your Stage</div>
+<!--       <div class="swiper-slide" id="page3">
+        <div class="swiper-wrapper">
+          <div class="swiper-slide">Slide 3-1</div>
+          <div class="swiper-slide">Slide 3-2</div>
+          <div class="swiper-slide">Slide 3-3</div>
+          <div class="swiper-slide">Slide 3-4</div>
+          <div class="swiper-slide">Slide 3-5</div>
+          <div class="swiper-slide">Slide 3-6</div>
+        </div>
+        <div class="swiper-pagination"></div>
+      </div> -->
+    </div>
+  </div>
+</body>
+<!-- 使用下面的代码启用printlog打印调试信息 -->
+<!-- <script src="//g.alicdn.com/mtb/lib-windvane/2.1.1/printlog.js"></script> -->
+
+
+<!-- 发布页面到AWP前启用以上代码，使用cdn上的三方库 -->
+
+<script charset="utf-8" src="<%= htmlWebpackPlugin.options.buildOptions.resourceBase %>/index.js"></script>
+</html>

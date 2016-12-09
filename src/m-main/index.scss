@@ -1,0 +1,186 @@
+@import "../_common/css/_function";
+@import "../_common/css/_variables";
+@import "../_common/css/_reboot";
+@import "./css/swiper.scss";
+body {
+  background: #eee;
+  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  color: #000;
+  margin: 0;
+  padding: 0;
+
+}
+
+.swiper-container {
+  position: absolute;
+  width: 10rem;
+  height: 100%;
+
+/*  margin: 20px auto;*/
+}
+
+.swiper-slide {
+
+  text-align: center;
+  font-size: 18px;
+  background: #fff;
+  /* Center slide text vertically */
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+/*  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  align-items: center;*/
+}
+
+#page1 {
+  background-color: black;
+  .m-logo {
+    position: absolute;
+    width: getRem(200);
+    height: getRem(200);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background:url('//gw.alicdn.com/tps/TB1pfhUOFXXXXaSaXXXXXXXXXXX-350-350.png') no-repeat center center;
+    background-size: getRem(175) getRem(175);
+    border-radius: getRem(45);
+    animation: toupperleftwithsize 4.5s linear;   
+    -webkit-animation-fill-mode: forwards;
+    animation-fill-mode: forwards;  
+    z-index: 2
+  }
+  .m-logo-background {
+    position: absolute;
+    width: getRem(200);
+    height: getRem(200);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: getRem(45);
+    animation: toupperleft 4.5s linear;
+    -webkit-animation-fill-mode: forwards;
+    animation-fill-mode: forwards;    
+    z-index: 1;
+/*    background: -webkit-linear-gradient(-90deg, red, yellow);
+    background: -o-linear-gradient(-90deg, red, yellow); 
+    background: -moz-linear-gradient(-90deg, red, yellow); 
+    background: linear-gradient(-90deg, red, yellow);*/
+  }
+}
+@keyframes toupperleft {
+  0% {
+    /*transform: translate(-50%, -50%);*/
+    width: getRem(200);
+    height: getRem(200);
+    top: 50%;
+    left: 50%;
+    border-radius: getRem(45);
+  }
+  80% {
+    /*transform: translate(-50%, -50%);*/
+    width: getRem(200);
+    height: getRem(200);
+    top: 50%;
+    left: 50%;
+    border-radius: getRem(45);
+  }
+  100% {
+    /*transform: translate(0, 0);*/
+    width: getRem(125);
+    height: getRem(125);
+    top: 10%;
+    left: 20%;
+    border-radius: getRem(20);
+  }
+}
+@keyframes toupperleftwithsize {
+  0% {
+    /*transform: translate(-50%, -50%);*/
+    width: getRem(200);
+    height: getRem(200);
+    top: 50%;
+    left: 50%;
+    background-size: getRem(175) getRem(175);
+  }
+  80% {
+    /*transform: translate(-50%, -50%);*/
+    width: getRem(200);
+    height: getRem(200);
+    top: 50%;
+    left: 50%;
+    background-size: getRem(175) getRem(175);
+  }
+  100% {
+    /*transform: translate(0, 0);*/
+    width: getRem(125);
+    height: getRem(125);
+    background-size: getRem(110) getRem(110);
+    top: 10%;
+    left: 20%;
+  }
+}
+
+
+#page2 {
+  background:url('//gw.alicdn.com/tps/TB1YkGyOFXXXXcyXFXXXXXXXXXX-750-1300.png') no-repeat center center;
+  background-size: cover;
+}
+#page3 {
+  background:url('//gw.alicdn.com/tps/TB1vlCtOFXXXXciXVXXXXXXXXXX-750-1300.png') no-repeat center center;
+  background-size: cover;
+}
+#page4 {
+  background:url('//gw.alicdn.com/tps/TB1cgy2OFXXXXXnXXXXXXXXXXXX-750-1300.png') no-repeat center center;
+  background-size: cover;
+}
+#page5 {
+  background:url('//gw.alicdn.com/tps/TB1F5KROFXXXXbGXpXXXXXXXXXX-750-1300.png') no-repeat center center;
+  background-size: cover;
+}
+#page6 {
+  background:url('//gw.alicdn.com/tps/TB1TveKOFXXXXa1XFXXXXXXXXXX-750-1300.png') no-repeat center center;
+  background-size: cover;
+}
+.full-mask {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(rgba(0,0,0,0.1),rgba(0,0,0,1));
+}
+.quote {
+    position: absolute;
+    color: white;
+    bottom: 10%;
+    font-size: 0.7rem;
+    width: 8rem;
+    margin-left: 1rem;
+    line-height: 1rem;
+    font-family: 'Dancing Script', cursive;
+    color: #ebebeb;
+}
+
+#byzq {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 8rem;
+  height: 10rem;
+  span {
+    display: none;
+    position: absolute;
+    font-size: .4rem;
+    color: #ebebeb;
+    width: 1.6rem;
+    line-height: .5rem;
+    transition-duration:1000ms;
+  }
+}
