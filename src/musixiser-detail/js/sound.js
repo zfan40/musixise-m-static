@@ -7,6 +7,8 @@ var latency = 6000; //5000 milliseconds
 var tt = 0; // total time, from the first two params
 var hasFirstNoteArrived = false; //use first Note to set late 
 
+var notePool = [];
+
 var SoundModule = {
     sendMidi: function(note_data) {
         var delay = 0;
@@ -16,8 +18,6 @@ var SoundModule = {
         }
         tt = note_data.time - timeDiff + latency;
         delay = tt - performance.now();
-
-
         
         // Visual.letThereBeLight(note_data);
 
@@ -77,14 +77,21 @@ var SoundModule = {
             }
             //method 1: js setTimeout
             (function(i) {
-                setTimeout(function() {
+                notePool.push(setTimeout(function() {
                     // console.log(noteArray[i][0]);
                     Musixise.callHandler('MusicDeviceMIDIEvent', [noteArray[i][0], noteArray[i][1], noteArray[i][2], 0]);
+                    console.log('set note');
                     // Visual.letThereBeLight(noteArray[i]);
-                }, noteArray[i][3]);
+                }, noteArray[i][3]));
             })(i);
             //mathod 2: native sample based
                // Musixise.callHandler('MusicDeviceMIDIEvent', [noteArray[i][0], noteArray[i][1], noteArray[i][2], noteArray[i][3]]);
+        }
+    },
+    stop: function() {
+        var length = notePool.length;
+        for (var i =0;i<=length-1;i++) {
+            clearTimeout(notePool[i]);
         }
     }
 }

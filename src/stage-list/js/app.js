@@ -1,21 +1,20 @@
 /**
- * app
- * @type {Object}
+ * stagelist page, overview of current players
+ * author: ziwen
  */
 
 var d = document;
 var io = require('../../_common/js/socket.io.js');
 var socket = io('http://io.musixise.com');
 var Musixise = require('../../_common/js/jsbridge.js');
-
+var Env = require('../../_common/js/env.js');
 var StageListTpl = require('../template/stageList.ejs');
 // var MockData = require('../mock/mock.js');
-var User = require('./user.js');
+
 var app = {
     init: function() {
         var self = this;
         // self.renderStageList(MockData);
-        // User.getUserInfo();
         self.bindSocket();
         self.bindEvent();
     },

@@ -1,11 +1,31 @@
 var MusixiseBridge = require('./jsbridge');
-var inApp = !!navigator.userAgent.indexOf('Musixise');
-var appVersion = '0.0.1';
+var Util = require('./utils');
+
 var env = {
-    inApp: inApp,
+    inApp: !!(navigator.userAgent.indexOf('Musixise')>0),
+    appVersion: '0.0.1',
     getUserInfo: function(cb) {
-      MusixiseBridge.callHandler('getUserInfo','',cb(res));
-    }
+        var self = this;
+        if (!self.inApp) { //app外
+        	var username = '';
+            if (!Util.getCookie("a_username")) {
+                username = '游客' + parseInt(Math.random() * 10000);
+                Util.setCookie("a_username", username, 240);
+            } else {
+                username = Util.getCookie("a_username");
+            }
+            self.userInfo = {username:username}
+            cb(self.userInfo);
+        } else { //app内
+            MusixiseBridge.callHandler('getUserInfo', {}, function(res) {
+              self.userInfo = res;
+              cb(res);
+            });
+        }
+    },
+    userInfo:{}
 }
-console.log('JSBridge Activated');
+
+console.log('Env Activated');
 module.exports = env;
+
