@@ -29,6 +29,7 @@ var app = {
     init: function() {
         var self = this;
         Env.getUserInfo(function(res) {
+            alert(JSON.stringify(res));
             console.log('in app js',res);
             socket.on('connect', function() {
                 console.log('enter stage ' + musixiserId);

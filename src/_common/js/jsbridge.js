@@ -12,6 +12,9 @@ var JSBridge = {
     callHandler: function(evt, data, callback) {
         if (!MUSIXISE) {
             this.connectWebViewJavascriptBridge(function(bridge) {
+                bridge.init(function(message,responseCallback){
+                    responseCallback(data);
+                })
                 MUSIXISE = bridge;
                 bridge.callHandler(evt, data, callback)
             })
