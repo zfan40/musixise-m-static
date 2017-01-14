@@ -59,7 +59,7 @@ var app = {
         axios.post('//api.musixise.com/api/work/getListByUid/' + musixiserId, '', req_config)
             .then(function(res) {
                 AllWorks = res.data.data;
-                self.renderWorkList(res.data.data);
+                self.renderWorkList(AllWorks);
                 self.bindPlayWork();
                 self.bindAddFavoriteWork();
             })

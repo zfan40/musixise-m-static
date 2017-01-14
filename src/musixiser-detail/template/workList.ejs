@@ -6,9 +6,13 @@
         <li data-id="<%-l.id%>">
             <div class="info" data-id="<%-l.id%>">
                 <span data-id="<%-l.id%>"><%-new Date(l.createdDate)%></span>
-                <span data-id="<%-l.id%>"><%-l.name%></span>
-                <span data-id="<%-l.id%>"><%-l.description%></span>
-                <span data-likeid="<%-l.id%>">like icon</span>
+                <span data-id="<%-l.id%>"><%-l.title%></span>
+                <span data-id="<%-l.id%>"><%-l.content%></span>
+                <% if (data.followStatus)%>
+                    <span data-likeid="<%-l.id%>">like</span>
+                <%}else{%>
+                    <span data-likeid="<%-l.id%>">like not</span>
+                <%}%>
             </div>
         </li>
     <% } %>
