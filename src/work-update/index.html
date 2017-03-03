@@ -12,11 +12,11 @@
     <!-- uc强制竖屏 -->
     <meta name="screen-orientation" content="portrait">
     <!-- qq强制竖屏 -->
-    
+    <% if(htmlWebpackPlugin.options.buildOptions.debug){ %>
         <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
         <meta http-equiv="Pragma" content="no-cache">
         <meta http-equiv="Expires" content="0">
-        
+        <% } %>
             <script>
             ;
             (function() {
@@ -41,39 +41,17 @@
                 }
             })();
             </script>
-            <link rel="stylesheet" href="./index.css">
+            <link rel="stylesheet" href="<%= htmlWebpackPlugin.options.buildOptions.resourceBase %>/index.css">
 </head>
 
 <body>
-    <div class="tabs">
-        <div id="musixiser-tab">艺人icon</div>
-        <div id="work-tab">作品icon</div>
-    </div>
-    <div class="main">
-        <div id="musixiser-section">
-            <!-- favorite musixiser list -->
-            <ul></ul>
-            <!-- no favorite musixiser condition -->
-            <div id="no-favorite-musixiser" style="display:none;">
-                <img id="boya" src="http://gw.alicdn.com/tps/TB13eqTLpXXXXaIXFXXXXXXXXXX-350-350.png">
-            </div>
-        </div>
-        <div id="work-section" style="display:none;">
-            <!-- favorite work list -->
-            <ul></ul>
-            <!-- no favorite work condition -->
-            <div id="no-favorite-work" style="display:none;">
-                <img id="boya" src="http://gw.alicdn.com/tps/TB13eqTLpXXXXaIXFXXXXXXXXXX-350-350.png">
-            </div>
-        </div>
-    </div>
-
+    <div id="work-update"></div>
     <div class="venus-spinner mask"><div class="box"><div class="img-bk"><div id="ticktack"></div></div><div class="title">loading…</div></div></div>
     
 </body>
 <!-- 使用下面的代码启用printlog打印调试信息 -->
 <!-- <script src="//g.alicdn.com/mtb/lib-windvane/2.1.1/printlog.js"></script> -->
 <!-- 发布页面到AWP前启用以上代码，使用cdn上的三方库 -->
-<script charset="utf-8" src="./index.js"></script>
+<script charset="utf-8" src="<%= htmlWebpackPlugin.options.buildOptions.resourceBase %>/index.js"></script>
 
 </html>

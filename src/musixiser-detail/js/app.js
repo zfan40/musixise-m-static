@@ -59,6 +59,7 @@ var app = {
         axios.post('//api.musixise.com/api/work/getListByUid/' + musixiserId, '', req_config)
             .then(function(res) {
                 AllWorks = res.data.data;
+                alert(111);
                 self.renderWorkList(AllWorks);
                 self.bindPlayWork();
                 self.bindAddFavoriteWork();
@@ -84,7 +85,8 @@ var app = {
     renderWorkList: function(data) {
         var self = this;
         var a = data || {};
-        var renderStr = workListTpl(a);
+        var renderStr = workListTpl(a.content);
+        console.log(a);
         workSection.innerHTML = renderStr;
         //if no stage at all, show empty icon
         if (!data) {

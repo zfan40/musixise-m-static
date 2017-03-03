@@ -8,7 +8,7 @@
                 <span data-id="<%-l.id%>"><%-new Date(l.createdDate)%></span>
                 <span data-id="<%-l.id%>"><%-l.title%></span>
                 <span data-id="<%-l.id%>"><%-l.content%></span>
-                <% if (data.followStatus)%>
+                <% if (data.followStatus){%>
                     <span data-likeid="<%-l.id%>">like</span>
                 <%}else{%>
                     <span data-likeid="<%-l.id%>">like not</span>

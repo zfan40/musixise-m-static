@@ -4,8 +4,6 @@
  */
 
 var d = document;
-var io = require('../../_common/js/socket.io.js');
-var socket = io('http://io.musixise.com');
 var Musixise = require('../../_common/js/jsbridge.js');
 // var fetch = require('../../_common/js/fetch.js');
 var axios = require('axios');
@@ -51,7 +49,7 @@ var app = {
                     .catch(function(err){
                         console.log(err);
                     });
-                //收藏某作品
+                //收藏某作品   客户端单曲页面
                 axios.post('//api.musixise.com/api/favorite/addWork',JSON.stringify({workId:10,status:0}), req_config)
                     .then(function(res){
                         console.log('收藏作品成功',res);
@@ -59,7 +57,7 @@ var app = {
                     .catch(function(err){
                         console.log(err);
                     });
-                //获取关注人
+                //获取关注人   h5 音乐人详情页
                 axios.post('//api.musixise.com/api/follow/getList','', req_config)
                     .then(function(res){
                         console.log('关注的人',res);
