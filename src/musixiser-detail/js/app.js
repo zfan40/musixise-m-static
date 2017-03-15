@@ -47,7 +47,7 @@ var app = {
         axios.post('//api.musixise.com/api/user/detail/' + musixiserId, '', req_config)
             .then(function(res) {
                 // console.log(res.data.data);
-                followStatus = res.data.data.followStatus //这块还没测试;
+                followStatus = res.data.data.followStatus; //这块还没测试;
                 self.renderMusixiserInfo(res.data.data);
                 self.bindFollowMusixiser();
                 self.bindCheckMusixiser();
@@ -118,10 +118,10 @@ var app = {
 
                 // js play
                 // console.log(AllWorks);
-                var l = AllWorks.length
+                var l = AllWorks.length;
                 for (var i=0;i<=l-1;i++) {
                     if (e.target.getAttribute('data-id') == AllWorks[i].id) {
-                        Sound.playPiece(AllWorks[i].content)
+                        Sound.playPiece(AllWorks[i].content);
                     }
                 }
             }
