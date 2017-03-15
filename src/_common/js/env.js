@@ -1,6 +1,7 @@
 var MusixiseBridge = require('./jsbridge');
 var Util = require('./utils');
 
+// alert(navigator.userAgent);
 var env = {
     inApp: !!(navigator.userAgent.indexOf('Musixise')>0),
     appVersion: '0.0.1',
@@ -14,7 +15,7 @@ var env = {
             } else {
                 username = Util.getCookie("a_username");
             }
-            self.userInfo = {username:username}
+            self.userInfo = {username:username,realname:username}
             cb(self.userInfo);
         } else { //app内
             MusixiseBridge.callHandler('getUserInfo', {}, function(res) {
