@@ -202,7 +202,7 @@
 	        musixiserSection.addEventListener('click', function(e) {
 	            // alert('查看音乐人详情');
 	            alert(e.target.getAttribute('data-id'));
-	            // Musixise.callHandler('EnterStage', 'http://m.musixise.com/stage/'+e.target.getAttribute('data-name'));
+	            // Musixise.callHandler('OpenWebView', 'http://m.musixise.com/stage/'+e.target.getAttribute('data-name'));
 	            // location.href = 'http://m.musixise.com/stage/'+e.target.getAttribute('data-name');
 	        });
 	        workSection.addEventListener('click', function(e) {
@@ -261,6 +261,7 @@
 	var utils = __webpack_require__(6);
 	var bind = __webpack_require__(7);
 	var Axios = __webpack_require__(8);
+	var defaults = __webpack_require__(9);
 	
 	/**
 	 * Create an instance of Axios
@@ -282,14 +283,14 @@
 	}
 	
 	// Create the default instance to be exported
-	var axios = createInstance();
+	var axios = createInstance(defaults);
 	
 	// Expose Axios class to allow class inheritance
 	axios.Axios = Axios;
 	
 	// Factory for creating new instances
-	axios.create = function create(defaultConfig) {
-	  return createInstance(defaultConfig);
+	axios.create = function create(instanceConfig) {
+	  return createInstance(utils.merge(defaults, instanceConfig));
 	};
 	
 	// Expose Cancel & CancelToken
@@ -647,10 +648,10 @@
 	/**
 	 * Create a new instance of Axios
 	 *
-	 * @param {Object} defaultConfig The default config for the instance
+	 * @param {Object} instanceConfig The default config for the instance
 	 */
-	function Axios(defaultConfig) {
-	  this.defaults = utils.merge(defaults, defaultConfig);
+	function Axios(instanceConfig) {
+	  this.defaults = instanceConfig;
 	  this.interceptors = {
 	    request: new InterceptorManager(),
 	    response: new InterceptorManager()
@@ -754,7 +755,7 @@
 	  return adapter;
 	}
 	
-	module.exports = {
+	var defaults = {
 	  adapter: getDefaultAdapter(),
 	
 	  transformRequest: [function transformRequest(data, headers) {
@@ -792,15 +793,6 @@
 	    return data;
 	  }],
 	
-	  headers: {
-	    common: {
-	      'Accept': 'application/json, text/plain, */*'
-	    },
-	    patch: utils.merge(DEFAULT_CONTENT_TYPE),
-	    post: utils.merge(DEFAULT_CONTENT_TYPE),
-	    put: utils.merge(DEFAULT_CONTENT_TYPE)
-	  },
-	
 	  timeout: 0,
 	
 	  xsrfCookieName: 'XSRF-TOKEN',
@@ -813,6 +805,22 @@
 	  }
 	};
 	
+	defaults.headers = {
+	  common: {
+	    'Accept': 'application/json, text/plain, */*'
+	  }
+	};
+	
+	utils.forEach(['delete', 'get', 'head'], function forEachMehtodNoData(method) {
+	  defaults.headers[method] = {};
+	});
+	
+	utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
+	  defaults.headers[method] = utils.merge(DEFAULT_CONTENT_TYPE);
+	});
+	
+	module.exports = defaults;
+	
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(10)))
 
 /***/ },
@@ -820,8 +828,94 @@
 /***/ function(module, exports) {
 
 	// shim for using process in browser
-	
 	var process = module.exports = {};
+	
+	// cached from whatever global is present so that test runners that stub it
+	// don't break things.  But we need to wrap it in a try catch in case it is
+	// wrapped in strict mode code which doesn't define any globals.  It's inside a
+	// function because try/catches deoptimize in certain engines.
+	
+	var cachedSetTimeout;
+	var cachedClearTimeout;
+	
+	function defaultSetTimout() {
+	    throw new Error('setTimeout has not been defined');
+	}
+	function defaultClearTimeout () {
+	    throw new Error('clearTimeout has not been defined');
+	}
+	(function () {
+	    try {
+	        if (typeof setTimeout === 'function') {
+	            cachedSetTimeout = setTimeout;
+	        } else {
+	            cachedSetTimeout = defaultSetTimout;
+	        }
+	    } catch (e) {
+	        cachedSetTimeout = defaultSetTimout;
+	    }
+	    try {
+	        if (typeof clearTimeout === 'function') {
+	            cachedClearTimeout = clearTimeout;
+	        } else {
+	            cachedClearTimeout = defaultClearTimeout;
+	        }
+	    } catch (e) {
+	        cachedClearTimeout = defaultClearTimeout;
+	    }
+	} ())
+	function runTimeout(fun) {
+	    if (cachedSetTimeout === setTimeout) {
+	        //normal enviroments in sane situations
+	        return setTimeout(fun, 0);
+	    }
+	    // if setTimeout wasn't available but was latter defined
+	    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
+	        cachedSetTimeout = setTimeout;
+	        return setTimeout(fun, 0);
+	    }
+	    try {
+	        // when when somebody has screwed with setTimeout but no I.E. maddness
+	        return cachedSetTimeout(fun, 0);
+	    } catch(e){
+	        try {
+	            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
+	            return cachedSetTimeout.call(null, fun, 0);
+	        } catch(e){
+	            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
+	            return cachedSetTimeout.call(this, fun, 0);
+	        }
+	    }
+	
+	
+	}
+	function runClearTimeout(marker) {
+	    if (cachedClearTimeout === clearTimeout) {
+	        //normal enviroments in sane situations
+	        return clearTimeout(marker);
+	    }
+	    // if clearTimeout wasn't available but was latter defined
+	    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
+	        cachedClearTimeout = clearTimeout;
+	        return clearTimeout(marker);
+	    }
+	    try {
+	        // when when somebody has screwed with setTimeout but no I.E. maddness
+	        return cachedClearTimeout(marker);
+	    } catch (e){
+	        try {
+	            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
+	            return cachedClearTimeout.call(null, marker);
+	        } catch (e){
+	            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
+	            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
+	            return cachedClearTimeout.call(this, marker);
+	        }
+	    }
+	
+	
+	
+	}
 	var queue = [];
 	var draining = false;
 	var currentQueue;
@@ -846,7 +940,7 @@
 	    if (draining) {
 	        return;
 	    }
-	    var timeout = setTimeout(cleanUpNextTick);
+	    var timeout = runTimeout(cleanUpNextTick);
 	    draining = true;
 	
 	    var len = queue.length;
@@ -863,7 +957,7 @@
 	    }
 	    currentQueue = null;
 	    draining = false;
-	    clearTimeout(timeout);
+	    runClearTimeout(timeout);
 	}
 	
 	process.nextTick = function (fun) {
@@ -875,7 +969,7 @@
 	    }
 	    queue.push(new Item(fun, args));
 	    if (queue.length === 1 && !draining) {
-	        setTimeout(drainQueue, 0);
+	        runTimeout(drainQueue);
 	    }
 	};
 	
@@ -945,7 +1039,7 @@
 	var parseHeaders = __webpack_require__(17);
 	var isURLSameOrigin = __webpack_require__(18);
 	var createError = __webpack_require__(14);
-	var btoa = (typeof window !== 'undefined' && window.btoa) || __webpack_require__(19);
+	var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__(19);
 	
 	module.exports = function xhrAdapter(config) {
 	  return new Promise(function dispatchXhrRequest(resolve, reject) {
@@ -1836,9 +1930,9 @@
 	function print() { __p += __j.call(arguments, '') }
 	
 	 for(var i = 0, len = data.musixisers.length; i <len; i++) { ;
-	__p += ' ';
+	
 	 var l = data.musixisers[i]; ;
-	__p += ' <li><div class="avatar" data-id="' +
+	__p += '<li><div class="avatar" data-id="' +
 	__e(l.userId) +
 	'"><img src="' +
 	__e(l.userAvatar) +
@@ -1854,7 +1948,7 @@
 	__e(l.followerNum) +
 	' subscribed</span></div></li>';
 	 } ;
-	
+	__p += '\n';
 	return __p
 	};
 
@@ -2113,9 +2207,9 @@
 	function print() { __p += __j.call(arguments, '') }
 	
 	 for(var i = 0, len = data.works.length; i <len; i++) { ;
-	__p += ' ';
+	
 	 var l = data.works[i]; ;
-	__p += ' <li data-id="' +
+	__p += '<li data-id="' +
 	__e(l.workId) +
 	'"><div class="info" data-id="' +
 	__e(l.workId) +
@@ -2129,7 +2223,7 @@
 	__e(l.author) +
 	'</span></div></li>';
 	 } ;
-	
+	__p += '\n';
 	return __p
 	};
 

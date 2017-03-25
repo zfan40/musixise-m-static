@@ -1,20 +1,42 @@
-<div class="follow-status">
-  <% if(data.followStatus) { %>
-    未关注
-  <% } else { %>
-    已关注
-  <% }%>
-</div>
+
+<% if(data.followStatus) { %>
+  <div class="follow-status active"></div>
+<% } else { %>
+    <div class="follow-status inactive"></div>
+<% }%>
+
 <div class="avatar">
     <img src="<%-data.largeAvatar%>">
+    <div class="gradient-mask"></div>
+    <p class="realname"><%-data.realname%></p>
+    <div id="relation-tab">
+      <div id="watchhim">
+        <span class="superscript"><%-data.fansNum%></span>
+      </div>
+      <div id="hewatch">
+        <span class="superscript"><%-data.followNum%></span>
+      </div>
+    </div>
 </div>
 
-<div class="core">
-    <div class="name"><span><%-data.realname%></span></div>
-    <div class="following"><span>Ta关注的人<%-data.followNum%></span></div>
-    <div class="fans"><span>关注Ta的人<%-data.fansNum%></span></div>
-    <!-- <div class="gender">性别<span>男</span></div> -->
-  <!--   <div class="rank">排名<span>老二</span></div> -->
+<div class="intro">
+  <% if(data.introduction) { %>
+  <%-data.introduction%>
+  <%} else { %>
+  此处应有个人介绍
+  <% }%>
 </div>
 
-<div class="musixiserID">musixiser ID: <%-data.userId%></div>
+<div class="section-spliter"></div>
+
+<div class="tab-container">
+  <div class="active tab" id="work-tab">作品</div>
+  <div class="tab" id="live-tab">直播</div>
+</div>
+
+<div class="work-list">
+
+</div>
+<div class="live-list">
+
+</div>

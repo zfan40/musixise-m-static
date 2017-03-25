@@ -47,8 +47,8 @@ var app = {
                 param.cover = res.data.data.cover;
 
                 self.renderMyWorkInfo(res.data.data);
-                self.bindUploadCover();
-                self.bindUpdateMyWork();
+                // self.bindUploadCover();
+                // self.bindUpdateMyWork();
             })
             .catch(function(err) {
 
@@ -65,9 +65,12 @@ var app = {
 
     bindUploadCover: function() {
         var self = this;
-
-        //env里面要写一个uploadImg的插件方法，和谔谔联调,TODO
-        newCover = '//blabla/img.png';
+        env.uploadImage(function(res){
+            if (res) {
+                alert(JSON.stringify(res));
+                newCover = res.src;
+            }
+        })
     },
     bindUpdateMyWork: function() {
         var self = this;
@@ -75,7 +78,6 @@ var app = {
         param.content = d.querySelector('#work-desc').value;
         param.cover = newCover;
 
-        //和八定联调更新作品的接口,TODO
         axios.post('//api.musixise.com/api/work/updateInfo/' + workId, JSON.stringify(param), req_config)
             .then(function(res) {
                 alert('updated');

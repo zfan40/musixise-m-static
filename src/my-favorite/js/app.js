@@ -124,7 +124,7 @@ var app = {
         musixiserSection.addEventListener('click', function(e) {
             // alert('查看音乐人详情');
             alert(e.target.getAttribute('data-id'));
-            // Musixise.callHandler('EnterStage', 'http://m.musixise.com/stage/'+e.target.getAttribute('data-name'));
+            // Musixise.callHandler('OpenWebView', 'http://m.musixise.com/stage/'+e.target.getAttribute('data-name'));
             // location.href = 'http://m.musixise.com/stage/'+e.target.getAttribute('data-name');
         });
         workSection.addEventListener('click', function(e) {

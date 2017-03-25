@@ -103,7 +103,7 @@ var app = {
         var stageList = d.querySelector('#musixiser-section');
         stageList.addEventListener('click',function(e){
             if (e.target.getAttribute('data-uid')) {
-                Musixise.callHandler('EnterStage', 'http://m.musixise.com/stage/'+e.target.getAttribute('data-uid'));
+                Musixise.callHandler('OpenWebView', 'http://m.musixise.com/stage/'+e.target.getAttribute('data-uid'));
                 // location.href = 'http://m.musixise.com/stage/'+e.target.getAttribute('data-name');
             } else if (e.target.getAttribute('data-sm-uid')) {
               location.replace('//m.musixise.com/musixiser-detail/'+e.target.getAttribute('data-sm-uid'));

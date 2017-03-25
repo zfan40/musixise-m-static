@@ -18,8 +18,18 @@ var env = {
             self.userInfo = {username:username,realname:username}
             cb(self.userInfo);
         } else { //app内
-            MusixiseBridge.callHandler('getUserInfo', {}, function(res) {
+            MusixiseBridge.callHandler('GetUserInfo', {}, function(res) {
               self.userInfo = res;
+              cb(res);
+            });
+        }
+    },
+    uploadImage: function(cb){
+        var self= this;
+        if (!self.inApp) { //app外
+            location.href='musixise://open';
+        } else { //app内
+            MusixiseBridge.callHandler('UploadImage', {}, function(res) {
               cb(res);
             });
         }

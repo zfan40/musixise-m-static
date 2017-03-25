@@ -20,7 +20,7 @@ var app = {
             spaceBetween: 0
         });
         // SwiperPage3 = new Swiper('#page3', {
-        //     speed: 400,
+        //     speed: 400,getRem()
         //     spaceBetween: 0,
         //     slidesPerView: 3,
         //     pagination: '.swiper-pagination'

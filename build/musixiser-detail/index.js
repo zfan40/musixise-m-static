@@ -1,1 +1,2662 @@
-!function(e){function t(r){if(n[r])return n[r].exports;var o=n[r]={exports:{},id:r,loaded:!1};return e[r].call(o.exports,o,o.exports,t),o.loaded=!0,o.exports}var n={};return t.m=e,t.c=n,t.p="/",t(0)}([function(e,t,n){n(4);var r=n(5);r.init()},,,,function(e,t){},function(e,t,n){var r=document,o=n(6),i=n(7),a=n(9),s=n(35),u=(n(36),n(37),n(38)),c=n(41),f=r.querySelector("#intro-info"),l=r.querySelector("#past-work"),p=location.href.split("/").pop(),d=-1,h={},m={},v=[],g={init:function(){var e=this;i.getUserInfo(function(t){h=t,h.token&&(m.headers.Authorization="Bearer "+h.token),e.renderPage()})},renderPage:function(){var e=this;a.post("//api.musixise.com/api/user/detail/"+p,"",m).then(function(t){d=t.data.data.followStatus,e.renderMusixiserInfo(t.data.data),e.bindFollowMusixiser(),e.bindCheckMusixiser()})["catch"](function(e){}),a.post("//api.musixise.com/api/work/getListByUid/"+p,"",m).then(function(t){v=t.data.data,alert(111),e.renderWorkList(v),e.bindPlayWork(),e.bindAddFavoriteWork()})["catch"](function(e){})},renderMusixiserInfo:function(e){var t=e||{},n=u(t);f.innerHTML=n,e||(r.querySelector("#no-favorite-musixiser").style.display="flex");var o=r.querySelector(".venus-spinner");o.style.display="none"},renderWorkList:function(e){var t=e||{},n=c(t.content);l.innerHTML=n,e||(r.querySelector("#no-favorite-work").style.display="flex")},bindPlayWork:function(){r.querySelector("#past-work").addEventListener("click",function(e){if(e.target.getAttribute("data-id")){alert("play piece of id "+e.target.getAttribute("data-id"));for(var t=v.length,n=0;t-1>=n;n++)e.target.getAttribute("data-id")==v[n].id&&s.playPiece(v[n].content)}})},bindAddFavoriteWork:function(){r.querySelector("#past-work").addEventListener("click",function(e){e.target.getAttribute("data-likeid")&&a.post("//api.musixise.com/api/favorite/addWork",JSON.stringify({workId:e.target.getAttribute("data-likeid"),status:0}),m).then(function(e){})["catch"](function(e){})})},bindCheckMusixiser:function(){r.querySelector(".avatar").addEventListener("click",function(){o.callHandler("popMusixiserBox",{id:p,avatar:"",follow:0,name:""},function(){})})},bindFollowMusixiser:function(){r.querySelector(".follow-status").addEventListener("click",function(e){d?(d=0,r.querySelector(".follow-status").innerHTML="已关注"):(d=1,r.querySelector(".follow-status").innerHTML="未关注");var t={followId:p,status:d};a.post("//api.musixise.com/api/follow/add",JSON.stringify(t),m).then(function(e){})["catch"](function(e){})})}};e.exports=g},function(e,t){var n=void 0,r={connectWebViewJavascriptBridge:function(e){window.WebViewJavascriptBridge?e(WebViewJavascriptBridge):document.addEventListener("WebViewJavascriptBridgeReady",function(){e(WebViewJavascriptBridge)},!1)},callHandler:function(e,t,r){n?n.callHandler(e,t,r):this.connectWebViewJavascriptBridge(function(o){o.init(function(e,n){n(t)}),n=o,o.callHandler(e,t,r)})}};e.exports=r},function(e,t,n){var r=n(6),o=n(8),i={inApp:!!(navigator.userAgent.indexOf("Musixise")>0),appVersion:"0.0.1",getUserInfo:function(e){var t=this;if(t.inApp)r.callHandler("getUserInfo",{},function(n){t.userInfo=n,e(n)});else{var n="";o.getCookie("a_username")?n=o.getCookie("a_username"):(n="游客"+parseInt(1e4*Math.random()),o.setCookie("a_username",n,240)),t.userInfo={username:n,realname:n},e(t.userInfo)}},userInfo:{}};e.exports=i},function(e,t){var n={getiOSVersion:function(){var e=window.navigator.userAgent,t=/OS\s+(\d+)_(\d+)/,n=e.match(t);return n&&n.length>2?parseInt(n[1],10)+parseInt(n[2],10)/10:0},milleSecToMinuteSec:function(e){var t=Math.floor(e/6e4),n=Math.floor(e/1e3-60*t);return t=10>t?"0"+t:""+t,n=10>n?"0"+n:""+n,[t,n]},runTimer:function(e,t){setInterval(function(){var n=+document.querySelector(e).innerHTML,r=+document.querySelector(t).innerHTML;r+=1,r>=60?(r="00",n+=1,n=0==n?"00":10>n?"0"+n:""+n):10>r?(r="0"+r,n=0==n?"00":10>n?"0"+n:""+n):(r=""+r,n=0==n?"00":10>n?"0"+n:""+n),document.querySelector(e).innerHTML=n,document.querySelector(t).innerHTML=r},1e3)},getCookie:function(e){var t,n=new RegExp("(^| )"+e+"=([^;]*)(;|$)");return(t=document.cookie.match(n))?unescape(t[2]):null},setCookie:function(e,t,n){var r=e+"="+escape(t);if(n>0){var o=new Date;o.setTime(o.getTime()+3600*n*1e3),r=r+"; expires="+o.toGMTString()+";domain=.musixise.com;path=/"}document.cookie=r},getLocalTime:function(e){var t=new Date(1e3*parseInt(e));return t=t.getFullYear()+"-"+(t.getMonth()+1)+"-"+t.getDate()},decodeHtml:function(e){var t="";return 0==e.length?"":(t=e.replace(/&lt;/g,"<"),t=t.replace(/&gt;/g,">"),t=t.replace(/&nbsp;/g," "),t=t.replace(/&#39;/g,"'"),t=t.replace(/&#039;/g,"'"),t=t.replace(/&quot;/g,'"'),t=t.replace(/&amp;/g,"&"),t=t.replace(/<br>/g,"\n"))},filterHtml:function(e){var t="";return 0==e.length?"":(t=e.replace(/style="([\s\S]*?)"/gi,""),t=t.replace(/<div(.*?)>/gi,""),t=t.replace(/<\/div(.*?)>(<br(.*?)>)*/gi,"<br>"),t=t.replace(/<\/?p(.*?)>/gi,"<br>"),t=t.replace(/<object(.*?)>.*?<\/object>/gi,""),t=t.replace(/<\/?(a|span)(.*?)>/gi,""),t=t.replace(/<\/?[font|embed](.*?)>/gi,"<br>"),t=t.replace(/(<br\s*\/?>\s*(&nbsp;)*){2,}/gi,"<hr/>"))},getTime:function(e){var t=this,n=(new Date).getTime(),o=Math.round(n/1e3)-e;return 5>o?r="刚刚":o>=0&&60>o?r=o+"秒前":o>=60&&3600>o?r=Math.ceil(o/60)+"分钟前":o>=3600&&86400>o?r=Math.ceil(o/3600)+"小时前":o>86400&&259200>o?r=Math.floor(o/86400)+"天前":r=t.getLocalTime(e),r}};e.exports=n},function(e,t,n){e.exports=n(10)},function(e,t,n){"use strict";function r(e){var t=new a(e),n=i(a.prototype.request,t);return o.extend(n,a.prototype,t),o.extend(n,t),n}var o=n(11),i=n(12),a=n(13),s=r();s.Axios=a,s.create=function(e){return r(e)},s.Cancel=n(32),s.CancelToken=n(33),s.isCancel=n(29),s.all=function(e){return Promise.all(e)},s.spread=n(34),e.exports=s,e.exports["default"]=s},function(e,t,n){"use strict";function r(e){return"[object Array]"===k.call(e)}function o(e){return"[object ArrayBuffer]"===k.call(e)}function i(e){return"undefined"!=typeof FormData&&e instanceof FormData}function a(e){var t;return t="undefined"!=typeof ArrayBuffer&&ArrayBuffer.isView?ArrayBuffer.isView(e):e&&e.buffer&&e.buffer instanceof ArrayBuffer}function s(e){return"string"==typeof e}function u(e){return"number"==typeof e}function c(e){return"undefined"==typeof e}function f(e){return null!==e&&"object"==typeof e}function l(e){return"[object Date]"===k.call(e)}function p(e){return"[object File]"===k.call(e)}function d(e){return"[object Blob]"===k.call(e)}function h(e){return"[object Function]"===k.call(e)}function m(e){return f(e)&&h(e.pipe)}function v(e){return"undefined"!=typeof URLSearchParams&&e instanceof URLSearchParams}function g(e){return e.replace(/^\s*/,"").replace(/\s*$/,"")}function y(){return"undefined"!=typeof window&&"undefined"!=typeof document&&"function"==typeof document.createElement}function w(e,t){if(null!==e&&"undefined"!=typeof e)if("object"==typeof e||r(e)||(e=[e]),r(e))for(var n=0,o=e.length;o>n;n++)t.call(null,e[n],n,e);else for(var i in e)Object.prototype.hasOwnProperty.call(e,i)&&t.call(null,e[i],i,e)}function x(){function e(e,n){"object"==typeof t[n]&&"object"==typeof e?t[n]=x(t[n],e):t[n]=e}for(var t={},n=0,r=arguments.length;r>n;n++)w(arguments[n],e);return t}function b(e,t,n){return w(t,function(t,r){n&&"function"==typeof t?e[r]=S(t,n):e[r]=t}),e}var S=n(12),k=Object.prototype.toString;e.exports={isArray:r,isArrayBuffer:o,isFormData:i,isArrayBufferView:a,isString:s,isNumber:u,isObject:f,isUndefined:c,isDate:l,isFile:p,isBlob:d,isFunction:h,isStream:m,isURLSearchParams:v,isStandardBrowserEnv:y,forEach:w,merge:x,extend:b,trim:g}},function(e,t){"use strict";e.exports=function(e,t){return function(){for(var n=new Array(arguments.length),r=0;r<n.length;r++)n[r]=arguments[r];return e.apply(t,n)}}},function(e,t,n){"use strict";function r(e){this.defaults=i.merge(o,e),this.interceptors={request:new a,response:new a}}var o=n(14),i=n(11),a=n(26),s=n(27),u=n(30),c=n(31);r.prototype.request=function(e){"string"==typeof e&&(e=i.merge({url:arguments[0]},arguments[1])),e=i.merge(o,this.defaults,{method:"get"},e),e.baseURL&&!u(e.url)&&(e.url=c(e.baseURL,e.url));var t=[s,void 0],n=Promise.resolve(e);for(this.interceptors.request.forEach(function(e){t.unshift(e.fulfilled,e.rejected)}),this.interceptors.response.forEach(function(e){t.push(e.fulfilled,e.rejected)});t.length;)n=n.then(t.shift(),t.shift());return n},i.forEach(["delete","get","head"],function(e){r.prototype[e]=function(t,n){return this.request(i.merge(n||{},{method:e,url:t}))}}),i.forEach(["post","put","patch"],function(e){r.prototype[e]=function(t,n,r){return this.request(i.merge(r||{},{method:e,url:t,data:n}))}}),e.exports=r},function(e,t,n){(function(t){"use strict";function r(e,t){!i.isUndefined(e)&&i.isUndefined(e["Content-Type"])&&(e["Content-Type"]=t)}function o(){var e;return"undefined"!=typeof XMLHttpRequest?e=n(17):"undefined"!=typeof t&&(e=n(17)),e}var i=n(11),a=n(16),s=/^\)\]\}',?\n/,u={"Content-Type":"application/x-www-form-urlencoded"};e.exports={adapter:o(),transformRequest:[function(e,t){return a(t,"Content-Type"),i.isFormData(e)||i.isArrayBuffer(e)||i.isStream(e)||i.isFile(e)||i.isBlob(e)?e:i.isArrayBufferView(e)?e.buffer:i.isURLSearchParams(e)?(r(t,"application/x-www-form-urlencoded;charset=utf-8"),e.toString()):i.isObject(e)?(r(t,"application/json;charset=utf-8"),JSON.stringify(e)):e}],transformResponse:[function(e){if("string"==typeof e){e=e.replace(s,"");try{e=JSON.parse(e)}catch(t){}}return e}],headers:{common:{Accept:"application/json, text/plain, */*"},patch:i.merge(u),post:i.merge(u),put:i.merge(u)},timeout:0,xsrfCookieName:"XSRF-TOKEN",xsrfHeaderName:"X-XSRF-TOKEN",maxContentLength:-1,validateStatus:function(e){return e>=200&&300>e}}}).call(t,n(15))},function(e,t){function n(){c&&a&&(c=!1,a.length?u=a.concat(u):f=-1,u.length&&r())}function r(){if(!c){var e=setTimeout(n);c=!0;for(var t=u.length;t;){for(a=u,u=[];++f<t;)a&&a[f].run();f=-1,t=u.length}a=null,c=!1,clearTimeout(e)}}function o(e,t){this.fun=e,this.array=t}function i(){}var a,s=e.exports={},u=[],c=!1,f=-1;s.nextTick=function(e){var t=new Array(arguments.length-1);if(arguments.length>1)for(var n=1;n<arguments.length;n++)t[n-1]=arguments[n];u.push(new o(e,t)),1!==u.length||c||setTimeout(r,0)},o.prototype.run=function(){this.fun.apply(null,this.array)},s.title="browser",s.browser=!0,s.env={},s.argv=[],s.version="",s.versions={},s.on=i,s.addListener=i,s.once=i,s.off=i,s.removeListener=i,s.removeAllListeners=i,s.emit=i,s.binding=function(e){throw new Error("process.binding is not supported")},s.cwd=function(){return"/"},s.chdir=function(e){throw new Error("process.chdir is not supported")},s.umask=function(){return 0}},function(e,t,n){"use strict";var r=n(11);e.exports=function(e,t){r.forEach(e,function(n,r){r!==t&&r.toUpperCase()===t.toUpperCase()&&(e[t]=n,delete e[r])})}},function(e,t,n){(function(t){"use strict";var r=n(11),o=n(18),i=n(21),a=n(22),s=n(23),u=n(19),c="undefined"!=typeof window&&window.btoa||n(24);e.exports=function(e){return new Promise(function(f,l){var p=e.data,d=e.headers;r.isFormData(p)&&delete d["Content-Type"];var h=new XMLHttpRequest,m="onreadystatechange",v=!1;if("test"===t.env.NODE_ENV||"undefined"==typeof window||!window.XDomainRequest||"withCredentials"in h||s(e.url)||(h=new window.XDomainRequest,m="onload",v=!0,h.onprogress=function(){},h.ontimeout=function(){}),e.auth){var g=e.auth.username||"",y=e.auth.password||"";d.Authorization="Basic "+c(g+":"+y)}if(h.open(e.method.toUpperCase(),i(e.url,e.params,e.paramsSerializer),!0),h.timeout=e.timeout,h[m]=function(){if(h&&(4===h.readyState||v)&&(0!==h.status||h.responseURL&&0===h.responseURL.indexOf("file:"))){var t="getAllResponseHeaders"in h?a(h.getAllResponseHeaders()):null,n=e.responseType&&"text"!==e.responseType?h.response:h.responseText,r={data:n,status:1223===h.status?204:h.status,statusText:1223===h.status?"No Content":h.statusText,headers:t,config:e,request:h};o(f,l,r),h=null}},h.onerror=function(){l(u("Network Error",e)),h=null},h.ontimeout=function(){l(u("timeout of "+e.timeout+"ms exceeded",e,"ECONNABORTED")),h=null},r.isStandardBrowserEnv()){var w=n(25),x=(e.withCredentials||s(e.url))&&e.xsrfCookieName?w.read(e.xsrfCookieName):void 0;x&&(d[e.xsrfHeaderName]=x)}if("setRequestHeader"in h&&r.forEach(d,function(e,t){"undefined"==typeof p&&"content-type"===t.toLowerCase()?delete d[t]:h.setRequestHeader(t,e)}),e.withCredentials&&(h.withCredentials=!0),e.responseType)try{h.responseType=e.responseType}catch(b){if("json"!==h.responseType)throw b}"function"==typeof e.onDownloadProgress&&h.addEventListener("progress",e.onDownloadProgress),"function"==typeof e.onUploadProgress&&h.upload&&h.upload.addEventListener("progress",e.onUploadProgress),e.cancelToken&&e.cancelToken.promise.then(function(e){h&&(h.abort(),l(e),h=null)}),void 0===p&&(p=null),h.send(p)})}}).call(t,n(15))},function(e,t,n){"use strict";var r=n(19);e.exports=function(e,t,n){var o=n.config.validateStatus;n.status&&o&&!o(n.status)?t(r("Request failed with status code "+n.status,n.config,null,n)):e(n)}},function(e,t,n){"use strict";var r=n(20);e.exports=function(e,t,n,o){var i=new Error(e);return r(i,t,n,o)}},function(e,t){"use strict";e.exports=function(e,t,n,r){return e.config=t,n&&(e.code=n),e.response=r,e}},function(e,t,n){"use strict";function r(e){return encodeURIComponent(e).replace(/%40/gi,"@").replace(/%3A/gi,":").replace(/%24/g,"$").replace(/%2C/gi,",").replace(/%20/g,"+").replace(/%5B/gi,"[").replace(/%5D/gi,"]")}var o=n(11);e.exports=function(e,t,n){if(!t)return e;var i;if(n)i=n(t);else if(o.isURLSearchParams(t))i=t.toString();else{var a=[];o.forEach(t,function(e,t){null!==e&&"undefined"!=typeof e&&(o.isArray(e)&&(t+="[]"),o.isArray(e)||(e=[e]),o.forEach(e,function(e){o.isDate(e)?e=e.toISOString():o.isObject(e)&&(e=JSON.stringify(e)),a.push(r(t)+"="+r(e))}))}),i=a.join("&")}return i&&(e+=(-1===e.indexOf("?")?"?":"&")+i),e}},function(e,t,n){"use strict";var r=n(11);e.exports=function(e){var t,n,o,i={};return e?(r.forEach(e.split("\n"),function(e){o=e.indexOf(":"),t=r.trim(e.substr(0,o)).toLowerCase(),n=r.trim(e.substr(o+1)),t&&(i[t]=i[t]?i[t]+", "+n:n)}),i):i}},function(e,t,n){"use strict";var r=n(11);e.exports=r.isStandardBrowserEnv()?function(){function e(e){var t=e;return n&&(o.setAttribute("href",t),t=o.href),o.setAttribute("href",t),{href:o.href,protocol:o.protocol?o.protocol.replace(/:$/,""):"",host:o.host,search:o.search?o.search.replace(/^\?/,""):"",hash:o.hash?o.hash.replace(/^#/,""):"",hostname:o.hostname,port:o.port,pathname:"/"===o.pathname.charAt(0)?o.pathname:"/"+o.pathname}}var t,n=/(msie|trident)/i.test(navigator.userAgent),o=document.createElement("a");return t=e(window.location.href),function(n){var o=r.isString(n)?e(n):n;return o.protocol===t.protocol&&o.host===t.host}}():function(){return function(){return!0}}()},function(e,t){"use strict";function n(){this.message="String contains an invalid character"}function r(e){for(var t,r,i=String(e),a="",s=0,u=o;i.charAt(0|s)||(u="=",s%1);a+=u.charAt(63&t>>8-s%1*8)){if(r=i.charCodeAt(s+=.75),r>255)throw new n;t=t<<8|r}return a}var o="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";n.prototype=new Error,n.prototype.code=5,n.prototype.name="InvalidCharacterError",e.exports=r},function(e,t,n){"use strict";var r=n(11);e.exports=r.isStandardBrowserEnv()?function(){return{write:function(e,t,n,o,i,a){var s=[];s.push(e+"="+encodeURIComponent(t)),r.isNumber(n)&&s.push("expires="+new Date(n).toGMTString()),r.isString(o)&&s.push("path="+o),r.isString(i)&&s.push("domain="+i),a===!0&&s.push("secure"),document.cookie=s.join("; ")},read:function(e){var t=document.cookie.match(new RegExp("(^|;\\s*)("+e+")=([^;]*)"));return t?decodeURIComponent(t[3]):null},remove:function(e){this.write(e,"",Date.now()-864e5)}}}():function(){return{write:function(){},read:function(){return null},remove:function(){}}}()},function(e,t,n){"use strict";function r(){this.handlers=[]}var o=n(11);r.prototype.use=function(e,t){return this.handlers.push({fulfilled:e,rejected:t}),this.handlers.length-1},r.prototype.eject=function(e){this.handlers[e]&&(this.handlers[e]=null)},r.prototype.forEach=function(e){o.forEach(this.handlers,function(t){null!==t&&e(t)})},e.exports=r},function(e,t,n){"use strict";function r(e){e.cancelToken&&e.cancelToken.throwIfRequested()}var o=n(11),i=n(28),a=n(29),s=n(14);e.exports=function(e){r(e),e.headers=e.headers||{},e.data=i(e.data,e.headers,e.transformRequest),e.headers=o.merge(e.headers.common||{},e.headers[e.method]||{},e.headers||{}),o.forEach(["delete","get","head","post","put","patch","common"],function(t){delete e.headers[t]});var t=e.adapter||s.adapter;return t(e).then(function(t){return r(e),t.data=i(t.data,t.headers,e.transformResponse),t},function(t){return a(t)||(r(e),t&&t.response&&(t.response.data=i(t.response.data,t.response.headers,e.transformResponse))),Promise.reject(t)})}},function(e,t,n){"use strict";var r=n(11);e.exports=function(e,t,n){return r.forEach(n,function(n){e=n(e,t)}),e}},function(e,t){"use strict";e.exports=function(e){return!(!e||!e.__CANCEL__)}},function(e,t){"use strict";e.exports=function(e){return/^([a-z][a-z\d\+\-\.]*:)?\/\//i.test(e)}},function(e,t){"use strict";e.exports=function(e,t){return e.replace(/\/+$/,"")+"/"+t.replace(/^\/+/,"")}},function(e,t){"use strict";function n(e){this.message=e}n.prototype.toString=function(){return"Cancel"+(this.message?": "+this.message:"")},n.prototype.__CANCEL__=!0,e.exports=n},function(e,t,n){"use strict";function r(e){if("function"!=typeof e)throw new TypeError("executor must be a function.");var t;this.promise=new Promise(function(e){t=e});var n=this;e(function(e){n.reason||(n.reason=new o(e),t(n.reason))})}var o=n(32);r.prototype.throwIfRequested=function(){if(this.reason)throw this.reason},r.source=function(){var e,t=new r(function(t){e=t});return{token:t,cancel:e}},e.exports=r},function(e,t){"use strict";e.exports=function(e){return function(t){return e.apply(null,t)}}},function(e,t,n){var r=n(6),o=0,i=6e3,a=0,s=!1,u=[],c={sendMidi:function(e){var t=0;!s&&e.midi_msg&&(s=!0,o=e.time-performance.now()),a=e.time-o+i,t=a-performance.now(),t>=0&&setTimeout(function(){r.callHandler("MusicDeviceMIDIEvent",[+e.midi_msg[0],+e.midi_msg[1],+e.midi_msg[2],0])},t)},playRandomNote:function(){var e=0,t=setInterval(function(){e+=1,r.callHandler("MusicDeviceMIDIEvent",[144,50+parseInt(30*Math.random()),70,0]),20==e&&clearInterval(t)},25)},playPiece:function(e){for(var t=JSON.parse(e),n=t.length,o=0;n-1>=o;o++)!function(e){u.push(setTimeout(function(){r.callHandler("MusicDeviceMIDIEvent",[t[e][0],t[e][1],t[e][2],0])},t[e][3]))}(o)},stop:function(){for(var e=u.length,t=0;e-1>=t;t++)clearTimeout(u[t])}};e.exports=c},function(e,t){e.exports={realname:"小野妹子",userId:"103554",largeAvatar:"./assets/1.gif",followerNum:"1314",online:!0}},function(e,t){e.exports=[{name:"半岛铁盒",author:"jay",workId:"5",description:"哪里有卖",createTime:"1314",likes:"1002",mp3:""},{name:"她的睫毛",author:"f",workId:"24",description:"睫毛弯弯，眼睛眨呀眨呀眨",createTime:"10000",likes:"10",mp3:""},{name:"最后的战役",author:"princess",workId:"1",description:"我留着陪你，强忍着泪滴",createTime:"100",likes:"924",mp3:""},{name:"飞啊飞啊我的骄傲放纵",author:"princess",workId:"1",description:"我留着陪你，强忍着泪滴",createTime:"100",likes:"924",mp3:""}]},function(e,t,n){var r={escape:n(39)};e.exports=function(e){var t="",n=r.escape;Array.prototype.join;return t+='<div class="follow-status"> ',t+=e.followStatus?" 未关注 ":" 已关注 ",t+='</div><div class="avatar"><img src="'+n(e.largeAvatar)+'"></div><div class="core"><div class="name"><span>'+n(e.realname)+'</span></div><div class="following"><span>Ta关注的人'+n(e.followNum)+'</span></div><div class="fans"><span>关注Ta的人'+n(e.fansNum)+'</span></div></div><div class="musixiserID">musixiser ID: '+n(e.userId)+"</div>"}},function(e,t,n){(function(e,n){function r(e){return e&&e.Object===Object?e:null}function o(e){return d[e]}function i(e){return!!e&&"object"==typeof e}function a(e){return"symbol"==typeof e||i(e)&&k.call(e)==f}function s(e){if("string"==typeof e)return e;if(null==e)return"";if(a(e))return T?E.call(e):"";var t=e+"";return"0"==t&&1/e==-c?"-0":t}function u(e){return e=s(e),e&&p.test(e)?e.replace(l,o):e}var c=1/0,f="[object Symbol]",l=/[&<>"'`]/g,p=RegExp(l.source),d={"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;","`":"&#96;"},h={"function":!0,object:!0},m=h[typeof t]&&t&&!t.nodeType?t:null,v=h[typeof e]&&e&&!e.nodeType?e:null,g=r(m&&v&&"object"==typeof n&&n),y=r(h[typeof self]&&self),w=r(h[typeof window]&&window),x=r(h[typeof this]&&this),b=g||w!==(x&&x.window)&&w||y||x||Function("return this")(),S=Object.prototype,k=S.toString,T=b.Symbol,A=T?T.prototype:void 0,E=T?A.toString:void 0;e.exports=u}).call(t,n(40)(e),function(){return this}())},function(e,t){e.exports=function(e){return e.webpackPolyfill||(e.deprecate=function(){},e.paths=[],e.children=[],e.webpackPolyfill=1),e}},function(e,t,n){var r={escape:n(39)};e.exports=function(e){var t="",n=r.escape;Array.prototype.join;if(e.length){t+=" <h2>作品</h2><ul> ";for(var o=0,i=e.length;i>o;o++){t+=" ";var a=e[o];t+=' <li data-id="'+n(a.id)+'"><div class="info" data-id="'+n(a.id)+'"><span data-id="'+n(a.id)+'">'+n(new Date(a.createdDate))+'</span><span data-id="'+n(a.id)+'">'+n(a.title)+'</span><span data-id="'+n(a.id)+'">'+n(a.content)+"</span> ",t+=e.followStatus?' <span data-likeid="'+n(a.id)+'">like</span> ':' <span data-likeid="'+n(a.id)+'">like not</span> ',t+=" </div></li> "}t+=" </ul>"}return t}}]);
+/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId])
+/******/ 			return installedModules[moduleId].exports;
+/******/
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			exports: {},
+/******/ 			id: moduleId,
+/******/ 			loaded: false
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.loaded = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "/";
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(0);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(1);
+	
+	
+	
+	/**
+	 * 本地开发时请启用以上代码使用本地的第三方库
+	 * 发布到AWP上之前请注释掉以上代码再Build
+	 */
+	
+	
+	/**
+	 * 启用以下代码使用orbit mtop mock
+	 */
+	/*
+	require('./mock/_orbit-mtop-mock.js');
+	*/
+	
+	var app = __webpack_require__(2);
+	app.init();
+	
+
+
+/***/ },
+/* 1 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 2 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * app
+	 * musixiser detail page
+	 * author: ziwen
+	 */
+	
+	var d = document;
+	var Musixise = __webpack_require__(3);
+	var Env = __webpack_require__(4);
+	var axios = __webpack_require__(6);
+	var Sound = __webpack_require__(32);
+	
+	var generalData = __webpack_require__(33);
+	var workData = __webpack_require__(34);
+	var musixiserIntroTpl = __webpack_require__(35);
+	var workListTpl = __webpack_require__(38);
+	
+	var musixiserSection = d.querySelector('#intro-info');
+	var workSection = d.querySelector('#work-list');
+	
+	var musixiserId = location.href.split('/').pop();
+	musixiserId = 40; //test
+	
+	var followStatus = -1; //n种取值，0关注1取消
+	var userInfo = {};
+	var req_config = {};
+	var AllWorks = [];//以后这里还是得native...否则歌多了会崩吧...
+	
+	var app = {
+	    init: function() {
+	        var self = this;
+	        // axios.get('http://api.musixise.com/api/work-lists/4', req_config)
+	        //     .then(function(res) { console.log(res) })
+	        //     .catch(function(err) {console.log(err)})
+	        Env.getUserInfo(function(res) {
+	            userInfo = res;
+	            console.log(userInfo);
+	            if (userInfo.token) {
+	                req_config.headers.Authorization = 'Bearer ' + userInfo.token;
+	            }
+	            self.renderPage();
+	        });
+	    },
+	    renderPage: function() {
+	        var self = this;
+	
+	        axios.post('//api.musixise.com/api/user/detail/' + musixiserId, '', req_config)
+	            .then(function(res) {
+	                console.log('musixiser info',res.data.data);
+	                followStatus = res.data.data.followStatus //这块还没测试;
+	                self.renderMusixiserInfo(res.data.data);
+	                self.bindFollowMusixiser();
+	                // self.bindCheckMusixiser();
+	            })
+	            .catch(function(err) {
+	
+	            });
+	
+	        axios.post('//api.musixise.com/api/work/getListByUid/' + musixiserId, '', req_config)
+	            .then(function(res) {
+	                AllWorks = res.data.data;
+	                console.log('musixiser work',res.data.data);
+	                self.renderWorkList(AllWorks);
+	                self.bindPlayWork();
+	                self.bindAddFavoriteWork();
+	            })
+	            .catch(function(err) {
+	
+	            });
+	        // self.renderMusixiserInfo(generalData); //test
+	        // self.renderWorkList(workData); //test
+	    },
+	    renderMusixiserInfo: function(data) {
+	        var self = this;
+	        var a = data || {};
+	        var renderStr = musixiserIntroTpl(a);
+	        musixiserSection.innerHTML = renderStr;
+	        //if no stage at all, show empty icon
+	        if (!data) {
+	            d.querySelector('#no-favorite-musixiser').style.display = 'flex';
+	        }
+	        var loading = d.querySelector('.venus-spinner');
+	        loading.style.display = 'none';
+	    },
+	    renderWorkList: function(data) {
+	        var self = this;
+	        var a = data || {};
+	        var renderStr = workListTpl(a.content);
+	        workSection.innerHTML = renderStr;
+	        //if no stage at all, show empty icon
+	        if (!data) {
+	            d.querySelector('#no-favorite-work').style.display = 'flex';
+	        }
+	    },
+	    renderLiveList: function(data) {
+	
+	    },
+	    // bindEvent: function() {
+	    //     var self = this;
+	    //     // if interchange tabs.
+	    //     // musixiserTab.addEventListener('click',function(){
+	    //     //     workSection.style.display='none';
+	    //     //     musixiserSection.style.display='inherit';
+	    //     // });
+	    //     // workTab.addEventListener('click',function(){
+	    //     //     musixiserSection.style.display='none';
+	    //     //     workSection.style.display='inherit';
+	    //     // });
+	    //     self.bindPlayWork();
+	    //     self.bindAddFavoriteWork();
+	    //     self.bindFollowMusixiser();
+	    //     self.bindCheckMusixiser();
+	    // },
+	    bindPlayWork: function() {
+	        var self = this;
+	        d.querySelector('#work-list').addEventListener('click', function(e) {
+	            if (e.target.getAttribute('data-id')) {
+	                alert('play piece of id ' + e.target.getAttribute('data-id'));
+	                // native play
+	                // Musixise.callHandler('showToast', '开始播放', function() {});
+	                // location.href = "musixise://play/" + e.target.getAttribute('data-id');
+	
+	                // js play
+	                // console.log(AllWorks);
+	                var l = AllWorks.length
+	                for (var i=0;i<=l-1;i++) {
+	                    if (e.target.getAttribute('data-id') == AllWorks[i].id) {
+	                        Sound.playPiece(AllWorks[i].content)
+	                    }
+	                }
+	            }
+	        });
+	    },
+	    bindAddFavoriteWork: function() {
+	        var self = this;
+	        //收藏某作品
+	        //onclick...
+	
+	        d.querySelector('#work-list').addEventListener('click', function(e) {
+	            if (e.target.getAttribute('data-likeid')) {
+	                axios.post('//api.musixise.com/api/favorite/addWork', JSON.stringify({
+	                        workId: e.target.getAttribute('data-likeid'),
+	                        status: 0
+	                    }), req_config)
+	                    .then(function(res) {
+	                        console.log('收藏作品成功', res);
+	                    })
+	                    .catch(function(err) {
+	                        console.log(err);
+	                    });
+	            }
+	        });
+	    },
+	    // bindCheckMusixiser: function() {
+	    //     var self = this;
+	    //     d.querySelector('.avatar').addEventListener('click', function() {
+	    //         Musixise.callHandler('popMusixiserBox', {
+	    //             id: musixiserId,
+	    //             avatar: '',
+	    //             follow: 0,
+	    //             name: ''
+	    //         }, function() {
+	    //             //
+	    //         });
+	    //     });
+	    // },
+	    bindFollowMusixiser: function() {//complete
+	        var self = this;
+	        d.querySelector('.follow-status').addEventListener('click', function(e) {
+	            if (!userInfo.token) {
+	                alert('未登录');
+	                return;
+	            }
+	            if (followStatus) {
+	                //取消关注
+	                followStatus = 0;
+	                document.querySelector('.follow-status.active').className = 'follow-status inactive'
+	            } else {
+	                followStatus = 1;
+	                document.querySelector('.follow-status.inactive').className = 'follow-status active'
+	            }
+	            // 关注某人
+	            var param = {
+	                followId: musixiserId,
+	                status: followStatus
+	            };
+	            axios.post('//api.musixise.com/api/follow/add', JSON.stringify(param), req_config)
+	                .then(function(res) {
+	                    console.log('关注人成功', res);
+	                })
+	                .catch(function(err) {
+	                    console.log(err);
+	                });
+	        });
+	    }
+	};
+	module.exports = app;
+
+/***/ },
+/* 3 */
+/***/ function(module, exports) {
+
+	var MUSIXISE = undefined;
+	var JSBridge = {
+	    connectWebViewJavascriptBridge: function(callback) {
+	        if (window.WebViewJavascriptBridge) {
+	            callback(WebViewJavascriptBridge);
+	        } else {
+	            document.addEventListener('WebViewJavascriptBridgeReady', function() {
+	                callback(WebViewJavascriptBridge);
+	            }, false)
+	        }
+	    },
+	    callHandler: function(evt, data, callback) {
+	        if (!MUSIXISE) {
+	            this.connectWebViewJavascriptBridge(function(bridge) {
+	                bridge.init(function(message,responseCallback){
+	                    responseCallback(data);
+	                })
+	                MUSIXISE = bridge;
+	                bridge.callHandler(evt, data, callback)
+	            })
+	        } else {
+	            MUSIXISE.callHandler(evt, data, callback)
+	        }
+	    }
+	}
+	console.log('JSBridge Activated');
+	module.exports = JSBridge;
+
+/***/ },
+/* 4 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var MusixiseBridge = __webpack_require__(3);
+	var Util = __webpack_require__(5);
+	
+	// alert(navigator.userAgent);
+	var env = {
+	    inApp: !!(navigator.userAgent.indexOf('Musixise')>0),
+	    appVersion: '0.0.1',
+	    getUserInfo: function(cb) {
+	        var self = this;
+	        if (!self.inApp) { //app外
+	        	var username = '';
+	            if (!Util.getCookie("a_username")) {
+	                username = '游客' + parseInt(Math.random() * 10000);
+	                Util.setCookie("a_username", username, 240);
+	            } else {
+	                username = Util.getCookie("a_username");
+	            }
+	            self.userInfo = {username:username,realname:username}
+	            cb(self.userInfo);
+	        } else { //app内
+	            MusixiseBridge.callHandler('GetUserInfo', {}, function(res) {
+	              self.userInfo = res;
+	              cb(res);
+	            });
+	        }
+	    },
+	    uploadImage: function(cb){
+	        var self= this;
+	        if (!self.inApp) { //app外
+	            location.href='musixise://open';
+	        } else { //app内
+	            MusixiseBridge.callHandler('UploadImage', {}, function(res) {
+	              cb(res);
+	            });
+	        }
+	    },
+	    userInfo:{}
+	}
+	
+	console.log('Env Activated');
+	module.exports = env;
+	
+
+
+/***/ },
+/* 5 */
+/***/ function(module, exports) {
+
+	var UtilsModule = {
+	    getiOSVersion: function() {
+	        var UA = window.navigator.userAgent;
+	        var IOS_VERSION_RE = /OS\s+(\d+)_(\d+)/;
+	        var arr = UA.match(IOS_VERSION_RE);
+	        if (arr && arr.length > 2) {
+	            return parseInt(arr[1], 10) + parseInt(arr[2], 10) / 10;
+	        } else {
+	            return 0;
+	        }
+	    },
+	    milleSecToMinuteSec: function(mS) {
+	        var minute = Math.floor(mS / 60000);
+	        var second = Math.floor(mS / 1000 - minute * 60);
+	        if (minute < 10) {
+	            minute = '0' + minute;
+	        } else {
+	            minute = '' + minute;
+	        }
+	        if (second < 10) {
+	            second = '0' + second;
+	        } else {
+	            second = '' + second;
+	        }
+	        console.log(minute, second);
+	        return [minute, second];
+	    },
+	    runTimer: function(minuteDom, secondDom) {
+	        setInterval(function() {
+	            var min = +document.querySelector(minuteDom).innerHTML;
+	            var sec = +document.querySelector(secondDom).innerHTML;
+	            sec += 1;
+	            if (sec >= 60) {
+	                sec = '00';
+	                min += 1;
+	                if (min == 0) {
+	                    min = '00';
+	                } else if (min < 10) {
+	                    min = '0' + min;
+	                } else {
+	                    min = '' + min;
+	                }
+	            } else if (sec < 10) {
+	                sec = '0' + sec;
+	                if (min == 0) {
+	                    min = '00';
+	                } else if (min < 10) {
+	                    min = '0' + min;
+	                } else {
+	                    min = '' + min;
+	                }
+	            } else {
+	                sec = '' + sec;
+	                if (min == 0) {
+	                    min = '00';
+	                } else if (min < 10) {
+	                    min = '0' + min;
+	                } else {
+	                    min = '' + min;
+	                }
+	            }
+	            document.querySelector(minuteDom).innerHTML = min;
+	            document.querySelector(secondDom).innerHTML = sec;
+	        }, 1000);
+	    },
+	    getCookie: function(name) {
+	        var arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
+	        if (arr = document.cookie.match(reg)) {
+	            return unescape(arr[2]);
+	        } else {
+	            return null;
+	        }
+	    },
+	
+	    setCookie: function(name, value, expiresHours) {
+	        var cookieString = name + "=" + escape(value);
+	        if (expiresHours > 0) {
+	            var date = new Date();
+	            date.setTime(date.getTime() + expiresHours * 3600 * 1000);
+	            cookieString = cookieString + "; expires=" + date.toGMTString() + ';domain=.musixise.com;path=/';
+	        }
+	        document.cookie = cookieString;
+	    },
+	
+	    //Convert Time
+	    getLocalTime: function(mS) {
+	        var date1 = new Date(parseInt(mS) * 1000);
+	        date1 = date1.getFullYear() + '-' + (date1.getMonth() + 1) + '-' + date1.getDate();
+	        return date1;
+	    },
+	    // DECODE HTML
+	    decodeHtml: function(str) {
+	        var s = "";
+	        if (str.length == 0) return "";
+	        s = str.replace(/&lt;/g, "<");
+	        s = s.replace(/&gt;/g, ">");
+	        s = s.replace(/&nbsp;/g, " ");
+	        s = s.replace(/&#39;/g, "\'");
+	        s = s.replace(/&#039;/g, "\'");
+	        s = s.replace(/&quot;/g, "\"");
+	        s = s.replace(/&amp;/g, "&");
+	        s = s.replace(/<br>/g, "\n");
+	        return s;
+	    },
+	
+	    // 过滤 HTML
+	    filterHtml: function(str) {
+	        var s = '';
+	        if (str.length == 0) return "";
+	        s = str.replace(/style="([\s\S]*?)"/ig, "");
+	        s = s.replace(/<div(.*?)>/ig, '');
+	        s = s.replace(/<\/div(.*?)>(<br(.*?)>)*/ig, '<br>');
+	        s = s.replace(/<\/?p(.*?)>/ig, '<br>');
+	        s = s.replace(/<object(.*?)>.*?<\/object>/ig, '');
+	        s = s.replace(/<\/?(a|span)(.*?)>/ig, '');
+	        s = s.replace(/<\/?[font|embed](.*?)>/ig, '<br>');
+	        s = s.replace(/(<br\s*\/?>\s*(&nbsp;)*){2,}/ig, '<hr/>');
+	        //s = s.replace(/<br>/i, '');
+	        return s;
+	    },
+	    getTime: function(time) {
+	        var that = this;
+	        var curtime = (new Date()).getTime();
+	        var gosecond = Math.round(curtime / 1000) - time;
+	        if (gosecond < 5) {
+	            r = "刚刚";
+	        } else if (gosecond >= 0 && gosecond < 60) {
+	            r = gosecond + "秒前";
+	        } else if (gosecond >= 60 && gosecond < 3600) {
+	            r = Math.ceil(gosecond / 60) + "分钟前";
+	        } else if (gosecond >= 3600 && gosecond < 86400) {
+	            r = Math.ceil(gosecond / 3600) + "小时前";
+	        } else if (gosecond > 86400 && gosecond < 3 * 86400) {
+	            r = Math.floor(gosecond / (3600 * 24)) + "天前";
+	        } else {
+	            r = that.getLocalTime(time);
+	        }
+	        return r;
+	    }
+	
+	}
+	module.exports = UtilsModule;
+
+/***/ },
+/* 6 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__(7);
+
+/***/ },
+/* 7 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var utils = __webpack_require__(8);
+	var bind = __webpack_require__(9);
+	var Axios = __webpack_require__(10);
+	var defaults = __webpack_require__(11);
+	
+	/**
+	 * Create an instance of Axios
+	 *
+	 * @param {Object} defaultConfig The default config for the instance
+	 * @return {Axios} A new instance of Axios
+	 */
+	function createInstance(defaultConfig) {
+	  var context = new Axios(defaultConfig);
+	  var instance = bind(Axios.prototype.request, context);
+	
+	  // Copy axios.prototype to instance
+	  utils.extend(instance, Axios.prototype, context);
+	
+	  // Copy context to instance
+	  utils.extend(instance, context);
+	
+	  return instance;
+	}
+	
+	// Create the default instance to be exported
+	var axios = createInstance(defaults);
+	
+	// Expose Axios class to allow class inheritance
+	axios.Axios = Axios;
+	
+	// Factory for creating new instances
+	axios.create = function create(instanceConfig) {
+	  return createInstance(utils.merge(defaults, instanceConfig));
+	};
+	
+	// Expose Cancel & CancelToken
+	axios.Cancel = __webpack_require__(29);
+	axios.CancelToken = __webpack_require__(30);
+	axios.isCancel = __webpack_require__(26);
+	
+	// Expose all/spread
+	axios.all = function all(promises) {
+	  return Promise.all(promises);
+	};
+	axios.spread = __webpack_require__(31);
+	
+	module.exports = axios;
+	
+	// Allow use of default import syntax in TypeScript
+	module.exports.default = axios;
+
+
+/***/ },
+/* 8 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var bind = __webpack_require__(9);
+	
+	/*global toString:true*/
+	
+	// utils is a library of generic helper functions non-specific to axios
+	
+	var toString = Object.prototype.toString;
+	
+	/**
+	 * Determine if a value is an Array
+	 *
+	 * @param {Object} val The value to test
+	 * @returns {boolean} True if value is an Array, otherwise false
+	 */
+	function isArray(val) {
+	  return toString.call(val) === '[object Array]';
+	}
+	
+	/**
+	 * Determine if a value is an ArrayBuffer
+	 *
+	 * @param {Object} val The value to test
+	 * @returns {boolean} True if value is an ArrayBuffer, otherwise false
+	 */
+	function isArrayBuffer(val) {
+	  return toString.call(val) === '[object ArrayBuffer]';
+	}
+	
+	/**
+	 * Determine if a value is a FormData
+	 *
+	 * @param {Object} val The value to test
+	 * @returns {boolean} True if value is an FormData, otherwise false
+	 */
+	function isFormData(val) {
+	  return (typeof FormData !== 'undefined') && (val instanceof FormData);
+	}
+	
+	/**
+	 * Determine if a value is a view on an ArrayBuffer
+	 *
+	 * @param {Object} val The value to test
+	 * @returns {boolean} True if value is a view on an ArrayBuffer, otherwise false
+	 */
+	function isArrayBufferView(val) {
+	  var result;
+	  if ((typeof ArrayBuffer !== 'undefined') && (ArrayBuffer.isView)) {
+	    result = ArrayBuffer.isView(val);
+	  } else {
+	    result = (val) && (val.buffer) && (val.buffer instanceof ArrayBuffer);
+	  }
+	  return result;
+	}
+	
+	/**
+	 * Determine if a value is a String
+	 *
+	 * @param {Object} val The value to test
+	 * @returns {boolean} True if value is a String, otherwise false
+	 */
+	function isString(val) {
+	  return typeof val === 'string';
+	}
+	
+	/**
+	 * Determine if a value is a Number
+	 *
+	 * @param {Object} val The value to test
+	 * @returns {boolean} True if value is a Number, otherwise false
+	 */
+	function isNumber(val) {
+	  return typeof val === 'number';
+	}
+	
+	/**
+	 * Determine if a value is undefined
+	 *
+	 * @param {Object} val The value to test
+	 * @returns {boolean} True if the value is undefined, otherwise false
+	 */
+	function isUndefined(val) {
+	  return typeof val === 'undefined';
+	}
+	
+	/**
+	 * Determine if a value is an Object
+	 *
+	 * @param {Object} val The value to test
+	 * @returns {boolean} True if value is an Object, otherwise false
+	 */
+	function isObject(val) {
+	  return val !== null && typeof val === 'object';
+	}
+	
+	/**
+	 * Determine if a value is a Date
+	 *
+	 * @param {Object} val The value to test
+	 * @returns {boolean} True if value is a Date, otherwise false
+	 */
+	function isDate(val) {
+	  return toString.call(val) === '[object Date]';
+	}
+	
+	/**
+	 * Determine if a value is a File
+	 *
+	 * @param {Object} val The value to test
+	 * @returns {boolean} True if value is a File, otherwise false
+	 */
+	function isFile(val) {
+	  return toString.call(val) === '[object File]';
+	}
+	
+	/**
+	 * Determine if a value is a Blob
+	 *
+	 * @param {Object} val The value to test
+	 * @returns {boolean} True if value is a Blob, otherwise false
+	 */
+	function isBlob(val) {
+	  return toString.call(val) === '[object Blob]';
+	}
+	
+	/**
+	 * Determine if a value is a Function
+	 *
+	 * @param {Object} val The value to test
+	 * @returns {boolean} True if value is a Function, otherwise false
+	 */
+	function isFunction(val) {
+	  return toString.call(val) === '[object Function]';
+	}
+	
+	/**
+	 * Determine if a value is a Stream
+	 *
+	 * @param {Object} val The value to test
+	 * @returns {boolean} True if value is a Stream, otherwise false
+	 */
+	function isStream(val) {
+	  return isObject(val) && isFunction(val.pipe);
+	}
+	
+	/**
+	 * Determine if a value is a URLSearchParams object
+	 *
+	 * @param {Object} val The value to test
+	 * @returns {boolean} True if value is a URLSearchParams object, otherwise false
+	 */
+	function isURLSearchParams(val) {
+	  return typeof URLSearchParams !== 'undefined' && val instanceof URLSearchParams;
+	}
+	
+	/**
+	 * Trim excess whitespace off the beginning and end of a string
+	 *
+	 * @param {String} str The String to trim
+	 * @returns {String} The String freed of excess whitespace
+	 */
+	function trim(str) {
+	  return str.replace(/^\s*/, '').replace(/\s*$/, '');
+	}
+	
+	/**
+	 * Determine if we're running in a standard browser environment
+	 *
+	 * This allows axios to run in a web worker, and react-native.
+	 * Both environments support XMLHttpRequest, but not fully standard globals.
+	 *
+	 * web workers:
+	 *  typeof window -> undefined
+	 *  typeof document -> undefined
+	 *
+	 * react-native:
+	 *  typeof document.createElement -> undefined
+	 */
+	function isStandardBrowserEnv() {
+	  return (
+	    typeof window !== 'undefined' &&
+	    typeof document !== 'undefined' &&
+	    typeof document.createElement === 'function'
+	  );
+	}
+	
+	/**
+	 * Iterate over an Array or an Object invoking a function for each item.
+	 *
+	 * If `obj` is an Array callback will be called passing
+	 * the value, index, and complete array for each item.
+	 *
+	 * If 'obj' is an Object callback will be called passing
+	 * the value, key, and complete object for each property.
+	 *
+	 * @param {Object|Array} obj The object to iterate
+	 * @param {Function} fn The callback to invoke for each item
+	 */
+	function forEach(obj, fn) {
+	  // Don't bother if no value provided
+	  if (obj === null || typeof obj === 'undefined') {
+	    return;
+	  }
+	
+	  // Force an array if not already something iterable
+	  if (typeof obj !== 'object' && !isArray(obj)) {
+	    /*eslint no-param-reassign:0*/
+	    obj = [obj];
+	  }
+	
+	  if (isArray(obj)) {
+	    // Iterate over array values
+	    for (var i = 0, l = obj.length; i < l; i++) {
+	      fn.call(null, obj[i], i, obj);
+	    }
+	  } else {
+	    // Iterate over object keys
+	    for (var key in obj) {
+	      if (Object.prototype.hasOwnProperty.call(obj, key)) {
+	        fn.call(null, obj[key], key, obj);
+	      }
+	    }
+	  }
+	}
+	
+	/**
+	 * Accepts varargs expecting each argument to be an object, then
+	 * immutably merges the properties of each object and returns result.
+	 *
+	 * When multiple objects contain the same key the later object in
+	 * the arguments list will take precedence.
+	 *
+	 * Example:
+	 *
+	 * ```js
+	 * var result = merge({foo: 123}, {foo: 456});
+	 * console.log(result.foo); // outputs 456
+	 * ```
+	 *
+	 * @param {Object} obj1 Object to merge
+	 * @returns {Object} Result of all merge properties
+	 */
+	function merge(/* obj1, obj2, obj3, ... */) {
+	  var result = {};
+	  function assignValue(val, key) {
+	    if (typeof result[key] === 'object' && typeof val === 'object') {
+	      result[key] = merge(result[key], val);
+	    } else {
+	      result[key] = val;
+	    }
+	  }
+	
+	  for (var i = 0, l = arguments.length; i < l; i++) {
+	    forEach(arguments[i], assignValue);
+	  }
+	  return result;
+	}
+	
+	/**
+	 * Extends object a by mutably adding to it the properties of object b.
+	 *
+	 * @param {Object} a The object to be extended
+	 * @param {Object} b The object to copy properties from
+	 * @param {Object} thisArg The object to bind function to
+	 * @return {Object} The resulting value of object a
+	 */
+	function extend(a, b, thisArg) {
+	  forEach(b, function assignValue(val, key) {
+	    if (thisArg && typeof val === 'function') {
+	      a[key] = bind(val, thisArg);
+	    } else {
+	      a[key] = val;
+	    }
+	  });
+	  return a;
+	}
+	
+	module.exports = {
+	  isArray: isArray,
+	  isArrayBuffer: isArrayBuffer,
+	  isFormData: isFormData,
+	  isArrayBufferView: isArrayBufferView,
+	  isString: isString,
+	  isNumber: isNumber,
+	  isObject: isObject,
+	  isUndefined: isUndefined,
+	  isDate: isDate,
+	  isFile: isFile,
+	  isBlob: isBlob,
+	  isFunction: isFunction,
+	  isStream: isStream,
+	  isURLSearchParams: isURLSearchParams,
+	  isStandardBrowserEnv: isStandardBrowserEnv,
+	  forEach: forEach,
+	  merge: merge,
+	  extend: extend,
+	  trim: trim
+	};
+
+
+/***/ },
+/* 9 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	module.exports = function bind(fn, thisArg) {
+	  return function wrap() {
+	    var args = new Array(arguments.length);
+	    for (var i = 0; i < args.length; i++) {
+	      args[i] = arguments[i];
+	    }
+	    return fn.apply(thisArg, args);
+	  };
+	};
+
+
+/***/ },
+/* 10 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var defaults = __webpack_require__(11);
+	var utils = __webpack_require__(8);
+	var InterceptorManager = __webpack_require__(23);
+	var dispatchRequest = __webpack_require__(24);
+	var isAbsoluteURL = __webpack_require__(27);
+	var combineURLs = __webpack_require__(28);
+	
+	/**
+	 * Create a new instance of Axios
+	 *
+	 * @param {Object} instanceConfig The default config for the instance
+	 */
+	function Axios(instanceConfig) {
+	  this.defaults = instanceConfig;
+	  this.interceptors = {
+	    request: new InterceptorManager(),
+	    response: new InterceptorManager()
+	  };
+	}
+	
+	/**
+	 * Dispatch a request
+	 *
+	 * @param {Object} config The config specific for this request (merged with this.defaults)
+	 */
+	Axios.prototype.request = function request(config) {
+	  /*eslint no-param-reassign:0*/
+	  // Allow for axios('example/url'[, config]) a la fetch API
+	  if (typeof config === 'string') {
+	    config = utils.merge({
+	      url: arguments[0]
+	    }, arguments[1]);
+	  }
+	
+	  config = utils.merge(defaults, this.defaults, { method: 'get' }, config);
+	
+	  // Support baseURL config
+	  if (config.baseURL && !isAbsoluteURL(config.url)) {
+	    config.url = combineURLs(config.baseURL, config.url);
+	  }
+	
+	  // Hook up interceptors middleware
+	  var chain = [dispatchRequest, undefined];
+	  var promise = Promise.resolve(config);
+	
+	  this.interceptors.request.forEach(function unshiftRequestInterceptors(interceptor) {
+	    chain.unshift(interceptor.fulfilled, interceptor.rejected);
+	  });
+	
+	  this.interceptors.response.forEach(function pushResponseInterceptors(interceptor) {
+	    chain.push(interceptor.fulfilled, interceptor.rejected);
+	  });
+	
+	  while (chain.length) {
+	    promise = promise.then(chain.shift(), chain.shift());
+	  }
+	
+	  return promise;
+	};
+	
+	// Provide aliases for supported request methods
+	utils.forEach(['delete', 'get', 'head'], function forEachMethodNoData(method) {
+	  /*eslint func-names:0*/
+	  Axios.prototype[method] = function(url, config) {
+	    return this.request(utils.merge(config || {}, {
+	      method: method,
+	      url: url
+	    }));
+	  };
+	});
+	
+	utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
+	  /*eslint func-names:0*/
+	  Axios.prototype[method] = function(url, data, config) {
+	    return this.request(utils.merge(config || {}, {
+	      method: method,
+	      url: url,
+	      data: data
+	    }));
+	  };
+	});
+	
+	module.exports = Axios;
+
+
+/***/ },
+/* 11 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
+	
+	var utils = __webpack_require__(8);
+	var normalizeHeaderName = __webpack_require__(13);
+	
+	var PROTECTION_PREFIX = /^\)\]\}',?\n/;
+	var DEFAULT_CONTENT_TYPE = {
+	  'Content-Type': 'application/x-www-form-urlencoded'
+	};
+	
+	function setContentTypeIfUnset(headers, value) {
+	  if (!utils.isUndefined(headers) && utils.isUndefined(headers['Content-Type'])) {
+	    headers['Content-Type'] = value;
+	  }
+	}
+	
+	function getDefaultAdapter() {
+	  var adapter;
+	  if (typeof XMLHttpRequest !== 'undefined') {
+	    // For browsers use XHR adapter
+	    adapter = __webpack_require__(14);
+	  } else if (typeof process !== 'undefined') {
+	    // For node use HTTP adapter
+	    adapter = __webpack_require__(14);
+	  }
+	  return adapter;
+	}
+	
+	var defaults = {
+	  adapter: getDefaultAdapter(),
+	
+	  transformRequest: [function transformRequest(data, headers) {
+	    normalizeHeaderName(headers, 'Content-Type');
+	    if (utils.isFormData(data) ||
+	      utils.isArrayBuffer(data) ||
+	      utils.isStream(data) ||
+	      utils.isFile(data) ||
+	      utils.isBlob(data)
+	    ) {
+	      return data;
+	    }
+	    if (utils.isArrayBufferView(data)) {
+	      return data.buffer;
+	    }
+	    if (utils.isURLSearchParams(data)) {
+	      setContentTypeIfUnset(headers, 'application/x-www-form-urlencoded;charset=utf-8');
+	      return data.toString();
+	    }
+	    if (utils.isObject(data)) {
+	      setContentTypeIfUnset(headers, 'application/json;charset=utf-8');
+	      return JSON.stringify(data);
+	    }
+	    return data;
+	  }],
+	
+	  transformResponse: [function transformResponse(data) {
+	    /*eslint no-param-reassign:0*/
+	    if (typeof data === 'string') {
+	      data = data.replace(PROTECTION_PREFIX, '');
+	      try {
+	        data = JSON.parse(data);
+	      } catch (e) { /* Ignore */ }
+	    }
+	    return data;
+	  }],
+	
+	  timeout: 0,
+	
+	  xsrfCookieName: 'XSRF-TOKEN',
+	  xsrfHeaderName: 'X-XSRF-TOKEN',
+	
+	  maxContentLength: -1,
+	
+	  validateStatus: function validateStatus(status) {
+	    return status >= 200 && status < 300;
+	  }
+	};
+	
+	defaults.headers = {
+	  common: {
+	    'Accept': 'application/json, text/plain, */*'
+	  }
+	};
+	
+	utils.forEach(['delete', 'get', 'head'], function forEachMehtodNoData(method) {
+	  defaults.headers[method] = {};
+	});
+	
+	utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
+	  defaults.headers[method] = utils.merge(DEFAULT_CONTENT_TYPE);
+	});
+	
+	module.exports = defaults;
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(12)))
+
+/***/ },
+/* 12 */
+/***/ function(module, exports) {
+
+	// shim for using process in browser
+	var process = module.exports = {};
+	
+	// cached from whatever global is present so that test runners that stub it
+	// don't break things.  But we need to wrap it in a try catch in case it is
+	// wrapped in strict mode code which doesn't define any globals.  It's inside a
+	// function because try/catches deoptimize in certain engines.
+	
+	var cachedSetTimeout;
+	var cachedClearTimeout;
+	
+	function defaultSetTimout() {
+	    throw new Error('setTimeout has not been defined');
+	}
+	function defaultClearTimeout () {
+	    throw new Error('clearTimeout has not been defined');
+	}
+	(function () {
+	    try {
+	        if (typeof setTimeout === 'function') {
+	            cachedSetTimeout = setTimeout;
+	        } else {
+	            cachedSetTimeout = defaultSetTimout;
+	        }
+	    } catch (e) {
+	        cachedSetTimeout = defaultSetTimout;
+	    }
+	    try {
+	        if (typeof clearTimeout === 'function') {
+	            cachedClearTimeout = clearTimeout;
+	        } else {
+	            cachedClearTimeout = defaultClearTimeout;
+	        }
+	    } catch (e) {
+	        cachedClearTimeout = defaultClearTimeout;
+	    }
+	} ())
+	function runTimeout(fun) {
+	    if (cachedSetTimeout === setTimeout) {
+	        //normal enviroments in sane situations
+	        return setTimeout(fun, 0);
+	    }
+	    // if setTimeout wasn't available but was latter defined
+	    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
+	        cachedSetTimeout = setTimeout;
+	        return setTimeout(fun, 0);
+	    }
+	    try {
+	        // when when somebody has screwed with setTimeout but no I.E. maddness
+	        return cachedSetTimeout(fun, 0);
+	    } catch(e){
+	        try {
+	            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
+	            return cachedSetTimeout.call(null, fun, 0);
+	        } catch(e){
+	            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
+	            return cachedSetTimeout.call(this, fun, 0);
+	        }
+	    }
+	
+	
+	}
+	function runClearTimeout(marker) {
+	    if (cachedClearTimeout === clearTimeout) {
+	        //normal enviroments in sane situations
+	        return clearTimeout(marker);
+	    }
+	    // if clearTimeout wasn't available but was latter defined
+	    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
+	        cachedClearTimeout = clearTimeout;
+	        return clearTimeout(marker);
+	    }
+	    try {
+	        // when when somebody has screwed with setTimeout but no I.E. maddness
+	        return cachedClearTimeout(marker);
+	    } catch (e){
+	        try {
+	            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
+	            return cachedClearTimeout.call(null, marker);
+	        } catch (e){
+	            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
+	            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
+	            return cachedClearTimeout.call(this, marker);
+	        }
+	    }
+	
+	
+	
+	}
+	var queue = [];
+	var draining = false;
+	var currentQueue;
+	var queueIndex = -1;
+	
+	function cleanUpNextTick() {
+	    if (!draining || !currentQueue) {
+	        return;
+	    }
+	    draining = false;
+	    if (currentQueue.length) {
+	        queue = currentQueue.concat(queue);
+	    } else {
+	        queueIndex = -1;
+	    }
+	    if (queue.length) {
+	        drainQueue();
+	    }
+	}
+	
+	function drainQueue() {
+	    if (draining) {
+	        return;
+	    }
+	    var timeout = runTimeout(cleanUpNextTick);
+	    draining = true;
+	
+	    var len = queue.length;
+	    while(len) {
+	        currentQueue = queue;
+	        queue = [];
+	        while (++queueIndex < len) {
+	            if (currentQueue) {
+	                currentQueue[queueIndex].run();
+	            }
+	        }
+	        queueIndex = -1;
+	        len = queue.length;
+	    }
+	    currentQueue = null;
+	    draining = false;
+	    runClearTimeout(timeout);
+	}
+	
+	process.nextTick = function (fun) {
+	    var args = new Array(arguments.length - 1);
+	    if (arguments.length > 1) {
+	        for (var i = 1; i < arguments.length; i++) {
+	            args[i - 1] = arguments[i];
+	        }
+	    }
+	    queue.push(new Item(fun, args));
+	    if (queue.length === 1 && !draining) {
+	        runTimeout(drainQueue);
+	    }
+	};
+	
+	// v8 likes predictible objects
+	function Item(fun, array) {
+	    this.fun = fun;
+	    this.array = array;
+	}
+	Item.prototype.run = function () {
+	    this.fun.apply(null, this.array);
+	};
+	process.title = 'browser';
+	process.browser = true;
+	process.env = {};
+	process.argv = [];
+	process.version = ''; // empty string to avoid regexp issues
+	process.versions = {};
+	
+	function noop() {}
+	
+	process.on = noop;
+	process.addListener = noop;
+	process.once = noop;
+	process.off = noop;
+	process.removeListener = noop;
+	process.removeAllListeners = noop;
+	process.emit = noop;
+	
+	process.binding = function (name) {
+	    throw new Error('process.binding is not supported');
+	};
+	
+	process.cwd = function () { return '/' };
+	process.chdir = function (dir) {
+	    throw new Error('process.chdir is not supported');
+	};
+	process.umask = function() { return 0; };
+
+
+/***/ },
+/* 13 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var utils = __webpack_require__(8);
+	
+	module.exports = function normalizeHeaderName(headers, normalizedName) {
+	  utils.forEach(headers, function processHeader(value, name) {
+	    if (name !== normalizedName && name.toUpperCase() === normalizedName.toUpperCase()) {
+	      headers[normalizedName] = value;
+	      delete headers[name];
+	    }
+	  });
+	};
+
+
+/***/ },
+/* 14 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
+	
+	var utils = __webpack_require__(8);
+	var settle = __webpack_require__(15);
+	var buildURL = __webpack_require__(18);
+	var parseHeaders = __webpack_require__(19);
+	var isURLSameOrigin = __webpack_require__(20);
+	var createError = __webpack_require__(16);
+	var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__(21);
+	
+	module.exports = function xhrAdapter(config) {
+	  return new Promise(function dispatchXhrRequest(resolve, reject) {
+	    var requestData = config.data;
+	    var requestHeaders = config.headers;
+	
+	    if (utils.isFormData(requestData)) {
+	      delete requestHeaders['Content-Type']; // Let the browser set it
+	    }
+	
+	    var request = new XMLHttpRequest();
+	    var loadEvent = 'onreadystatechange';
+	    var xDomain = false;
+	
+	    // For IE 8/9 CORS support
+	    // Only supports POST and GET calls and doesn't returns the response headers.
+	    // DON'T do this for testing b/c XMLHttpRequest is mocked, not XDomainRequest.
+	    if (process.env.NODE_ENV !== 'test' &&
+	        typeof window !== 'undefined' &&
+	        window.XDomainRequest && !('withCredentials' in request) &&
+	        !isURLSameOrigin(config.url)) {
+	      request = new window.XDomainRequest();
+	      loadEvent = 'onload';
+	      xDomain = true;
+	      request.onprogress = function handleProgress() {};
+	      request.ontimeout = function handleTimeout() {};
+	    }
+	
+	    // HTTP basic authentication
+	    if (config.auth) {
+	      var username = config.auth.username || '';
+	      var password = config.auth.password || '';
+	      requestHeaders.Authorization = 'Basic ' + btoa(username + ':' + password);
+	    }
+	
+	    request.open(config.method.toUpperCase(), buildURL(config.url, config.params, config.paramsSerializer), true);
+	
+	    // Set the request timeout in MS
+	    request.timeout = config.timeout;
+	
+	    // Listen for ready state
+	    request[loadEvent] = function handleLoad() {
+	      if (!request || (request.readyState !== 4 && !xDomain)) {
+	        return;
+	      }
+	
+	      // The request errored out and we didn't get a response, this will be
+	      // handled by onerror instead
+	      // With one exception: request that using file: protocol, most browsers
+	      // will return status as 0 even though it's a successful request
+	      if (request.status === 0 && !(request.responseURL && request.responseURL.indexOf('file:') === 0)) {
+	        return;
+	      }
+	
+	      // Prepare the response
+	      var responseHeaders = 'getAllResponseHeaders' in request ? parseHeaders(request.getAllResponseHeaders()) : null;
+	      var responseData = !config.responseType || config.responseType === 'text' ? request.responseText : request.response;
+	      var response = {
+	        data: responseData,
+	        // IE sends 1223 instead of 204 (https://github.com/mzabriskie/axios/issues/201)
+	        status: request.status === 1223 ? 204 : request.status,
+	        statusText: request.status === 1223 ? 'No Content' : request.statusText,
+	        headers: responseHeaders,
+	        config: config,
+	        request: request
+	      };
+	
+	      settle(resolve, reject, response);
+	
+	      // Clean up request
+	      request = null;
+	    };
+	
+	    // Handle low level network errors
+	    request.onerror = function handleError() {
+	      // Real errors are hidden from us by the browser
+	      // onerror should only fire if it's a network error
+	      reject(createError('Network Error', config));
+	
+	      // Clean up request
+	      request = null;
+	    };
+	
+	    // Handle timeout
+	    request.ontimeout = function handleTimeout() {
+	      reject(createError('timeout of ' + config.timeout + 'ms exceeded', config, 'ECONNABORTED'));
+	
+	      // Clean up request
+	      request = null;
+	    };
+	
+	    // Add xsrf header
+	    // This is only done if running in a standard browser environment.
+	    // Specifically not if we're in a web worker, or react-native.
+	    if (utils.isStandardBrowserEnv()) {
+	      var cookies = __webpack_require__(22);
+	
+	      // Add xsrf header
+	      var xsrfValue = (config.withCredentials || isURLSameOrigin(config.url)) && config.xsrfCookieName ?
+	          cookies.read(config.xsrfCookieName) :
+	          undefined;
+	
+	      if (xsrfValue) {
+	        requestHeaders[config.xsrfHeaderName] = xsrfValue;
+	      }
+	    }
+	
+	    // Add headers to the request
+	    if ('setRequestHeader' in request) {
+	      utils.forEach(requestHeaders, function setRequestHeader(val, key) {
+	        if (typeof requestData === 'undefined' && key.toLowerCase() === 'content-type') {
+	          // Remove Content-Type if data is undefined
+	          delete requestHeaders[key];
+	        } else {
+	          // Otherwise add header to the request
+	          request.setRequestHeader(key, val);
+	        }
+	      });
+	    }
+	
+	    // Add withCredentials to request if needed
+	    if (config.withCredentials) {
+	      request.withCredentials = true;
+	    }
+	
+	    // Add responseType to request if needed
+	    if (config.responseType) {
+	      try {
+	        request.responseType = config.responseType;
+	      } catch (e) {
+	        if (request.responseType !== 'json') {
+	          throw e;
+	        }
+	      }
+	    }
+	
+	    // Handle progress if needed
+	    if (typeof config.onDownloadProgress === 'function') {
+	      request.addEventListener('progress', config.onDownloadProgress);
+	    }
+	
+	    // Not all browsers support upload events
+	    if (typeof config.onUploadProgress === 'function' && request.upload) {
+	      request.upload.addEventListener('progress', config.onUploadProgress);
+	    }
+	
+	    if (config.cancelToken) {
+	      // Handle cancellation
+	      config.cancelToken.promise.then(function onCanceled(cancel) {
+	        if (!request) {
+	          return;
+	        }
+	
+	        request.abort();
+	        reject(cancel);
+	        // Clean up request
+	        request = null;
+	      });
+	    }
+	
+	    if (requestData === undefined) {
+	      requestData = null;
+	    }
+	
+	    // Send the request
+	    request.send(requestData);
+	  });
+	};
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(12)))
+
+/***/ },
+/* 15 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var createError = __webpack_require__(16);
+	
+	/**
+	 * Resolve or reject a Promise based on response status.
+	 *
+	 * @param {Function} resolve A function that resolves the promise.
+	 * @param {Function} reject A function that rejects the promise.
+	 * @param {object} response The response.
+	 */
+	module.exports = function settle(resolve, reject, response) {
+	  var validateStatus = response.config.validateStatus;
+	  // Note: status is not exposed by XDomainRequest
+	  if (!response.status || !validateStatus || validateStatus(response.status)) {
+	    resolve(response);
+	  } else {
+	    reject(createError(
+	      'Request failed with status code ' + response.status,
+	      response.config,
+	      null,
+	      response
+	    ));
+	  }
+	};
+
+
+/***/ },
+/* 16 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var enhanceError = __webpack_require__(17);
+	
+	/**
+	 * Create an Error with the specified message, config, error code, and response.
+	 *
+	 * @param {string} message The error message.
+	 * @param {Object} config The config.
+	 * @param {string} [code] The error code (for example, 'ECONNABORTED').
+	 @ @param {Object} [response] The response.
+	 * @returns {Error} The created error.
+	 */
+	module.exports = function createError(message, config, code, response) {
+	  var error = new Error(message);
+	  return enhanceError(error, config, code, response);
+	};
+
+
+/***/ },
+/* 17 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	/**
+	 * Update an Error with the specified config, error code, and response.
+	 *
+	 * @param {Error} error The error to update.
+	 * @param {Object} config The config.
+	 * @param {string} [code] The error code (for example, 'ECONNABORTED').
+	 @ @param {Object} [response] The response.
+	 * @returns {Error} The error.
+	 */
+	module.exports = function enhanceError(error, config, code, response) {
+	  error.config = config;
+	  if (code) {
+	    error.code = code;
+	  }
+	  error.response = response;
+	  return error;
+	};
+
+
+/***/ },
+/* 18 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var utils = __webpack_require__(8);
+	
+	function encode(val) {
+	  return encodeURIComponent(val).
+	    replace(/%40/gi, '@').
+	    replace(/%3A/gi, ':').
+	    replace(/%24/g, '$').
+	    replace(/%2C/gi, ',').
+	    replace(/%20/g, '+').
+	    replace(/%5B/gi, '[').
+	    replace(/%5D/gi, ']');
+	}
+	
+	/**
+	 * Build a URL by appending params to the end
+	 *
+	 * @param {string} url The base of the url (e.g., http://www.google.com)
+	 * @param {object} [params] The params to be appended
+	 * @returns {string} The formatted url
+	 */
+	module.exports = function buildURL(url, params, paramsSerializer) {
+	  /*eslint no-param-reassign:0*/
+	  if (!params) {
+	    return url;
+	  }
+	
+	  var serializedParams;
+	  if (paramsSerializer) {
+	    serializedParams = paramsSerializer(params);
+	  } else if (utils.isURLSearchParams(params)) {
+	    serializedParams = params.toString();
+	  } else {
+	    var parts = [];
+	
+	    utils.forEach(params, function serialize(val, key) {
+	      if (val === null || typeof val === 'undefined') {
+	        return;
+	      }
+	
+	      if (utils.isArray(val)) {
+	        key = key + '[]';
+	      }
+	
+	      if (!utils.isArray(val)) {
+	        val = [val];
+	      }
+	
+	      utils.forEach(val, function parseValue(v) {
+	        if (utils.isDate(v)) {
+	          v = v.toISOString();
+	        } else if (utils.isObject(v)) {
+	          v = JSON.stringify(v);
+	        }
+	        parts.push(encode(key) + '=' + encode(v));
+	      });
+	    });
+	
+	    serializedParams = parts.join('&');
+	  }
+	
+	  if (serializedParams) {
+	    url += (url.indexOf('?') === -1 ? '?' : '&') + serializedParams;
+	  }
+	
+	  return url;
+	};
+
+
+/***/ },
+/* 19 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var utils = __webpack_require__(8);
+	
+	/**
+	 * Parse headers into an object
+	 *
+	 * ```
+	 * Date: Wed, 27 Aug 2014 08:58:49 GMT
+	 * Content-Type: application/json
+	 * Connection: keep-alive
+	 * Transfer-Encoding: chunked
+	 * ```
+	 *
+	 * @param {String} headers Headers needing to be parsed
+	 * @returns {Object} Headers parsed into an object
+	 */
+	module.exports = function parseHeaders(headers) {
+	  var parsed = {};
+	  var key;
+	  var val;
+	  var i;
+	
+	  if (!headers) { return parsed; }
+	
+	  utils.forEach(headers.split('\n'), function parser(line) {
+	    i = line.indexOf(':');
+	    key = utils.trim(line.substr(0, i)).toLowerCase();
+	    val = utils.trim(line.substr(i + 1));
+	
+	    if (key) {
+	      parsed[key] = parsed[key] ? parsed[key] + ', ' + val : val;
+	    }
+	  });
+	
+	  return parsed;
+	};
+
+
+/***/ },
+/* 20 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var utils = __webpack_require__(8);
+	
+	module.exports = (
+	  utils.isStandardBrowserEnv() ?
+	
+	  // Standard browser envs have full support of the APIs needed to test
+	  // whether the request URL is of the same origin as current location.
+	  (function standardBrowserEnv() {
+	    var msie = /(msie|trident)/i.test(navigator.userAgent);
+	    var urlParsingNode = document.createElement('a');
+	    var originURL;
+	
+	    /**
+	    * Parse a URL to discover it's components
+	    *
+	    * @param {String} url The URL to be parsed
+	    * @returns {Object}
+	    */
+	    function resolveURL(url) {
+	      var href = url;
+	
+	      if (msie) {
+	        // IE needs attribute set twice to normalize properties
+	        urlParsingNode.setAttribute('href', href);
+	        href = urlParsingNode.href;
+	      }
+	
+	      urlParsingNode.setAttribute('href', href);
+	
+	      // urlParsingNode provides the UrlUtils interface - http://url.spec.whatwg.org/#urlutils
+	      return {
+	        href: urlParsingNode.href,
+	        protocol: urlParsingNode.protocol ? urlParsingNode.protocol.replace(/:$/, '') : '',
+	        host: urlParsingNode.host,
+	        search: urlParsingNode.search ? urlParsingNode.search.replace(/^\?/, '') : '',
+	        hash: urlParsingNode.hash ? urlParsingNode.hash.replace(/^#/, '') : '',
+	        hostname: urlParsingNode.hostname,
+	        port: urlParsingNode.port,
+	        pathname: (urlParsingNode.pathname.charAt(0) === '/') ?
+	                  urlParsingNode.pathname :
+	                  '/' + urlParsingNode.pathname
+	      };
+	    }
+	
+	    originURL = resolveURL(window.location.href);
+	
+	    /**
+	    * Determine if a URL shares the same origin as the current location
+	    *
+	    * @param {String} requestURL The URL to test
+	    * @returns {boolean} True if URL shares the same origin, otherwise false
+	    */
+	    return function isURLSameOrigin(requestURL) {
+	      var parsed = (utils.isString(requestURL)) ? resolveURL(requestURL) : requestURL;
+	      return (parsed.protocol === originURL.protocol &&
+	            parsed.host === originURL.host);
+	    };
+	  })() :
+	
+	  // Non standard browser envs (web workers, react-native) lack needed support.
+	  (function nonStandardBrowserEnv() {
+	    return function isURLSameOrigin() {
+	      return true;
+	    };
+	  })()
+	);
+
+
+/***/ },
+/* 21 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	// btoa polyfill for IE<10 courtesy https://github.com/davidchambers/Base64.js
+	
+	var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
+	
+	function E() {
+	  this.message = 'String contains an invalid character';
+	}
+	E.prototype = new Error;
+	E.prototype.code = 5;
+	E.prototype.name = 'InvalidCharacterError';
+	
+	function btoa(input) {
+	  var str = String(input);
+	  var output = '';
+	  for (
+	    // initialize result and counter
+	    var block, charCode, idx = 0, map = chars;
+	    // if the next str index does not exist:
+	    //   change the mapping table to "="
+	    //   check if d has no fractional digits
+	    str.charAt(idx | 0) || (map = '=', idx % 1);
+	    // "8 - idx % 1 * 8" generates the sequence 2, 4, 6, 8
+	    output += map.charAt(63 & block >> 8 - idx % 1 * 8)
+	  ) {
+	    charCode = str.charCodeAt(idx += 3 / 4);
+	    if (charCode > 0xFF) {
+	      throw new E();
+	    }
+	    block = block << 8 | charCode;
+	  }
+	  return output;
+	}
+	
+	module.exports = btoa;
+
+
+/***/ },
+/* 22 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var utils = __webpack_require__(8);
+	
+	module.exports = (
+	  utils.isStandardBrowserEnv() ?
+	
+	  // Standard browser envs support document.cookie
+	  (function standardBrowserEnv() {
+	    return {
+	      write: function write(name, value, expires, path, domain, secure) {
+	        var cookie = [];
+	        cookie.push(name + '=' + encodeURIComponent(value));
+	
+	        if (utils.isNumber(expires)) {
+	          cookie.push('expires=' + new Date(expires).toGMTString());
+	        }
+	
+	        if (utils.isString(path)) {
+	          cookie.push('path=' + path);
+	        }
+	
+	        if (utils.isString(domain)) {
+	          cookie.push('domain=' + domain);
+	        }
+	
+	        if (secure === true) {
+	          cookie.push('secure');
+	        }
+	
+	        document.cookie = cookie.join('; ');
+	      },
+	
+	      read: function read(name) {
+	        var match = document.cookie.match(new RegExp('(^|;\\s*)(' + name + ')=([^;]*)'));
+	        return (match ? decodeURIComponent(match[3]) : null);
+	      },
+	
+	      remove: function remove(name) {
+	        this.write(name, '', Date.now() - 86400000);
+	      }
+	    };
+	  })() :
+	
+	  // Non standard browser env (web workers, react-native) lack needed support.
+	  (function nonStandardBrowserEnv() {
+	    return {
+	      write: function write() {},
+	      read: function read() { return null; },
+	      remove: function remove() {}
+	    };
+	  })()
+	);
+
+
+/***/ },
+/* 23 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var utils = __webpack_require__(8);
+	
+	function InterceptorManager() {
+	  this.handlers = [];
+	}
+	
+	/**
+	 * Add a new interceptor to the stack
+	 *
+	 * @param {Function} fulfilled The function to handle `then` for a `Promise`
+	 * @param {Function} rejected The function to handle `reject` for a `Promise`
+	 *
+	 * @return {Number} An ID used to remove interceptor later
+	 */
+	InterceptorManager.prototype.use = function use(fulfilled, rejected) {
+	  this.handlers.push({
+	    fulfilled: fulfilled,
+	    rejected: rejected
+	  });
+	  return this.handlers.length - 1;
+	};
+	
+	/**
+	 * Remove an interceptor from the stack
+	 *
+	 * @param {Number} id The ID that was returned by `use`
+	 */
+	InterceptorManager.prototype.eject = function eject(id) {
+	  if (this.handlers[id]) {
+	    this.handlers[id] = null;
+	  }
+	};
+	
+	/**
+	 * Iterate over all the registered interceptors
+	 *
+	 * This method is particularly useful for skipping over any
+	 * interceptors that may have become `null` calling `eject`.
+	 *
+	 * @param {Function} fn The function to call for each interceptor
+	 */
+	InterceptorManager.prototype.forEach = function forEach(fn) {
+	  utils.forEach(this.handlers, function forEachHandler(h) {
+	    if (h !== null) {
+	      fn(h);
+	    }
+	  });
+	};
+	
+	module.exports = InterceptorManager;
+
+
+/***/ },
+/* 24 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var utils = __webpack_require__(8);
+	var transformData = __webpack_require__(25);
+	var isCancel = __webpack_require__(26);
+	var defaults = __webpack_require__(11);
+	
+	/**
+	 * Throws a `Cancel` if cancellation has been requested.
+	 */
+	function throwIfCancellationRequested(config) {
+	  if (config.cancelToken) {
+	    config.cancelToken.throwIfRequested();
+	  }
+	}
+	
+	/**
+	 * Dispatch a request to the server using the configured adapter.
+	 *
+	 * @param {object} config The config that is to be used for the request
+	 * @returns {Promise} The Promise to be fulfilled
+	 */
+	module.exports = function dispatchRequest(config) {
+	  throwIfCancellationRequested(config);
+	
+	  // Ensure headers exist
+	  config.headers = config.headers || {};
+	
+	  // Transform request data
+	  config.data = transformData(
+	    config.data,
+	    config.headers,
+	    config.transformRequest
+	  );
+	
+	  // Flatten headers
+	  config.headers = utils.merge(
+	    config.headers.common || {},
+	    config.headers[config.method] || {},
+	    config.headers || {}
+	  );
+	
+	  utils.forEach(
+	    ['delete', 'get', 'head', 'post', 'put', 'patch', 'common'],
+	    function cleanHeaderConfig(method) {
+	      delete config.headers[method];
+	    }
+	  );
+	
+	  var adapter = config.adapter || defaults.adapter;
+	
+	  return adapter(config).then(function onAdapterResolution(response) {
+	    throwIfCancellationRequested(config);
+	
+	    // Transform response data
+	    response.data = transformData(
+	      response.data,
+	      response.headers,
+	      config.transformResponse
+	    );
+	
+	    return response;
+	  }, function onAdapterRejection(reason) {
+	    if (!isCancel(reason)) {
+	      throwIfCancellationRequested(config);
+	
+	      // Transform response data
+	      if (reason && reason.response) {
+	        reason.response.data = transformData(
+	          reason.response.data,
+	          reason.response.headers,
+	          config.transformResponse
+	        );
+	      }
+	    }
+	
+	    return Promise.reject(reason);
+	  });
+	};
+
+
+/***/ },
+/* 25 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var utils = __webpack_require__(8);
+	
+	/**
+	 * Transform the data for a request or a response
+	 *
+	 * @param {Object|String} data The data to be transformed
+	 * @param {Array} headers The headers for the request or response
+	 * @param {Array|Function} fns A single function or Array of functions
+	 * @returns {*} The resulting transformed data
+	 */
+	module.exports = function transformData(data, headers, fns) {
+	  /*eslint no-param-reassign:0*/
+	  utils.forEach(fns, function transform(fn) {
+	    data = fn(data, headers);
+	  });
+	
+	  return data;
+	};
+
+
+/***/ },
+/* 26 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	module.exports = function isCancel(value) {
+	  return !!(value && value.__CANCEL__);
+	};
+
+
+/***/ },
+/* 27 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	/**
+	 * Determines whether the specified URL is absolute
+	 *
+	 * @param {string} url The URL to test
+	 * @returns {boolean} True if the specified URL is absolute, otherwise false
+	 */
+	module.exports = function isAbsoluteURL(url) {
+	  // A URL is considered absolute if it begins with "<scheme>://" or "//" (protocol-relative URL).
+	  // RFC 3986 defines scheme name as a sequence of characters beginning with a letter and followed
+	  // by any combination of letters, digits, plus, period, or hyphen.
+	  return /^([a-z][a-z\d\+\-\.]*:)?\/\//i.test(url);
+	};
+
+
+/***/ },
+/* 28 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	/**
+	 * Creates a new URL by combining the specified URLs
+	 *
+	 * @param {string} baseURL The base URL
+	 * @param {string} relativeURL The relative URL
+	 * @returns {string} The combined URL
+	 */
+	module.exports = function combineURLs(baseURL, relativeURL) {
+	  return baseURL.replace(/\/+$/, '') + '/' + relativeURL.replace(/^\/+/, '');
+	};
+
+
+/***/ },
+/* 29 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	/**
+	 * A `Cancel` is an object that is thrown when an operation is canceled.
+	 *
+	 * @class
+	 * @param {string=} message The message.
+	 */
+	function Cancel(message) {
+	  this.message = message;
+	}
+	
+	Cancel.prototype.toString = function toString() {
+	  return 'Cancel' + (this.message ? ': ' + this.message : '');
+	};
+	
+	Cancel.prototype.__CANCEL__ = true;
+	
+	module.exports = Cancel;
+
+
+/***/ },
+/* 30 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var Cancel = __webpack_require__(29);
+	
+	/**
+	 * A `CancelToken` is an object that can be used to request cancellation of an operation.
+	 *
+	 * @class
+	 * @param {Function} executor The executor function.
+	 */
+	function CancelToken(executor) {
+	  if (typeof executor !== 'function') {
+	    throw new TypeError('executor must be a function.');
+	  }
+	
+	  var resolvePromise;
+	  this.promise = new Promise(function promiseExecutor(resolve) {
+	    resolvePromise = resolve;
+	  });
+	
+	  var token = this;
+	  executor(function cancel(message) {
+	    if (token.reason) {
+	      // Cancellation has already been requested
+	      return;
+	    }
+	
+	    token.reason = new Cancel(message);
+	    resolvePromise(token.reason);
+	  });
+	}
+	
+	/**
+	 * Throws a `Cancel` if cancellation has been requested.
+	 */
+	CancelToken.prototype.throwIfRequested = function throwIfRequested() {
+	  if (this.reason) {
+	    throw this.reason;
+	  }
+	};
+	
+	/**
+	 * Returns an object that contains a new `CancelToken` and a function that, when called,
+	 * cancels the `CancelToken`.
+	 */
+	CancelToken.source = function source() {
+	  var cancel;
+	  var token = new CancelToken(function executor(c) {
+	    cancel = c;
+	  });
+	  return {
+	    token: token,
+	    cancel: cancel
+	  };
+	};
+	
+	module.exports = CancelToken;
+
+
+/***/ },
+/* 31 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	/**
+	 * Syntactic sugar for invoking a function and expanding an array for arguments.
+	 *
+	 * Common use case would be to use `Function.prototype.apply`.
+	 *
+	 *  ```js
+	 *  function f(x, y, z) {}
+	 *  var args = [1, 2, 3];
+	 *  f.apply(null, args);
+	 *  ```
+	 *
+	 * With `spread` this example can be re-written.
+	 *
+	 *  ```js
+	 *  spread(function(x, y, z) {})([1, 2, 3]);
+	 *  ```
+	 *
+	 * @param {Function} callback
+	 * @returns {Function}
+	 */
+	module.exports = function spread(callback) {
+	  return function wrap(arr) {
+	    return callback.apply(null, arr);
+	  };
+	};
+
+
+/***/ },
+/* 32 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// var Visual = require('./visual.js');
+	var Musixise = __webpack_require__(3)
+	
+	// timing params
+	var timeDiff = 0; //performer start time vs. audience enter 
+	var latency = 6000; //5000 milliseconds
+	var tt = 0; // total time, from the first two params
+	var hasFirstNoteArrived = false; //use first Note to set late 
+	
+	var notePool = [];
+	
+	var SoundModule = {
+	    sendMidi: function(note_data) {
+	        var delay = 0;
+	        if (!hasFirstNoteArrived && note_data.midi_msg) {
+	            hasFirstNoteArrived = true;
+	            timeDiff = note_data.time - performance.now(); //rough value
+	        }
+	        tt = note_data.time - timeDiff + latency;
+	        delay = tt - performance.now();
+	        
+	        // Visual.letThereBeLight(note_data);
+	
+	        if (delay >= 0) {
+	            //method 1: js setTimeout
+	            // Musixise.callHandler('MusicDeviceMIDIEvent', [+note_data.midi_msg[0], +note_data.midi_msg[1], +note_data.midi_msg[2], delay]);
+	            setTimeout(function() {
+	                Musixise.callHandler('MusicDeviceMIDIEvent', [+note_data.midi_msg[0], +note_data.midi_msg[1], +note_data.midi_msg[2], 0]);       
+	                // Visual.letThereBeLight(note_data);
+	                // if (note_data.midi_msg[0]==144) {
+	                //     console.log('bang',delay);
+	                // }
+	            }, delay);
+	            //mathod 2: native sample based
+	            // Musixise.callHandler('MusicDeviceMIDIEvent', [+note_data.midi_msg[0], +note_data.midi_msg[1], +note_data.midi_msg[2], 44.1*delay]);
+	        } else {
+	            return;
+	        }
+	    },
+	    playRandomNote: function(){
+	        var i = 0;
+	        var hehe = setInterval(function(){
+	            i += 1;
+	            // console.log(i);
+	            Musixise.callHandler('MusicDeviceMIDIEvent', [144, 50+parseInt(Math.random()*30), 70, 0]);
+	            if (i == 20) {
+	                clearInterval(hehe);
+	            }
+	        },25);
+	        // var notenum1 = 50+parseInt(Math.random()*15);
+	        // var notenum2 = 65+parseInt(Math.random()*15);
+	        // var notenum3 = 80+parseInt(Math.random()*15);
+	        // Musixise.callHandler('MusicDeviceMIDIEvent', [144, notenum1, 50+parseInt(Math.random()*40), 0]);
+	        // Musixise.callHandler('MusicDeviceMIDIEvent', [144, notenum2, 50+parseInt(Math.random()*40), 0]);
+	        // Musixise.callHandler('MusicDeviceMIDIEvent', [144, notenum3, 50+parseInt(Math.random()*40), 0]);
+	        // setTimeout(function(){
+	        //     Musixise.callHandler('MusicDeviceMIDIEvent', [128, notenum, 50+parseInt(Math.random()*40), 64]);
+	        // },1000);
+	    },
+	    playPiece: function(pieceStr) {
+	        var noteArray = JSON.parse(pieceStr);
+	        var length = noteArray.length;
+	
+	        // function cbplayNote(i) {
+	        //     return function() {
+	        //         setTimeout(function() {
+	        //             console.log(noteArray[i][0]);
+	        //             Musixise.callHandler('MusicDeviceMIDIEvent', [noteArray[i][0], noteArray[i][1], noteArray[i][2], 0]);
+	        //             // Visual.letThereBeLight(noteArray[i]);
+	        //         }, noteArray[i][3]);
+	        //     }
+	        // }
+	
+	        for (var i = 0; i <= length - 1; i++) {
+	            if (i==0||i==length-1){
+	                console.log(performance.now());
+	            }
+	            //method 1: js setTimeout
+	            (function(i) {
+	                notePool.push(setTimeout(function() {
+	                    // console.log(noteArray[i][0]);
+	                    Musixise.callHandler('MusicDeviceMIDIEvent', [noteArray[i][0], noteArray[i][1], noteArray[i][2], 0]);
+	                    console.log('set note');
+	                    // Visual.letThereBeLight(noteArray[i]);
+	                }, noteArray[i][3]));
+	            })(i);
+	            //mathod 2: native sample based
+	               // Musixise.callHandler('MusicDeviceMIDIEvent', [noteArray[i][0], noteArray[i][1], noteArray[i][2], noteArray[i][3]]);
+	        }
+	    },
+	    stop: function() {
+	        var length = notePool.length;
+	        for (var i =0;i<=length-1;i++) {
+	            clearTimeout(notePool[i]);
+	        }
+	    }
+	}
+	
+	console.log('SoundModule Activated');
+	module.exports = SoundModule;
+
+/***/ },
+/* 33 */
+/***/ function(module, exports) {
+
+	module.exports = {
+	    realname: '小野妹子',
+	    userId: '103554',
+	    largeAvatar: './assets/1.gif',
+	    followerNum: '1314',
+	    online: true,
+	}
+
+/***/ },
+/* 34 */
+/***/ function(module, exports) {
+
+	 module.exports = [{
+	     name: '半岛铁盒',
+	     author: 'jay',
+	     workId: '5',
+	     description: '哪里有卖',
+	     createTime: '1314',
+	     likes: '1002',
+	     mp3: ''
+	 }, {
+	     name: '她的睫毛',
+	     author: 'f',
+	     workId: '24',
+	     description: '睫毛弯弯，眼睛眨呀眨呀眨',
+	     createTime: '10000',
+	     likes: '10',
+	     mp3: ''
+	 }, {
+	     name: '最后的战役',
+	     author: 'princess',
+	     workId: '1',
+	     description: '我留着陪你，强忍着泪滴',
+	     createTime: '100',
+	     likes: '924',
+	     mp3: ''
+	 }, {
+	     name: '飞啊飞啊我的骄傲放纵',
+	     author: 'princess',
+	     workId: '1',
+	     description: '我留着陪你，强忍着泪滴',
+	     createTime: '100',
+	     likes: '924',
+	     mp3: ''
+	 }];
+
+/***/ },
+/* 35 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var _ = { escape: __webpack_require__(36) };module.exports = function (data) {
+	var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
+	function print() { __p += __j.call(arguments, '') }
+	__p += '\n';
+	 if(data.followStatus) { ;
+	__p += '<div class="follow-status active"></div>';
+	 } else { ;
+	__p += '<div class="follow-status inactive"></div>';
+	 };
+	__p += '<div class="avatar"><img src="' +
+	__e(data.largeAvatar) +
+	'"><div class="gradient-mask"></div><p class="realname">' +
+	__e(data.realname) +
+	'</p><div id="relation-tab"><div id="watchhim"><span class="superscript">' +
+	__e(data.fansNum) +
+	'</span></div><div id="hewatch"><span class="superscript">' +
+	__e(data.followNum) +
+	'</span></div></div></div><div class="intro">';
+	 if(data.introduction) { ;
+	__p +=
+	__e(data.introduction);
+	} else { ;
+	__p += '\n  此处应有个人介绍\n  ';
+	 };
+	__p += '</div><div class="section-spliter"></div><div class="tab-container"><div class="active tab" id="work-tab">作品</div><div class="tab" id="live-tab">直播</div></div><div class="work-list"></div><div class="live-list"></div>\n';
+	return __p
+	};
+
+
+/***/ },
+/* 36 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(module, global) {/**
+	 * lodash 3.1.2 (Custom Build) <https://lodash.com/>
+	 * Build: `lodash modularize exports="npm" -o ./`
+	 * Copyright 2012-2016 The Dojo Foundation <http://dojofoundation.org/>
+	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+	 * Copyright 2009-2016 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+	 * Available under MIT license <https://lodash.com/license>
+	 */
+	
+	/** Used as references for various `Number` constants. */
+	var INFINITY = 1 / 0;
+	
+	/** `Object#toString` result references. */
+	var symbolTag = '[object Symbol]';
+	
+	/** Used to match HTML entities and HTML characters. */
+	var reUnescapedHtml = /[&<>"'`]/g,
+	    reHasUnescapedHtml = RegExp(reUnescapedHtml.source);
+	
+	/** Used to map characters to HTML entities. */
+	var htmlEscapes = {
+	  '&': '&amp;',
+	  '<': '&lt;',
+	  '>': '&gt;',
+	  '"': '&quot;',
+	  "'": '&#39;',
+	  '`': '&#96;'
+	};
+	
+	/** Used to determine if values are of the language type `Object`. */
+	var objectTypes = {
+	  'function': true,
+	  'object': true
+	};
+	
+	/** Detect free variable `exports`. */
+	var freeExports = (objectTypes[typeof exports] && exports && !exports.nodeType) ? exports : null;
+	
+	/** Detect free variable `module`. */
+	var freeModule = (objectTypes[typeof module] && module && !module.nodeType) ? module : null;
+	
+	/** Detect free variable `global` from Node.js. */
+	var freeGlobal = checkGlobal(freeExports && freeModule && typeof global == 'object' && global);
+	
+	/** Detect free variable `self`. */
+	var freeSelf = checkGlobal(objectTypes[typeof self] && self);
+	
+	/** Detect free variable `window`. */
+	var freeWindow = checkGlobal(objectTypes[typeof window] && window);
+	
+	/** Detect `this` as the global object. */
+	var thisGlobal = checkGlobal(objectTypes[typeof this] && this);
+	
+	/**
+	 * Used as a reference to the global object.
+	 *
+	 * The `this` value is used if it's the global object to avoid Greasemonkey's
+	 * restricted `window` object, otherwise the `window` object is used.
+	 */
+	var root = freeGlobal || ((freeWindow !== (thisGlobal && thisGlobal.window)) && freeWindow) || freeSelf || thisGlobal || Function('return this')();
+	
+	/**
+	 * Checks if `value` is a global object.
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @returns {null|Object} Returns `value` if it's a global object, else `null`.
+	 */
+	function checkGlobal(value) {
+	  return (value && value.Object === Object) ? value : null;
+	}
+	
+	/**
+	 * Used by `_.escape` to convert characters to HTML entities.
+	 *
+	 * @private
+	 * @param {string} chr The matched character to escape.
+	 * @returns {string} Returns the escaped character.
+	 */
+	function escapeHtmlChar(chr) {
+	  return htmlEscapes[chr];
+	}
+	
+	/** Used for built-in method references. */
+	var objectProto = Object.prototype;
+	
+	/**
+	 * Used to resolve the [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
+	 * of values.
+	 */
+	var objectToString = objectProto.toString;
+	
+	/** Built-in value references. */
+	var Symbol = root.Symbol;
+	
+	/** Used to convert symbols to primitives and strings. */
+	var symbolProto = Symbol ? Symbol.prototype : undefined,
+	    symbolToString = Symbol ? symbolProto.toString : undefined;
+	
+	/**
+	 * Checks if `value` is object-like. A value is object-like if it's not `null`
+	 * and has a `typeof` result of "object".
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
+	 * @example
+	 *
+	 * _.isObjectLike({});
+	 * // => true
+	 *
+	 * _.isObjectLike([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isObjectLike(_.noop);
+	 * // => false
+	 *
+	 * _.isObjectLike(null);
+	 * // => false
+	 */
+	function isObjectLike(value) {
+	  return !!value && typeof value == 'object';
+	}
+	
+	/**
+	 * Checks if `value` is classified as a `Symbol` primitive or object.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
+	 * @example
+	 *
+	 * _.isSymbol(Symbol.iterator);
+	 * // => true
+	 *
+	 * _.isSymbol('abc');
+	 * // => false
+	 */
+	function isSymbol(value) {
+	  return typeof value == 'symbol' ||
+	    (isObjectLike(value) && objectToString.call(value) == symbolTag);
+	}
+	
+	/**
+	 * Converts `value` to a string if it's not one. An empty string is returned
+	 * for `null` and `undefined` values. The sign of `-0` is preserved.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to process.
+	 * @returns {string} Returns the string.
+	 * @example
+	 *
+	 * _.toString(null);
+	 * // => ''
+	 *
+	 * _.toString(-0);
+	 * // => '-0'
+	 *
+	 * _.toString([1, 2, 3]);
+	 * // => '1,2,3'
+	 */
+	function toString(value) {
+	  // Exit early for strings to avoid a performance hit in some environments.
+	  if (typeof value == 'string') {
+	    return value;
+	  }
+	  if (value == null) {
+	    return '';
+	  }
+	  if (isSymbol(value)) {
+	    return Symbol ? symbolToString.call(value) : '';
+	  }
+	  var result = (value + '');
+	  return (result == '0' && (1 / value) == -INFINITY) ? '-0' : result;
+	}
+	
+	/**
+	 * Converts the characters "&", "<", ">", '"', "'", and "\`" in `string` to
+	 * their corresponding HTML entities.
+	 *
+	 * **Note:** No other characters are escaped. To escape additional
+	 * characters use a third-party library like [_he_](https://mths.be/he).
+	 *
+	 * Though the ">" character is escaped for symmetry, characters like
+	 * ">" and "/" don't need escaping in HTML and have no special meaning
+	 * unless they're part of a tag or unquoted attribute value.
+	 * See [Mathias Bynens's article](https://mathiasbynens.be/notes/ambiguous-ampersands)
+	 * (under "semi-related fun fact") for more details.
+	 *
+	 * Backticks are escaped because in IE < 9, they can break out of
+	 * attribute values or HTML comments. See [#59](https://html5sec.org/#59),
+	 * [#102](https://html5sec.org/#102), [#108](https://html5sec.org/#108), and
+	 * [#133](https://html5sec.org/#133) of the [HTML5 Security Cheatsheet](https://html5sec.org/)
+	 * for more details.
+	 *
+	 * When working with HTML you should always [quote attribute values](http://wonko.com/post/html-escaping)
+	 * to reduce XSS vectors.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category String
+	 * @param {string} [string=''] The string to escape.
+	 * @returns {string} Returns the escaped string.
+	 * @example
+	 *
+	 * _.escape('fred, barney, & pebbles');
+	 * // => 'fred, barney, &amp; pebbles'
+	 */
+	function escape(string) {
+	  string = toString(string);
+	  return (string && reHasUnescapedHtml.test(string))
+	    ? string.replace(reUnescapedHtml, escapeHtmlChar)
+	    : string;
+	}
+	
+	module.exports = escape;
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(37)(module), (function() { return this; }())))
+
+/***/ },
+/* 37 */
+/***/ function(module, exports) {
+
+	module.exports = function(module) {
+		if(!module.webpackPolyfill) {
+			module.deprecate = function() {};
+			module.paths = [];
+			// module.parent = undefined by default
+			module.children = [];
+			module.webpackPolyfill = 1;
+		}
+		return module;
+	}
+
+
+/***/ },
+/* 38 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var _ = { escape: __webpack_require__(36) };module.exports = function (data) {
+	var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
+	function print() { __p += __j.call(arguments, '') }
+	
+	 if(data.length) { ;
+	__p += '<ul>';
+	 for(var i = 0, len = data.length; i <len; i++) { ;
+	
+	 var l = data[i]; ;
+	__p += '<li data-id="' +
+	__e(l.id) +
+	'"><div class="info" data-id="' +
+	__e(l.id) +
+	'"><span data-id="' +
+	__e(l.id) +
+	'">' +
+	__e(new Date(l.createdDate)) +
+	'</span><span data-id="' +
+	__e(l.id) +
+	'">' +
+	__e(l.title) +
+	'</span><span data-id="' +
+	__e(l.id) +
+	'">' +
+	__e(l.content) +
+	'</span>';
+	 if (data.followStatus){;
+	__p += '<span data-likeid="' +
+	__e(l.id) +
+	'">like</span>';
+	}else{;
+	__p += '<span data-likeid="' +
+	__e(l.id) +
+	'">like not</span>';
+	};
+	__p += '</div></li>';
+	 } ;
+	__p += '</ul>';
+	 } ;
+	__p += '\n';
+	return __p
+	};
+
+
+/***/ }
+/******/ ]);
+//# sourceMappingURL=index.js.map
