@@ -1,0 +1,24 @@
+<% if(data.length) { %>
+    <h2>作品</h2>
+    <ul>
+    <% for(var i = 0, len = data.length; i <len; i++) { %>
+        <% var l = data[i]; %>
+        <li data-id="<%-l.id%>">
+            <div class="info" data-id="<%-l.id%>">
+                <div class="info-pic"></div>
+                <div class="info-body"></div>
+                <div class="info-extra"></div>
+                
+                <span data-id="<%-l.id%>"><%-new Date(l.createdDate)%></span>
+                <span data-id="<%-l.id%>"><%-l.title%></span>
+                <span data-id="<%-l.id%>"><%-l.content%></span>
+                <% if (data.followStatus){%>
+                    <span data-likeid="<%-l.id%>">like</span>
+                <%}else{%>
+                    <span data-likeid="<%-l.id%>">like not</span>
+                <%}%>
+            </div>
+        </li>
+    <% } %>
+    </ul>
+<% } %>

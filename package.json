@@ -8,8 +8,8 @@
   "license": "ISC",
   "eslintConfig": {
     "env": {
-        "browser": true,
-        "node": true
+      "browser": true,
+      "node": true
     }
   },
   "devDependencies": {
@@ -42,6 +42,7 @@
     "@ali/lib-windvane": "~2.1.1",
     "axios": "^0.15.2",
     "es6-promise": "~3.0.2",
-    "lodash.escape": "~3.1.0"
+    "lodash.escape": "~3.1.0",
+    "swiper": "^3.4.2"
   }
 }

@@ -1,18 +1,22 @@
 <% if(data.length) { %>
-    <h2>作品</h2>
     <ul>
     <% for(var i = 0, len = data.length; i <len; i++) { %>
         <% var l = data[i]; %>
         <li data-id="<%-l.id%>">
             <div class="info" data-id="<%-l.id%>">
-                <span data-id="<%-l.id%>"><%-new Date(l.createdDate)%></span>
-                <span data-id="<%-l.id%>"><%-l.title%></span>
-                <span data-id="<%-l.id%>"><%-l.content%></span>
-                <% if (data.followStatus)%>
-                    <span data-likeid="<%-l.id%>">like</span>
-                <%}else{%>
-                    <span data-likeid="<%-l.id%>">like not</span>
-                <%}%>
+                <img data-id="<%-l.id%>" class="work-cover" src="<%-l.cover?l.cover:l.owner.smallAvatar%>"></img>
+                <div data-id="<%-l.id%>" class="work-body">
+                  <span data-id="<%-l.id%>" class="work-body-title"><%-l.title%></span>
+                  <span data-id="<%-l.id%>" class="work-body-desc"><p><%-l.content%></p></span>
+                  <!--<span><%-new Date(l.createdDate)%></span>-->
+                </div>
+                <!--<div class="work-extra">
+                  <% if (data.followStatus){%>
+                      <span data-likeid="<%-l.id%>">like</span>
+                  <%}else{%>
+                      <span data-likeid="<%-l.id%>">like not</span>
+                  <%}%>
+                </div>-->
             </div>
         </li>
     <% } %>

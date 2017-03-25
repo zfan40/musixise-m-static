@@ -16,16 +16,16 @@ var musixiserIntroTpl = require('../template/musixiserIntro.ejs');
 var workListTpl = require('../template/workList.ejs');
 
 var musixiserSection = d.querySelector('#intro-info');
-var workSection = d.querySelector('#past-work');
+var workSection = d.querySelector('#work-list');
 
-// var musixiserId = location.href.match(/.*?stage\/(.*)/)[1];
 var musixiserId = location.href.split('/').pop();
+musixiserId = 40; //test
+
 var followStatus = -1; //n种取值，0关注1取消
 var userInfo = {};
-
 var req_config = {};
-
 var AllWorks = [];//以后这里还是得native...否则歌多了会崩吧...
+
 var app = {
     init: function() {
         var self = this;
@@ -46,11 +46,11 @@ var app = {
 
         axios.post('//api.musixise.com/api/user/detail/' + musixiserId, '', req_config)
             .then(function(res) {
-                // console.log(res.data.data);
+                console.log('musixiser info',res.data.data);
                 followStatus = res.data.data.followStatus; //这块还没测试;
                 self.renderMusixiserInfo(res.data.data);
                 self.bindFollowMusixiser();
-                self.bindCheckMusixiser();
+                // self.bindCheckMusixiser();
             })
             .catch(function(err) {
 
@@ -59,6 +59,7 @@ var app = {
         axios.post('//api.musixise.com/api/work/getListByUid/' + musixiserId, '', req_config)
             .then(function(res) {
                 AllWorks = res.data.data;
+                console.log('musixiser work',res.data.data);
                 self.renderWorkList(AllWorks);
                 self.bindPlayWork();
                 self.bindAddFavoriteWork();
@@ -66,8 +67,8 @@ var app = {
             .catch(function(err) {
 
             });
-        // self.renderMusixiserInfo(generalData);
-        // self.renderWorkList(workData);
+        // self.renderMusixiserInfo(generalData); //test
+        // self.renderWorkList(workData); //test
     },
     renderMusixiserInfo: function(data) {
         var self = this;
@@ -84,12 +85,15 @@ var app = {
     renderWorkList: function(data) {
         var self = this;
         var a = data || {};
-        var renderStr = workListTpl(a);
+        var renderStr = workListTpl(a.content);
         workSection.innerHTML = renderStr;
         //if no stage at all, show empty icon
         if (!data) {
             d.querySelector('#no-favorite-work').style.display = 'flex';
         }
+    },
+    renderLiveList: function(data) {
+
     },
     // bindEvent: function() {
     //     var self = this;
@@ -109,21 +113,21 @@ var app = {
     // },
     bindPlayWork: function() {
         var self = this;
-        d.querySelector('#past-work').addEventListener('click', function(e) {
+        d.querySelector('#work-list').addEventListener('click', function(e) {
             if (e.target.getAttribute('data-id')) {
                 alert('play piece of id ' + e.target.getAttribute('data-id'));
                 // native play
                 // Musixise.callHandler('showToast', '开始播放', function() {});
-                // location.href = "musixise://play/" + e.target.getAttribute('data-id');
+                location.href = "musixise://play/" + e.target.getAttribute('data-id');
 
                 // js play
                 // console.log(AllWorks);
-                var l = AllWorks.length;
-                for (var i=0;i<=l-1;i++) {
-                    if (e.target.getAttribute('data-id') == AllWorks[i].id) {
-                        Sound.playPiece(AllWorks[i].content);
-                    }
-                }
+                // var l = AllWorks.length;
+                // for (var i=0;i<=l-1;i++) {
+                //     if (e.target.getAttribute('data-id') == AllWorks[i].id) {
+                //         Sound.playPiece(AllWorks[i].content);
+                //     }
+                // }
             }
         });
     },
@@ -132,7 +136,7 @@ var app = {
         //收藏某作品
         //onclick...
 
-        d.querySelector('#past-work').addEventListener('click', function(e) {
+        d.querySelector('#work-list').addEventListener('click', function(e) {
             if (e.target.getAttribute('data-likeid')) {
                 axios.post('//api.musixise.com/api/favorite/addWork', JSON.stringify({
                         workId: e.target.getAttribute('data-likeid'),
@@ -147,31 +151,35 @@ var app = {
             }
         });
     },
-    bindCheckMusixiser: function() {
-        var self = this;
-        d.querySelector('.avatar').addEventListener('click', function() {
-            Musixise.callHandler('popMusixiserBox', {
-                id: musixiserId,
-                avatar: '',
-                follow: 0,
-                name: ''
-            }, function() {
-                //
-            });
-        });
-    },
-    bindFollowMusixiser: function() {
+    // bindCheckMusixiser: function() {
+    //     var self = this;
+    //     d.querySelector('.avatar').addEventListener('click', function() {
+    //         Musixise.callHandler('popMusixiserBox', {
+    //             id: musixiserId,
+    //             avatar: '',
+    //             follow: 0,
+    //             name: ''
+    //         }, function() {
+    //             //
+    //         });
+    //     });
+    // },
+    bindFollowMusixiser: function() {//complete
         var self = this;
         d.querySelector('.follow-status').addEventListener('click', function(e) {
+            if (!userInfo.token) {
+                alert('未登录');
+                return;
+            }
             if (followStatus) {
                 //取消关注
                 followStatus = 0;
-                d.querySelector('.follow-status').innerHTML = '已关注';
+                document.querySelector('.follow-status.active').className = 'follow-status inactive';
             } else {
                 followStatus = 1;
-                d.querySelector('.follow-status').innerHTML = '未关注';
+                document.querySelector('.follow-status.inactive').className = 'follow-status active';
             }
-            //关注某人
+            // 关注某人
             var param = {
                 followId: musixiserId,
                 status: followStatus

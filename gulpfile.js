@@ -81,7 +81,7 @@ gulp.task('watch', function () {
  * gulp serve
  * 打包后启动服务器
  */
-gulp.task('serve', ['build:webpack'], function () {
+gulp.task('serve', ['build:webpack','watch'], function () {
   browserSync.init({
     server: {
       baseDir: './build',
