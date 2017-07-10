@@ -54,7 +54,7 @@ var app = {
     },
     removeStage: function(name) {
         var self = this;
-        d.querySelector('#id'+name).remove();
+        if (d.querySelector('#id'+name)) {d.querySelector('#id'+name).remove();}
         //if no stage at all, show empty icon
         if (!d.querySelector('.musixiser')){
             d.querySelector('#empty-stage').style.display='flex';
