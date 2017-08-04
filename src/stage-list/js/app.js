@@ -102,8 +102,7 @@ var app = {
         var stageList = d.querySelector('#musixiser-section');
         stageList.addEventListener('click',function(e){
             if (e.target.getAttribute('data-uid')) {
-                Env.callHandler('PushWebPage', 'http://m.musixise.com/stage/'+e.target.getAttribute('data-uid'));
-                
+              Env.pushWebPage('http://m.musixise.com/stage/'+e.target.getAttribute('data-uid'));
             } else if (e.target.getAttribute('data-sm-uid')) {
               location.replace('//m.musixise.com/musixiser-detail/'+e.target.getAttribute('data-sm-uid'));
             }
