@@ -6,7 +6,6 @@
 var d = document;
 var io = require('../../_common/js/socket.io.js');
 var socket = io('http://io.musixise.com');
-var Musixise = require('../../_common/js/jsbridge.js');
 var Env = require('../../_common/js/env.js');
 var StageListTpl = require('../template/stageList.ejs');
 // var MockData = require('../mock/mock.js');
@@ -103,8 +102,8 @@ var app = {
         var stageList = d.querySelector('#musixiser-section');
         stageList.addEventListener('click',function(e){
             if (e.target.getAttribute('data-uid')) {
-                Musixise.callHandler('PushWebPage', 'http://m.musixise.com/stage/'+e.target.getAttribute('data-uid'));
-                // location.href = 'http://m.musixise.com/stage/'+e.target.getAttribute('data-name');
+                Env.callHandler('PushWebPage', 'http://m.musixise.com/stage/'+e.target.getAttribute('data-uid'));
+                
             } else if (e.target.getAttribute('data-sm-uid')) {
               location.replace('//m.musixise.com/musixiser-detail/'+e.target.getAttribute('data-sm-uid'));
             }

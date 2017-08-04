@@ -27,12 +27,36 @@ var env = {
     uploadImage: function(cb){
         var self= this;
         if (!self.inApp) { //app外
-            location.href='musixise://open';
+            // location.href='musixise://open';
         } else { //app内
             MusixiseBridge.callHandler('UploadImage', {}, function(res) {
               cb(res);
             });
         }
+    },
+    setTitle: function(title){
+        var self= this;
+        if (!self.inApp) { //app外
+            // location.href='musixise://open';
+        } else { //app内
+            MusixiseBridge.callHandler('SetTitle',title,function(res){});
+        }
+    },
+    showToast: function(msg){
+        var self= this;
+        if (!self.inApp) { //app外
+            // location.href='musixise://open';
+        } else { //app内
+            MusixiseBridge.callHandler('ShowToast',msg,function(res){});
+        }
+    },
+    pushWebPage: function(url) {
+      var self = this;
+      if (!self.inApp){
+        location.href = url;
+      } else {
+        Musixise.callHandler('PushWebPage', url);
+      }
     },
     userInfo:{}
 }

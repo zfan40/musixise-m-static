@@ -22,13 +22,14 @@ var CommentModule = {
             var content = $(this).val();
             if (e.keyCode == 13 && content) {
                 var pickSong = orderSongTextRule(content);
+                callback(userInfo.username, content, pickSong);
                 if (pickSong) { //点了一首歌
                     var array = content.split('#');
                     content = '' + array[0] + '<span class="songname">#' + array[1] + '#</span>' + array[2];
                 }
                 $('#tl-audience-msg ul').append('<li><span class="audiencename">' + userInfo.username + '</span>: ' + content + '</li>');
                 document.querySelector('#tl-audience-msg').scrollTop = document.querySelector('#tl-audience-msg ul').clientHeight;
-                callback(userInfo.username, content, pickSong);
+                
                 $(this).val('');
             }
         });
